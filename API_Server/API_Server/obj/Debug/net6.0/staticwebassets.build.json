@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "ORMou2V+0HNo4YuvHFKvQ7jHD8PRuRMZ0RO2/u+dvIQ=",
+  "Source": "API_Server",
+  "BasePath": "_content/API_Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "API_Server\\wwwroot",
+      "Source": "API_Server",
+      "ContentRoot": "D:\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\",
+      "BasePath": "_content/API_Server",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
