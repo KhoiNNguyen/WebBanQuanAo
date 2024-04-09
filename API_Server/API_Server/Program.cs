@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using API_Server.Data;
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<API_ServerContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("API_ServerContext") ?? throw new InvalidOperationException("Connection string 'API_ServerContext' not found.")));
