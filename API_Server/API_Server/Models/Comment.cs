@@ -17,8 +17,8 @@ namespace API_Server.Models
         public bool Status { get; set; }
 
         [DisplayName("Điện Thoại")]
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public int ProductDetailId { get; set; }
+        public ProductDetail ProductDetail { get; set; }
 
         [DisplayName("Bình Luận")]
         public int? ParentCommentId { get; set; }

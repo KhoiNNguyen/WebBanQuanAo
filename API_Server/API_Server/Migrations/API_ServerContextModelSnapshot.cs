@@ -109,7 +109,7 @@ namespace API_Server.Migrations
                     b.Property<int?>("ParentCommentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductDetailId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -122,7 +122,7 @@ namespace API_Server.Migrations
 
                     b.HasIndex("ParentCommentId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductDetailId");
 
                     b.HasIndex("UserId");
 
@@ -272,9 +272,6 @@ namespace API_Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ColorId")
                         .HasColumnType("int");
 
@@ -284,10 +281,10 @@ namespace API_Server.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductSaleId")
+                    b.Property<int>("ProductDetailId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductTypeId")
+                    b.Property<int>("ProductSaleId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -304,17 +301,44 @@ namespace API_Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.HasIndex("ColorId");
 
-                    b.HasIndex("ProductSaleId");
+                    b.HasIndex("ProductDetailId");
 
-                    b.HasIndex("ProductTypeId");
+                    b.HasIndex("ProductSaleId");
 
                     b.HasIndex("SizeId");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("API_Server.Models.ProductDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("ProductTypeId");
+
+                    b.ToTable("ProductDetail");
                 });
 
             modelBuilder.Entity("API_Server.Models.ProductSale", b =>
@@ -644,9 +668,9 @@ namespace API_Server.Migrations
                         .WithMany()
                         .HasForeignKey("ParentCommentId");
 
-                    b.HasOne("API_Server.Models.Product", "Product")
+                    b.HasOne("API_Server.Models.ProductDetail", "ProductDetail")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductDetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -656,7 +680,7 @@ namespace API_Server.Migrations
 
                     b.Navigation("ParentConmment");
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductDetail");
 
                     b.Navigation("User");
                 });
@@ -735,15 +759,15 @@ namespace API_Server.Migrations
 
             modelBuilder.Entity("API_Server.Models.Product", b =>
                 {
-                    b.HasOne("API_Server.Models.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API_Server.Models.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API_Server.Models.ProductDetail", "ProductDetail")
+                        .WithMany()
+                        .HasForeignKey("ProductDetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -753,27 +777,38 @@ namespace API_Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API_Server.Models.ProductType", "ProductType")
-                        .WithMany()
-                        .HasForeignKey("ProductTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API_Server.Models.Size", "Size")
                         .WithMany()
                         .HasForeignKey("SizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
-
                     b.Navigation("Color");
+
+                    b.Navigation("ProductDetail");
 
                     b.Navigation("ProductSale");
 
-                    b.Navigation("ProductType");
-
                     b.Navigation("Size");
+                });
+
+            modelBuilder.Entity("API_Server.Models.ProductDetail", b =>
+                {
+                    b.HasOne("API_Server.Models.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API_Server.Models.ProductType", "ProductType")
+                        .WithMany()
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
