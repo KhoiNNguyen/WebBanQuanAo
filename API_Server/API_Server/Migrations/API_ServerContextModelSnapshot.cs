@@ -30,6 +30,9 @@ namespace API_Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -38,9 +41,6 @@ namespace API_Server.Migrations
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
-
-                    b.Property<string>("TenSp")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -296,9 +296,6 @@ namespace API_Server.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Thumbnail")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ColorId");
@@ -332,6 +329,9 @@ namespace API_Server.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Thumbnail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
@@ -355,7 +355,7 @@ namespace API_Server.Migrations
                     b.Property<string>("GhiChu")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("PercentDiscound")
+                    b.Property<float>("PercentDiscount")
                         .HasColumnType("real");
 
                     b.Property<DateTime>("StartTime")
@@ -379,6 +379,9 @@ namespace API_Server.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -492,7 +495,7 @@ namespace API_Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discound")
+                    b.Property<string>("Discount")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API_Server.Models
 {
@@ -6,7 +7,11 @@ namespace API_Server.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
+        [DisplayName("ảnh đại diện")]
+        public string Thumbnail { get; set; }
+        [NotMapped]
+        [DisplayName("ảnh đại diện")]
+        public IFormFile ImageFile { get; set; }
         [DisplayName("Số lượng")]
         public int Quantity { get; set; }
         public int BrandId { get; set; }

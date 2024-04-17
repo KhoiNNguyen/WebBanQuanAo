@@ -11,9 +11,6 @@ namespace API_Server.Models
 
         [DisplayName("Giá")]
         public int Price { get; set; }
-
-        [DisplayName("ảnh đại diện")]
-        public string Thumbnail { get; set; }
         public int SizeId { get; set; }
         public Size Size { get; set; }
         public int ColorId { get; set; }

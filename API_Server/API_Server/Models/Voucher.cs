@@ -10,7 +10,7 @@ namespace API_Server.Models
         public string VoucherCode { get; set; }
 
         [DisplayName("Giảm Giá")]
-        public string Discound { get; set; }
+        public string Discount { get; set; }
 
         [DisplayName("Thời Gian Bắt Đầu")]
         public DateTime StartTime { get; set; }

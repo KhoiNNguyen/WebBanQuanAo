@@ -11,7 +11,7 @@ namespace API_Server.Models
 
         [DisplayName("Thời Gian Kết Thúc")]
         public DateTime EndDate { get; set; }
-        public float PercentDiscound { get; set; }
+        public float PercentDiscount { get; set; }
         public string GhiChu { get; set; }
         public bool Status { get; set; }
 

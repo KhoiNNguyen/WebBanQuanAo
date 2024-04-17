@@ -7,9 +7,14 @@ namespace API_Server.Models
     {
         public int Id { get; set; }
 
-        [DisplayName("Tên Thương Hiệu")]
+        [DisplayName("Thương Hiệu")]
         public string Name { get; set; }
-        public string TenSp { get; set; }
+
+        [DisplayName("Hình Ảnh")]
+        public string Image { get; set; }
+        [NotMapped]
+        [DisplayName("Hình Ảnh")]
+        public IFormFile ImageFile { get; set; }
         public string SDT { get; set; }
         [DisplayName("Trạng Thái")]
         public bool Status { get; set; }
