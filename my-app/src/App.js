@@ -4,6 +4,9 @@ import LauOutAdmin from './LayOut/Admin/LayOutAdmin';
 import HomeAdmin from './Pages/Admin/HomeAdmin';
 import LayOutClient from './LayOut/Client/LayOutClient';
 import HomeClient from './Pages/Client/home/HomeClient';
+import Brand from './Pages/Admin/Brand/Brand';
+import BrandCreate from './Pages/Admin/Brand/BrandCreate';
+import BrandEdit from './Pages/Admin/Brand/BrandEdit';
 
 
 
@@ -14,6 +17,9 @@ function App() {
       <Routes>
         <Route path='/Admin' element={<LauOutAdmin/>}>
           <Route index element={<HomeAdmin/>}></Route>
+          <Route path='/Admin/Brands' element={<Brand/>}></Route>
+          <Route path='/Admin/Brands/Create' element={<BrandCreate/>}></Route>
+          <Route path='/Admin/Brands/Edit/uploadFile/:id' element={<BrandEdit/>}></Route>
         </Route>
         <Route path='/' element={<LayOutClient/>}>
         <Route index element={<HomeClient />}/>

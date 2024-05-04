@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_Server.Data;
 using API_Server.Models;
+using Microsoft.Extensions.Hosting;
 
 namespace API_Server.Controllers
 {
@@ -15,10 +16,11 @@ namespace API_Server.Controllers
     public class BrandsController : ControllerBase
     {
         private readonly API_ServerContext _context;
-
-        public BrandsController(API_ServerContext context)
+        public IWebHostEnvironment _environment;
+        public BrandsController(API_ServerContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         // GET: api/Brands
@@ -44,8 +46,8 @@ namespace API_Server.Controllers
 
         // PUT: api/Brands/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBrand(int id, Brand brand)
+        [HttpPut("uploadFile/{id}")]
+        public async Task<IActionResult> PutBrand(int id, [FromForm] Brand brand)
         {
             if (id != brand.Id)
             {
@@ -56,7 +58,22 @@ namespace API_Server.Controllers
 
             try
             {
-                await _context.SaveChangesAsync();
+                if (brand.ImageFile != null)
+                {
+                    brand.Image = "";
+
+                    var fileName = brand.Id.ToString() + Path.GetExtension(brand.ImageFile.FileName);
+                    var uploadFolder = Path.Combine(_environment.WebRootPath, "Images", "brands");
+                    var uploadPath = Path.Combine(uploadFolder, fileName);
+                    using (FileStream fs = System.IO.File.Create(uploadPath))
+                    {
+                        await brand.ImageFile.CopyToAsync(fs);
+                        fs.Flush();
+                    }
+                    brand.Image = fileName;
+                    _context.Brand.Update(brand);
+                    await _context.SaveChangesAsync();
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -75,13 +92,34 @@ namespace API_Server.Controllers
 
         // POST: api/Brands
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Brand>> PostBrand(Brand brand)
+        //[Bind("Name,ImageFile,Status")] ("uploadFile")
+        [HttpPost("uploadFile")]
+        public async Task<ActionResult<Brand>> PostBrand([FromForm] Brand brand)
         {
-            _context.Brand.Add(brand);
-            await _context.SaveChangesAsync();
+            if (brand.ImageFile != null)
+            {
+                brand.Image = "";
+                _context.Brand.Add(brand);
+                await _context.SaveChangesAsync();
 
+
+                var fileName = brand.Id.ToString() + Path.GetExtension(brand.ImageFile.FileName);
+                var uploadFolder = Path.Combine(_environment.WebRootPath, "Images", "brands");
+                var uploadPath = Path.Combine(uploadFolder, fileName);
+                using (FileStream fs = System.IO.File.Create(uploadPath))
+                {
+                    await brand.ImageFile.CopyToAsync(fs);
+                    fs.Flush();
+                }
+                brand.Image = fileName;
+                _context.Brand.Update(brand);
+                await _context.SaveChangesAsync();
+            }
             return CreatedAtAction("GetBrand", new { id = brand.Id }, brand);
+            //_context.Brand.Add(brand);
+            //await _context.SaveChangesAsync();
+
+            //return CreatedAtAction("GetBrand", new { id = brand.Id }, brand);
         }
 
         // DELETE: api/Brands/5
@@ -93,8 +131,8 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-
-            _context.Brand.Remove(brand);
+            brand.Status = false;
+            _context.Brand.Update(brand);
             await _context.SaveChangesAsync();
 
             return NoContent();
