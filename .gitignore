@@ -5,10 +5,10 @@
 *.pack
 *.pack.old
 
-API_BanDienThoai/.vs
-API_BanDienThoai/API_BanDienThoai/bin/
-API_BanDienThoai/API_BanDienThoai/obj/
-API_BanDienThoai/API_BanDienThoai/appsettings.json
+API_Server/.vs
+API_Server/API_Server/bin/
+API_Server/API_Server/obj/
+API_Server/API_Server/appsettings.json
 
 .vscode/
 my-app/node_modules/.bin/

@@ -9,5 +9,7 @@ namespace API_Server.Models
         [DisplayName("Tên")]
         public string Name { get; set; }
         public bool Status { get; set; }
+        public int GenderId { get; set; }
+        public Gender Gender { get; set; }
     }
 }
