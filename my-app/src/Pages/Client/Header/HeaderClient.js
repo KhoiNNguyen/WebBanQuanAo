@@ -28,16 +28,9 @@ function HeaderClient() {
             </div>
             <div className="Header2">
                 <div className="TypeHeader">
-                    <ul className="menu">
+                    <ul>
                         <li>TRANG CHỦ</li>
-                        <li>NAM
-                            <ul className="sub_menu">
-                                <li className="">Ao Thun</li>
-                                <li className="">Ao Ba Lo</li>
-                                <li className="">Quan Jean</li>
-                                <li className="">Quan Dui</li>
-                            </ul>
-                        </li>
+                        <li>NAM</li>
                         <li>NỮ</li>
                         <li>THƯƠNG HIỆU</li>
                     </ul>

@@ -7,15 +7,52 @@ import { FaStar } from "react-icons/fa6";
 import { BiSolidSkipPreviousCircle } from "react-icons/bi";
 
 function HomeClient() {
+    function activeClickFemaleType() {
+        var menu_female = document.querySelector('.menu_content_female');
+        var menu_male = document.querySelector('.menu_content_male');
+        var item_female = document.querySelector('.item-female');
+        var item_male = document.querySelector('.item-male');
+        console.log(menu_female,menu_male,item_female,item_male)
+        if (menu_female && menu_male && item_female && item_male) { // Kiểm tra xem các phần tử đã được tìm thấy chưa
+            if (!item_female.classList.contains('active')) {
+                item_female.classList.add('active');
+                menu_female.classList.remove('d-none');
+                menu_male.classList.add('d-none');
+                item_male.classList.remove('active');
+            }
+        } else {
+            console.error("Không tìm thấy một hoặc nhiều phần tử.");
+        }
+    }
+    
+    function activeClickMaleType() {
+        var menu_female = document.querySelector('.menu_content_female');
+        var menu_male = document.querySelector('.menu_content_male');
+        var item_female = document.querySelector('.item-female');
+        var item_male = document.querySelector('.item-male');
+        console.log(menu_female,menu_male,item_female,item_male)
+        
+        if (menu_female && menu_male && item_female && item_male) { // Kiểm tra xem các phần tử đã được tìm thấy chưa
+            if (!item_male.classList.contains('active')) {
+                item_male.classList.add('active');
+                menu_male.classList.remove('d-none');
+                menu_female.classList.add('d-none');
+                item_female.classList.remove('active');
+            }
+        } else {
+            console.error("Không tìm thấy một hoặc nhiều phần tử.");
+        }
+    }
+
     return ( <>
     <SlideShow />
     <div className="Inner">
         <div className="DanhMuc">
             <div className="MenuList">
-                <div className="item-menulist item-male active">NAM</div>
-                <div className="item-menulist item-female">NỮ</div>
+                    <div className="item-menulist item-male active" onClick={activeClickMaleType}>NAM</div>
+                    <div className="item-menulist item-female" onClick={activeClickFemaleType}>NỮ</div>
             </div>
-            <div className="menu_content_female">
+            <div className="menu_content_female d-none">
                 <ul className="menu_female_list">
                     <li>
                         <div className="menu_famale_list-group">
@@ -108,7 +145,7 @@ function HomeClient() {
                     </li>
                 </ul>
             </div>
-            <div className="menu_content_male d-none">
+            <div className="menu_content_male">
             <ul className="menu_female_list">
             <li>
                         <div className="menu_famale_list-group">

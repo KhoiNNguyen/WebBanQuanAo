@@ -1,0 +1,73 @@
+.bg{
+    background: #2a2a86 top center;
+    color: #fff;
+    height: auto;
+    padding: 10px 20px 10px 20px;
+}
+.col-content{
+    display: flex;
+}
+
+.link-content{
+    flex-direction: column;
+    width:16.67%;
+}
+
+.link-content h4{
+    font-size: 1rem;
+}
+
+.contact{
+    display: block;
+    margin-left: -30px;
+    line-height: 1.16rem;
+}
+
+.contact li{
+    font-size: 0.85rem;
+}
+
+li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+}
+
+.list-pay{
+    width: 18%;
+    margin-left: 50px;
+}
+
+.list-pay h4{
+    font-size: 1rem;
+}
+
+.list-transport{
+    width: 18%;
+}
+
+.list-transport h4{
+    font-size: 1rem;
+ 
+}
+
+.list-logo{
+    margin-left: -30px;
+    display: block;
+}
+
+.subLogo{
+    margin: 8px;
+}
+.info{
+    margin-top: 5px;
+    text-align: center;
+}
+
+.info p{
+    font-size: 0.9rem;
+    margin: 0;
+}
