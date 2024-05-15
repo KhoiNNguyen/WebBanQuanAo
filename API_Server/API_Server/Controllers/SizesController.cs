@@ -93,8 +93,8 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-
-            _context.Size.Remove(size);
+            size.Status = false;
+            _context.Size.Update(size);
             await _context.SaveChangesAsync();
 
             return NoContent();

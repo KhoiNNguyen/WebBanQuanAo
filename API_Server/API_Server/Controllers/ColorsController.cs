@@ -93,8 +93,8 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-
-            _context.Color.Remove(color);
+            color.Status = false;
+            _context.Color.Update(color);
             await _context.SaveChangesAsync();
 
             return NoContent();

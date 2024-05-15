@@ -67,6 +67,7 @@ const Brand = () => {
             brand.name && brand.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
+        setlistFalse(filtered)
         setCurrentPage(1);
     }
     
@@ -75,7 +76,7 @@ const Brand = () => {
     const indexOfLastBrand = currentPage * brandsPerPage;//Tính toán chỉ số của sản phẩm đầu tiên
     const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;// Tính toán chỉ số của sản phẩm cuối cùng
 
-    const totalBrands = brands.length; // Tổng số sản phẩm
+    const totalBrands = key.length; // Tổng số sản phẩm
     const totalPages = Math.ceil(totalBrands / brandsPerPage);// Tổng số trang hiển thị
     const currentBrandsTrue = (key.slice(indexOfFirstBrand, indexOfLastBrand));
 

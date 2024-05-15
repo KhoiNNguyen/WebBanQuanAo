@@ -1,0 +1,64 @@
+.display{
+    display: flex;
+}
+.margin-right-5px{
+    margin-right: 5px;
+}
+.margin-right-10px{
+    margin-right: 10px;
+}
+.margin-left-59rem{
+    margin-left: 59rem;
+}
+.margin-top-10px{
+    margin-top: 10px;
+}
+.margin-top-5px{
+    margin-top: 5px;
+}
+.margin-top-7px{
+    margin-top: 7px;
+}
+.justify-content-end{
+    justify-content: end;
+}
+.width-20-percent{
+    width: 20%;
+}
+.width-50-percent{
+    width: 50%;
+}
+.width-80-percent{
+    width: 80%;
+}
+.width-93-percent{
+    width: 93%;
+}
+.width-100-percent{
+    width: 100%;
+}
+.height-40-px{
+    height: 40px;
+}
+.width-80-px{
+    width: 80px;
+}
+.width-100-px{
+    width: 100px;
+}
+.width-400-px{
+    width: 400px;
+}
+.width-964-px{
+    width: 964px;
+}
+.padding-5-px{
+    padding: 5px;
+}
+td{
+    vertical-align: baseline;
+}
+.pagination-container {
+    display: flex;
+    justify-content: center;
+}

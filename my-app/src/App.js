@@ -7,6 +7,8 @@ import HomeClient from './Pages/Client/home/HomeClient';
 import Brand from './Pages/Admin/Brand/Brand';
 import BrandCreate from './Pages/Admin/Brand/BrandCreate';
 import BrandEdit from './Pages/Admin/Brand/BrandEdit';
+import Color from './Pages/Admin/Color/Color';
+import Size from './Pages/Admin/Size/Size';
 
 
 
@@ -20,6 +22,8 @@ function App() {
           <Route path='/Admin/Brands' element={<Brand/>}></Route>
           <Route path='/Admin/Brands/Create' element={<BrandCreate/>}></Route>
           <Route path='/Admin/Brands/Edit/uploadFile/:id' element={<BrandEdit/>}></Route>
+          <Route path='/Admin/Colors' element={<Color/>}></Route>
+          <Route path='/Admin/Sizes' element={<Size/>}></Route>
         </Route>
         <Route path='/' element={<LayOutClient/>}>
         <Route index element={<HomeClient />}/>
