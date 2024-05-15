@@ -4,13 +4,11 @@ import './Footer.css'
 function FooterClient() {
     return ( 
         <>
-         <div className="Inner">
             <div className="bg">
-            <div className="col-content">
+            <div className="Inner col-content">
                     <div className="link-content">
                     <h4>Hỗ Trợ - Dịch Vụ</h4>
                     <ul className="contact">
-                        <li>Mua hàng trả góp</li>
                         <li>Hướng dẫn đặt hàng và thanh toán</li>
                         <li>đơn hàng</li>
                         <li>Chính sách bảo hành</li>
@@ -26,20 +24,12 @@ function FooterClient() {
                     <ul className="contact">
                         <li>Bán hàng Online</li>
                         <li>Chăm sóc khách hàng</li>
-                        <li>Dịch vụ sửa chữa Hoàng Hà Care</li>
                         <li>Hợp tác kinh doanh</li>
-                        <li>Tra cứu bảo hành</li>
-                    </ul>
-                </div>
-                    <div className="link-content">
-                    <h4>Hệ thống 124 siêu thị trên toàn quốc</h4>
-                    <ul className="contact">
-                        <li>Danh sách 124 siêu thị trên toàn quốc</li>
                     </ul>
                 </div>
                 <div className="link-content">
                     <h4>Tổng đài</h4>
-                    <button><span style={{color:"white"}}>19006067</span></button>
+                    <span style={{color:"white"}}>18006067</span>
                 </div>
         
                 <div className="list-pay">
@@ -75,9 +65,8 @@ function FooterClient() {
             </div>
         
             <div className="info">
-                <p>© 2020. CÔNG TY CỔ PHẦN XÂY DỰNG VÀ ĐẦU TƯ THƯƠNG MẠI HOÀNG HÀ. MST:  0106713191. (Đăng ký lần đầu: Ngày 15 tháng 12 năm 2014, Đăng ký thay đổi ngày 24/11/2022)</p>
-                <p><strong>GP số 426/GP-TTĐT do sở TTTT Hà Nội cấp ngày 22/01/2021</strong></p>
-                <p>Địa chỉ: Số 89 Đường Tam Trinh, Phường Mai Động, Quận Hoàng Mai, Thành Phố Hà Nội, Việt Nam. Điện thoại: 1900.2091. Chịu trách nhiệm nội dung: <strong>Hoàng Ngọc Chiến</strong>. </p>
+                <p>“Đặt sự hài lòng của khách hàng là ưu tiên số 1 trong mọi suy nghĩ hành động của mình” là sứ mệnh, là triết lý, chiến lược.. luôn cùng YODY tiến bước</p>
+                <p>© YODY - Bản quyền thuộc về Công ty cổ phần thời trang YODY. </p>
             </div>
             <div id="navSocial">
                             <div className="social">
@@ -95,8 +84,6 @@ function FooterClient() {
                     </a>
                 </div>
             </div>
-            </div>
-
             </>         
     );
 }

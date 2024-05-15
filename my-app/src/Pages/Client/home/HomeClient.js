@@ -43,7 +43,7 @@ function HomeClient() {
             console.error("Không tìm thấy một hoặc nhiều phần tử.");
         }
     }
-
+    
     return ( <>
     <SlideShow />
     <div className="Inner">
@@ -519,10 +519,8 @@ function HomeClient() {
                                     <span className="price_current">199.000đ</span>
                                 </div>
                                 <div className="color_group">
-
                                 </div>
                             </div>
-
                             </div>
                         </div>
                     </div>

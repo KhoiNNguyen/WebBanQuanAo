@@ -43,6 +43,11 @@
     border: 1px solid #fff;
 }
 
+.Header1 .Search button{
+   background-color: #FCAF17;
+   border: none;
+}
+
 .findSearch{
     position: absolute;
     white-space: nowrap;
@@ -55,7 +60,7 @@
 }
 
 .Header1 .Search input:hover{
-    border-color: #919a31;
+    border-color: #FCAF17;
 }
 
 .Info{
@@ -85,7 +90,7 @@
     justify-content: space-between;
 }
 
-.TypeHeader ul {
+.TypeHeader .menu {
     padding: 0px;
     display: flex;
     height: 100%;
@@ -110,6 +115,8 @@
 
 .TypeHeader .menu li:hover .sub_menu{
     display: flex !important;
+    height: auto;
+    z-index: 100;
 }
 
 .TypeHeader ul li:first-child{
@@ -146,5 +153,12 @@
     background: #fff;
     width: 100%;
     left: 0;
+    height: auto;
     display: none !important;
 } 
+
+.menu .sub_menu .ImageNam img{
+    margin: 20px 9px;
+    width: 100%;
+    border-radius: 5%;
+}

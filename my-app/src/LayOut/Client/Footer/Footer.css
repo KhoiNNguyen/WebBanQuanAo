@@ -1,6 +1,5 @@
 .bg{
-    background: #00483d;
-    border-radius: 11px;
+    background: #2a2a86 top center;
     color: #fff;
     height: auto;
     padding: 10px 20px 10px 20px;
@@ -12,10 +11,6 @@
 .link-content{
     flex-direction: column;
     width:16.67%;
-}
-
-.link-content button{
-    background-color: #00483d;
 }
 
 .link-content h4{

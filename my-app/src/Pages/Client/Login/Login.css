@@ -1,0 +1,128 @@
+.title-login{
+    margin:0 auto;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 26px;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    text-transform: unset;
+    text-align: center;
+    color: #fcaf17;
+    line-height: 1;
+    margin-bottom: 30px;
+    padding-top: 30px;
+}
+
+.Container{
+    background-color: #dfb88d;
+}
+
+.form-1{
+    margin: 0 auto;
+}
+
+.title-login span{
+    color: #131382;
+}
+
+input{
+    height: 48px;
+    line-height: 48px;
+    margin-bottom: 10px;
+    padding: 0 18px;
+    margin-bottom: 24px;
+}
+
+.input-login{
+    padding: 8px 5px;
+    outline: none;
+    margin-bottom: 10px;
+    border: 1px solid #d7d7d9;
+    background: #f1f1f2;
+    width: 100%;
+    border-radius: 3px;
+}
+.input-login:hover{
+    background-color: #dedede;
+    border: 1px solid #dedede;
+}
+
+.activeLogin{
+    background: #fe3c55;
+}
+.back-login{
+    text-align: center;
+    margin-top: 20px;
+    cursor: pointer;
+}
+.input-position{
+    position: relative;
+}
+.icon-position{
+    position: absolute;
+    top: 14px;
+    right: 10px;
+    cursor: pointer;
+}
+button[disabled=disabled], button:disabled {
+    cursor: not-allowed;
+}
+
+.form-login{
+    background: #fff;
+    width: 100%;
+    padding: 0 107px;
+    border-right: 1px solid #DDE1EF;
+    text-align: center;
+    margin:40px 0px;
+}
+
+.btn-login{
+    width: 100%;
+    display: inline-block;
+    width: calc(50% - 5px);
+    height: 48px;
+    line-height: 48px;
+    background: #fcaf17;
+    color: #fff;
+    text-align: center;
+    padding: 0;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 18px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 10px;
+}
+
+.forget-password a{
+    color:#FCAF17;
+}
+
+.loginOr{
+    background-color: #DDE1E3;
+    height: 1px;
+    position: relative;
+    margin: 35px auto;
+}
+
+.loginOr span{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    color: #595959;
+    font-weight: 300;
+    background-color: white;
+    padding: 5px;
+}
+
+.page-signup-social-wrapper{
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.register-now{
+    color: #fcaf17;
+}

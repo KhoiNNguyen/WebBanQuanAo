@@ -9,6 +9,10 @@ import BrandCreate from './Pages/Admin/Brand/BrandCreate';
 import BrandEdit from './Pages/Admin/Brand/BrandEdit';
 import Color from './Pages/Admin/Color/Color';
 import Size from './Pages/Admin/Size/Size';
+import Login from './Pages/Client/Login/Login';
+import Register from './Pages/Client/Register/Register';
+import ProductDetail from './Pages/Client/ProductDetail';
+import Account from './Pages/Client/account/account';
 
 
 
@@ -27,6 +31,10 @@ function App() {
         </Route>
         <Route path='/' element={<LayOutClient/>}>
         <Route index element={<HomeClient />}/>
+        <Route path='/Login' element={<Login />}></Route>
+        <Route path='/Register' element={<Register />}></Route>
+        <Route path='/ProductDetail' element={<ProductDetail />}></Route>
+        <Route path='/Account' element={<Account />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
