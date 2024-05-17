@@ -13,6 +13,8 @@ import Login from './Pages/Client/Login/Login';
 import Register from './Pages/Client/Register/Register';
 import ProductDetail from './Pages/Client/ProductDetail';
 import Account from './Pages/Client/account/account';
+import Voucher from './Pages/Admin/Voucher/Voucher';
+import VoucherCreate from './Pages/Admin/Voucher/VoucherCreate';
 
 
 
@@ -28,6 +30,8 @@ function App() {
           <Route path='/Admin/Brands/Edit/uploadFile/:id' element={<BrandEdit/>}></Route>
           <Route path='/Admin/Colors' element={<Color/>}></Route>
           <Route path='/Admin/Sizes' element={<Size/>}></Route>
+          <Route path='/Admin/Vouchers' element={<Voucher/>}></Route>
+          <Route path='/Admin/Vouchers/Create' element={<VoucherCreate/>}></Route>
         </Route>
         <Route path='/' element={<LayOutClient/>}>
         <Route index element={<HomeClient />}/>

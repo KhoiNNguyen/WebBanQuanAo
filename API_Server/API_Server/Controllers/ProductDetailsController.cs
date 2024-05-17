@@ -12,47 +12,47 @@ namespace API_Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VouchersController : ControllerBase
+    public class ProductDetailsController : ControllerBase
     {
         private readonly API_ServerContext _context;
 
-        public VouchersController(API_ServerContext context)
+        public ProductDetailsController(API_ServerContext context)
         {
             _context = context;
         }
 
-        // GET: api/Vouchers
+        // GET: api/ProductDetails
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Voucher>>> GetVoucher()
+        public async Task<ActionResult<IEnumerable<ProductDetail>>> GetProductDetail()
         {
-            return await _context.Voucher.ToListAsync();
+            return await _context.ProductDetail.ToListAsync();
         }
 
-        // GET: api/Vouchers/5
+        // GET: api/ProductDetails/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Voucher>> GetVoucher(int id)
+        public async Task<ActionResult<ProductDetail>> GetProductDetail(int id)
         {
-            var voucher = await _context.Voucher.FindAsync(id);
+            var productDetail = await _context.ProductDetail.FindAsync(id);
 
-            if (voucher == null)
+            if (productDetail == null)
             {
                 return NotFound();
             }
 
-            return voucher;
+            return productDetail;
         }
 
-        // PUT: api/Vouchers/5
+        // PUT: api/ProductDetails/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVoucher(int id, Voucher voucher)
+        public async Task<IActionResult> PutProductDetail(int id, ProductDetail productDetail)
         {
-            if (id != voucher.Id)
+            if (id != productDetail.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(voucher).State = EntityState.Modified;
+            _context.Entry(productDetail).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace API_Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!VoucherExists(id))
+                if (!ProductDetailExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace API_Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Vouchers
+        // POST: api/ProductDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Voucher>> PostVoucher(Voucher voucher)
+        public async Task<ActionResult<ProductDetail>> PostProductDetail(ProductDetail productDetail)
         {
-            _context.Voucher.Add(voucher);
+            _context.ProductDetail.Add(productDetail);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetVoucher", new { id = voucher.Id }, voucher);
+            return CreatedAtAction("GetProductDetail", new { id = productDetail.Id }, productDetail);
         }
 
-        // DELETE: api/Vouchers/5
+        // DELETE: api/ProductDetails/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVoucher(int id)
+        public async Task<IActionResult> DeleteProductDetail(int id)
         {
-            var voucher = await _context.Voucher.FindAsync(id);
-            if (voucher == null)
+            var productDetail = await _context.ProductDetail.FindAsync(id);
+            if (productDetail == null)
             {
                 return NotFound();
             }
-            voucher.Status = false;
-            _context.Voucher.Update(voucher);
+
+            _context.ProductDetail.Remove(productDetail);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool VoucherExists(int id)
+        private bool ProductDetailExists(int id)
         {
-            return _context.Voucher.Any(e => e.Id == id);
+            return _context.ProductDetail.Any(e => e.Id == id);
         }
     }
 }

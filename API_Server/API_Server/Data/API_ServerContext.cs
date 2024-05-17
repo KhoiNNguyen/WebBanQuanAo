@@ -45,5 +45,7 @@ namespace API_Server.Data
 
         public DbSet<API_Server.Models.User> User { get; set; }
 
+        public DbSet<API_Server.Models.ProductDetail> ProductDetail { get; set; }
+
     }
 }
