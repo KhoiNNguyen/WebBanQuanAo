@@ -12,9 +12,14 @@ import Size from './Pages/Admin/Size/Size';
 import Login from './Pages/Client/Login/Login';
 import Register from './Pages/Client/Register/Register';
 import ProductDetail from './Pages/Client/ProductDetail';
-import Account from './Pages/Client/account/account';
+import Account from './Pages/Client/account/account'
+import Address from './Pages/Client/account/address';
+import Favorite from './Pages/Client/account/favorite';
+import Order from './Pages/Client/account/order';
+import Cart from './Pages/Client/cart';
 import Voucher from './Pages/Admin/Voucher/Voucher';
 import VoucherCreate from './Pages/Admin/Voucher/VoucherCreate';
+import Pay from './Pages/Client/Pay';
 
 
 
@@ -32,13 +37,18 @@ function App() {
           <Route path='/Admin/Sizes' element={<Size/>}></Route>
           <Route path='/Admin/Vouchers' element={<Voucher/>}></Route>
           <Route path='/Admin/Vouchers/Create' element={<VoucherCreate/>}></Route>
-        </Route>
-        <Route path='/' element={<LayOutClient/>}>
+          </Route>
+          <Route path='/' element={<LayOutClient/>}>
         <Route index element={<HomeClient />}/>
         <Route path='/Login' element={<Login />}></Route>
         <Route path='/Register' element={<Register />}></Route>
         <Route path='/ProductDetail' element={<ProductDetail />}></Route>
         <Route path='/Account' element={<Account />}></Route>
+        <Route path='/Account/Address' element={<Address />}></Route>
+        <Route path='/Account/Order' element={<Order />}></Route>
+        <Route path='/Account/Favorite' element={<Favorite />}></Route>
+        <Route path='/Cart' element={<Cart />}></Route>
+      <Route path='/pay' element={<Pay />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,0 +1,86 @@
+.container-pay{
+    background-color: #fde7ff;
+}
+
+.container-pay input{
+    padding: .4rem;
+    margin: .4rem;
+}
+
+
+.container-inside-pay{
+    display: flex;
+}
+
+.logo-company{
+    text-align: center;
+}
+
+.logo-company img{
+    width: 15%;
+}
+
+.left-pay{
+    width: 60%;
+    margin-top: 40px;
+}
+
+.pay-address{
+    display: flex;
+}
+
+.form-info-address{
+    width: 50%;
+}
+
+.info-pay{
+    width: 50%;
+}
+
+.form-info-address{
+    display: flex;
+    flex-direction: column;
+}
+
+.info-pay label{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   
+}
+
+.info-pay label span{
+    width: 70%;
+}
+
+.info-pay label .icon{
+    font-size: 25px;
+    margin-bottom: 2px;
+}
+
+.right-pay{
+    width: 40%;
+    margin-top: 40px;
+}
+
+.right-pay input{
+    width: 67%;
+}
+
+.right-pay button{
+    width: 30%;
+    height: 50px;
+    background-color:#e8b95b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    margin: 20px 0px 40px 0px;
+}
+
+.right-pay .right-pay-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: .5rem;
+}

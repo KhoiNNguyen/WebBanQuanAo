@@ -24,7 +24,7 @@
 }
 
 .Header1 img{
-    width: 10%;
+    width: 20%;
     height: 100%;
     margin: 0 8px;
 } 
@@ -161,4 +161,9 @@
     margin: 20px 9px;
     width: 100%;
     border-radius: 5%;
+}
+
+.info-user_cart{
+    display: flex;
+    align-items: center;
 }

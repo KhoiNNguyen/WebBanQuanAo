@@ -121,6 +121,9 @@ const ProductDetail = () => {
           <div className='btn-color'>
           </div>
         </div>
+        <div className='Table-size'>
+          <img src='/Image/Logo/AoSize@1x.jpg' alt='1' />
+        </div>
         <div className='size'>
           <p>Kích thước:</p>
           <div className='btn-size'>
@@ -274,7 +277,7 @@ const ProductDetail = () => {
                             </div>
                         </div>
                     </div>
-                    </div>
+        </div>
       </div>
     </div>
   )

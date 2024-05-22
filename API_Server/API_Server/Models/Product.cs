@@ -18,7 +18,6 @@ namespace API_Server.Models
 
         [DisplayName("Số lượng")]
         public int Quantity { get; set; }
-
         public int ProductDetailId { get; set; }
         public ProductDetail ProductDetail { get; set; }
         public int ProductSaleId { get; set; }
@@ -26,6 +25,6 @@ namespace API_Server.Models
 
         [DisplayName("Trạng Thái")]
         public bool Status { get; set; }
-        
+
     }
 }

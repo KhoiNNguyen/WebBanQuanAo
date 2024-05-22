@@ -12,7 +12,9 @@ function HeaderClient() {
     <div className="Inner">
             <div className="Header1">
                 <div className="Find d-flex">
+                    <Link to="/">
                     <img src="/Image/Logo/NG.png" alt="hinh anh" />
+                    </Link>
                 <Form className="Search">
                     <input type="text" placeholder="Tìm kiếm..." name="search" id="search"/>
                     <button className="findSearch"><RiFindReplaceLine /></button>
@@ -57,14 +59,14 @@ function HeaderClient() {
                     </ul>
                 </div>
                 <div className="InfoUser">
-                    <div className="icon">
+                    
+                    <Link to="/Cart" className="info-user_cart"><div className="icon">
                     <BsHandbag />
-                    </div>
-                    <a>Giỏ Hàng</a>
-                    <div className="icon">
+                    </div>Giỏ Hàng</Link>
+                   
+                    <Link to="/Login" className="info-user_cart"> <div className="icon">
                         <CiUser />
-                    </div>
-                    <Link to="/Login">Đăng Nhập</Link>
+                    </div>Đăng Nhập</Link>
                     /
                     <Link to="/Register">Đăng Ký</Link>
 

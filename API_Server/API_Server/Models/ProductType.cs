@@ -11,5 +11,8 @@ namespace API_Server.Models
         public bool Status { get; set; }
         public int GenderId { get; set; }
         public Gender Gender { get; set; }
+        public string Thumbnail { get; set; }
+        public string ThumbnailSize { get; set; }
+
     }
 }

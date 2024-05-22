@@ -1,3 +1,8 @@
+a{
+  color: #595959 !important;
+  text-decoration: none !important;
+}
+
 .background-all{
   background-color: #f8f8f8;;
 }
@@ -91,7 +96,7 @@
   color:red
 }
 
-.active{
+.function-account .active{
   background-color: #FEEEEA;
   color: #fcaf17;
 }
@@ -121,4 +126,73 @@
   border:none;
   border-radius: 4px;
   height: 40px;
+}
+
+.form-info{
+  padding: 20px 30px;
+  display: flex;
+    flex-wrap: wrap;
+}
+
+.form-info p{
+  flex: 0 0 50%;
+    max-width: 50%;
+}
+
+p{
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+}
+
+.table{
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+
+.table tr {
+  background-color: #c4c4c4;
+}
+
+.table th{
+  padding-left: 30px !important;
+  font-weight: 500;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+}
+
+.table tr td{
+  border: none !important;
+  border-top: 1px solid #DDE1EF !important;
+  padding: 12px 15px;
+  line-height: 16px;
+  vertical-align: middle;
+}
+
+.table tr td:nth-child(1){
+  padding-left: 30px !important;
+}
+
+.body-address{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 30px;
+}
+
+.body-address .info-address p{
+  margin-bottom: 5px;
+}
+
+.body-address .info-address strong{
+  display: inline-block;
+    width: 109px;
+    font-weight: initial;
+    color: #7A7A9D;
+}
+
+.body-favorite{
+  width: 100%;
+  height: auto;
+  padding: 20px 30px;
 }
