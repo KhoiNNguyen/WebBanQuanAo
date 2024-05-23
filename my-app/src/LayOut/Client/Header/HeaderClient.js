@@ -35,7 +35,7 @@ function HeaderClient() {
                     <Link to="/"><li>TRANG CHỦ</li></Link>
                         <li>NAM
                             <ul className="sub_menu row1">
-                                <li className="col">Ao Thun
+                                <li className="col">Áo Nam
                                 <ul>
                                 <li></li>
                                 <li>dep</li>
@@ -44,9 +44,9 @@ function HeaderClient() {
                                 <li>dep</li>
                                     </ul>
                                     </li>
-                                <li className="col">Ao Ba Lo</li>
-                                <li className="col">Quan Jean</li>
-                                <li className="col">Quan Dui</li>
+                                <li className="col">Quần Nam</li>
+                                <li className="col">Đồ Bơi</li>
+                                <li className="col"></li>
                                 <li className="col">      
                                 <div className="ImageNam">
                                     <img src="/Image/Logo/ao_thun_đen_1_Hermes.png" alt="" />

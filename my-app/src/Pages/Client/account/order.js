@@ -55,7 +55,7 @@ function Order() {
               <h1>Đơn hàng của tôi</h1>
               <h1>0 đơn hàng</h1>
             </div>
-            <table className="table table-order">
+            <table className="table table1 table-order">
                 <thead>
                     <tr>
                     <th>Mã đơn hàng</th>

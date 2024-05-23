@@ -67,19 +67,19 @@ namespace EshopIdentity.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register(string Username, string Password, string Email)
+        public async Task<IActionResult> Register(Register register)
         {
-            var userExists = await _userManager.FindByNameAsync(Username);
+            var userExists = await _userManager.FindByNameAsync(register.Username);
             if (userExists != null)
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
             User user = new User()
             {
-                Email = Email,
+                Email = register.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = Username
+                UserName = register.Username
             };
-            var result = await _userManager.CreateAsync(user, Password);
+            var result = await _userManager.CreateAsync(user, register.Password);
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
