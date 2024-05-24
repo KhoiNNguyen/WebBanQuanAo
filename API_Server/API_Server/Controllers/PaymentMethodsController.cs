@@ -93,8 +93,8 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-
-            _context.PaymentMethod.Remove(paymentMethod);
+            paymentMethod.Status = false;
+            _context.PaymentMethod.Update(paymentMethod);
             await _context.SaveChangesAsync();
 
             return NoContent();

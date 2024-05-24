@@ -1,57 +1,57 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Form, FormCheck, FormControl, FormGroup, FormLabel, Modal, ModalHeader } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const SizeEdit = (props) => {
-    const [sizeEdit, setSizeEdit] = useState({});
-    const {show,handleClose,data} = props
+const PaymentMethodCreate = (props) => {
+    const navigate = useNavigate()
+    const [paymentMethodCreate, setPaymentMethodCreate] = useState();
+    const {show,handleClose} = props
 
     const handleChange = (e) =>{
         let name = e.target.name
         let value = e.target.value
-        setSizeEdit(prev => ({...prev, [name]: value}));
+        setPaymentMethodCreate(prev => ({...prev, [name]: value}));
     }
     const handleCheck = (e) =>{
         let name = e.target.name
         let value = e.target.checked
-        setSizeEdit(prev => ({...prev, [name]: value}));
+        setPaymentMethodCreate(prev => ({...prev, [name]: value}));
     }
-
-    const handleSubmit = () => {
+    const handleSubmit = (e) =>{
         try{
-            axios.put(`https://localhost:7026/api/Sizes/${data.id}`,sizeEdit)
+            e.preventDefault();
+            axios.post(`https://localhost:7026/api/PaymentMethods`,paymentMethodCreate)
+            .then(() => navigate('/Admin/Sizes'))
             handleClose()
-            window.location.reload()
-            toast.success("Cập nhật thành công")
+            toast.success("Thêm thành công")
+            window.location.reload();
         }
         catch{
-            toast.error("Cập nhật thất bại")
+            toast.error("Thêm thất bại")
         }
     }
-    useEffect(() => {
-        setSizeEdit(data)
-    },[data])
     return ( 
         <>
             <Modal show={show} onHide={handleClose}>
                 <ModalHeader closeButton>
-                    Sửa Size
+                    Thêm mới phương thức thanh toán
                 </ModalHeader>
                 <Modal.Body>
                     <Form encType="multipart/form-data">
                         <FormGroup>
-                            <FormLabel>Name: </FormLabel>
-                            <FormControl name="name" type="text" onChange={handleChange} value={sizeEdit.name}></FormControl>
+                            <FormLabel>Phương thức thanh toán: </FormLabel>
+                            <FormControl name="name" type="text" onChange={handleChange}></FormControl>
                         </FormGroup>
                         <FormGroup>
-                            <FormCheck name="status" type="switch" label="Hoạt động" onChange={handleCheck} checked={sizeEdit.status}/>
+                            <FormCheck name="status" type="switch" label="Hoạt động" onChange={handleCheck}/>
                         </FormGroup>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="success" onClick={handleSubmit} type="submit">
-                        Cập nhật
+                        Thêm
                     </Button>
                     <Button variant="secondary" onClick={handleClose}>
                         Đóng
@@ -62,4 +62,4 @@ const SizeEdit = (props) => {
      );
 }
  
-export default SizeEdit;
+export default PaymentMethodCreate;

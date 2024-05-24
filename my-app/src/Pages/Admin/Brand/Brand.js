@@ -21,9 +21,9 @@ const Brand = () => {
     const [showEdit, setshowEdit] = useState(false);
     const [showDelete, setshowDelete] = useState(false);
     const [data, setData] = useState({});
-    const [check, setCheck] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);  
     const [searchTerm, setSearchTerm] = useState('');
+    const [check, setCheck] = useState(true);
     const [listFalse, setlistFalse] = useState([]);
     // const [number, setNumber] = useState(0);
 
@@ -33,13 +33,13 @@ const Brand = () => {
         setshowDelete(false) ;
     }
 
-    const handleShowEdit = (user) =>{
-        setData(user)
+    const handleShowEdit = (data) =>{
+        setData(data)
         setshowEdit(true)
     }
 
-    const handleShowDelete = (user) =>{
-        setData(user)
+    const handleShowDelete = (data) =>{
+        setData(data)
         setshowDelete(true)
     }
 

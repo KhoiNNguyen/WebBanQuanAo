@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API_Server.Models
 {
@@ -12,6 +13,8 @@ namespace API_Server.Models
         public int GenderId { get; set; }
         public Gender Gender { get; set; }
         public string Thumbnail { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
         public string ThumbnailSize { get; set; }
 
     }

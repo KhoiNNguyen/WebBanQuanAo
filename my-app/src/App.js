@@ -20,6 +20,9 @@ import Cart from './Pages/Client/cart';
 import Voucher from './Pages/Admin/Voucher/Voucher';
 import VoucherCreate from './Pages/Admin/Voucher/VoucherCreate';
 import Pay from './Pages/Client/Pay';
+import ProductType from './Pages/Admin/ProductType.js/ProductType';
+import PaymentMethod from './Pages/Admin/PaymentMethod/PaymentMethod';
+import ProductSale from './Pages/Admin/ProductSale/ProductSale';
 
 
 
@@ -37,6 +40,9 @@ function App() {
           <Route path='/Admin/Sizes' element={<Size/>}></Route>
           <Route path='/Admin/Vouchers' element={<Voucher/>}></Route>
           <Route path='/Admin/Vouchers/Create' element={<VoucherCreate/>}></Route>
+          <Route path='/Admin/ProductTypes' element={<ProductType/>}></Route>
+          <Route path='/Admin/ProductSales' element={<ProductSale/>}></Route>
+          <Route path='/Admin/PaymentMethods' element={<PaymentMethod/>}></Route>
           </Route>
           <Route path='/' element={<LayOutClient/>}>
         <Route index element={<HomeClient />}/>

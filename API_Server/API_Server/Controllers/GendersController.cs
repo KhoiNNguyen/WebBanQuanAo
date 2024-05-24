@@ -12,47 +12,47 @@ namespace API_Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductSalesController : ControllerBase
+    public class GendersController : ControllerBase
     {
         private readonly API_ServerContext _context;
 
-        public ProductSalesController(API_ServerContext context)
+        public GendersController(API_ServerContext context)
         {
             _context = context;
         }
 
-        // GET: api/ProductSales
+        // GET: api/Genders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductSale>>> GetProductSale()
+        public async Task<ActionResult<IEnumerable<Gender>>> GetGender()
         {
-            return await _context.ProductSale.ToListAsync();
+            return await _context.Gender.ToListAsync();
         }
 
-        // GET: api/ProductSales/5
+        // GET: api/Genders/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductSale>> GetProductSale(int id)
+        public async Task<ActionResult<Gender>> GetGender(int id)
         {
-            var productSale = await _context.ProductSale.FindAsync(id);
+            var gender = await _context.Gender.FindAsync(id);
 
-            if (productSale == null)
+            if (gender == null)
             {
                 return NotFound();
             }
 
-            return productSale;
+            return gender;
         }
 
-        // PUT: api/ProductSales/5
+        // PUT: api/Genders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProductSale(int id, ProductSale productSale)
+        public async Task<IActionResult> PutGender(int id, Gender gender)
         {
-            if (id != productSale.Id)
+            if (id != gender.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(productSale).State = EntityState.Modified;
+            _context.Entry(gender).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace API_Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductSaleExists(id))
+                if (!GenderExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace API_Server.Controllers
             return NoContent();
         }
 
-        // POST: api/ProductSales
+        // POST: api/Genders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ProductSale>> PostProductSale(ProductSale productSale)
+        public async Task<ActionResult<Gender>> PostGender(Gender gender)
         {
-            _context.ProductSale.Add(productSale);
+            _context.Gender.Add(gender);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProductSale", new { id = productSale.Id }, productSale);
+            return CreatedAtAction("GetGender", new { id = gender.Id }, gender);
         }
 
-        // DELETE: api/ProductSales/5
+        // DELETE: api/Genders/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProductSale(int id)
+        public async Task<IActionResult> DeleteGender(int id)
         {
-            var productSale = await _context.ProductSale.FindAsync(id);
-            if (productSale == null)
+            var gender = await _context.Gender.FindAsync(id);
+            if (gender == null)
             {
                 return NotFound();
             }
-            productSale.Status = false;
-            _context.ProductSale.Update(productSale);
+
+            _context.Gender.Remove(gender);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProductSaleExists(int id)
+        private bool GenderExists(int id)
         {
-            return _context.ProductSale.Any(e => e.Id == id);
+            return _context.Gender.Any(e => e.Id == id);
         }
     }
 }

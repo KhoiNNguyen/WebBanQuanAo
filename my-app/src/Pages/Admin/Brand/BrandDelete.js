@@ -19,14 +19,15 @@ const BrandDelete = (props) => {
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Body>
-                    Do you want delete?
+                    Bạn chắc chắn muốn xóa?
+                    <p>Tên: {brandDelete.name}</p>
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="danger" onClick={() => handleDelete(brandDelete.id)}>
-                    Ok
+                    Xóa
                 </Button>
                 <Button variant="secondary" onClick={handleClose}>
-                    Close
+                    Đóng
                 </Button>
                 </Modal.Footer>
             </Modal>

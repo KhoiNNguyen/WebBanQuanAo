@@ -4,26 +4,26 @@ import { Button, Form, FormCheck, FormControl, FormGroup, FormLabel, Modal, Moda
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const SizeCreate = (props) => {
+const ProductSaleCreate = (props) => {
     const navigate = useNavigate()
-    const [sizeCreate, setSizeCreate] = useState();
+    const [productSaleCreate, setproductSaleCreate] = useState();
     const {show,handleClose} = props
 
     const handleChange = (e) =>{
         let name = e.target.name
         let value = e.target.value
-        setSizeCreate(prev => ({...prev, [name]: value}));
+        setproductSaleCreate(prev => ({...prev, [name]: value}));
     }
     const handleCheck = (e) =>{
         let name = e.target.name
         let value = e.target.checked
-        setSizeCreate(prev => ({...prev, [name]: value}));
+        setproductSaleCreate(prev => ({...prev, [name]: value}));
     }
     const handleSubmit = (e) =>{
         try{
             e.preventDefault();
-            axios.post(`https://localhost:7026/api/Sizes`,sizeCreate)
-            .then(() => navigate('/Admin/Sizes'))
+            axios.post(`https://localhost:7026/api/ProductSales`,productSaleCreate)
+            .then(() => navigate('/Admin/ProductSales'))
             handleClose()
             toast.success("Thêm thành công")
             window.location.reload();
@@ -36,13 +36,25 @@ const SizeCreate = (props) => {
         <>
             <Modal show={show} onHide={handleClose}>
                 <ModalHeader closeButton>
-                    Thêm mới size
+                    Thêm mới Giảm giá sản phẩm
                 </ModalHeader>
                 <Modal.Body>
-                    <Form encType="multipart/form-data">
+                    <Form >
                         <FormGroup>
-                            <FormLabel>Size: </FormLabel>
-                            <FormControl name="name" type="text" onChange={handleChange}></FormControl>
+                            <FormLabel>Thời gian bắt đầu: </FormLabel>
+                            <FormControl name="startTime" type="date" format="yyyy-mm-dd" onChange={handleChange}></FormControl>
+                        </FormGroup>
+                        <FormGroup>
+                            <FormLabel>Thời gian kết thúc: </FormLabel>
+                            <FormControl name="endDate" type="date" format="yyyy-mm-dd" onChange={handleChange}></FormControl>
+                        </FormGroup>
+                        <FormGroup>
+                            <FormLabel>Phần trăm giảm giá: </FormLabel>
+                            <FormControl name="percentDiscount" type="text" onChange={handleChange} placeholder="Không ghi đấu %"></FormControl>
+                        </FormGroup>
+                        <FormGroup>
+                            <FormLabel>Ghi chú: </FormLabel>
+                            <FormControl name="ghiChu" type="text" onChange={handleChange} placeholder="vd: Giảm giá 10%"></FormControl>
                         </FormGroup>
                         <FormGroup>
                             <FormCheck name="status" type="switch" label="Hoạt động" onChange={handleCheck}/>
@@ -62,4 +74,4 @@ const SizeCreate = (props) => {
      );
 }
  
-export default SizeCreate;
+export default ProductSaleCreate;

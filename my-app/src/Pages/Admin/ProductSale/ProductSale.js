@@ -3,28 +3,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Form, FormGroup, Table } from "react-bootstrap";
-import VoucherCreate from "./VoucherCreate";
-import VoucherEdit from "./VoucherEdit";
-import VoucherDelete from "./VoucherDelete";
+import ProductSaleCreate from "./ProductSaleCreate";
+import ProductSaleEdit from "./ProductSaleEdit";
+import ProductSaleDelete from "./ProductSaleDelete";
 import ReactPaginate from "react-paginate";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer} from 'react-toastify';
 
-const Voucher = () => {
-    const [voucher, setVoucher] = useState([]);
+const ProductSale = () => {
+    const [productSale, setProductSale] = useState([]);
 
+    const [data, setData] = useState({});
     const [showCreate, setShowCreate] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
 
-    const [data, setData] = useState({});
     const [key, setKey] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [check, setCheck] = useState(true);
-
     const [listFalse, setlistFalse] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
-
 
     const handleClose = () =>{
         setShowCreate(false);
@@ -32,30 +30,30 @@ const Voucher = () => {
         setShowDelete(false)
     }
     const handleShowEdit = (data) =>{
-        setData(data)
         setShowEdit(true)
+        setData(data)
     }
     const handleShowDelete = (data) =>{
-        setData(data)
         setShowDelete(true)
+        setData(data)
     }
 
     //Chuyển trang
-    const voucherPerPage = 6
-    const indexOfLast = currentPage * voucherPerPage
-    const indexOfFirst = indexOfLast - voucherPerPage
+    const productSalePerPage = 6
+    const indexOfLast = productSalePerPage * currentPage
+    const indexOfFirst = indexOfLast - productSalePerPage
 
-    const totalVoucher = key.length
-    const totalPages = Math.ceil(totalVoucher / voucherPerPage)
-    const currentVoucherTrue = (key.slice(indexOfFirst, indexOfLast))
+    const totalProductSale = key.length
+    const totalPages = Math.ceil(totalProductSale / productSalePerPage)
+    const currentProductSale = key.slice(indexOfFirst,indexOfLast)
 
-    const totalVoucherFalse = listFalse.length
-    const totalPagesFalse = Math.ceil(totalVoucherFalse / voucherPerPage)
-    const currentVoucherFalse = (listFalse.slice(indexOfFirst, indexOfLast))
+    const totalProductSaleFalse = listFalse.length
+    const totalPagesFalse = Math.ceil(totalProductSaleFalse / productSalePerPage)
+    const currentProductSaleFalse = listFalse.slice(indexOfFirst,indexOfLast)
 
-    const handlePageClick = (e) =>{
+    const handlePageClick = (e) => {
         setCurrentPage(+e.selected + 1)
-        getListVoucher(+e.selected + 1)
+        getListProductSale(+e.selected + 1)
     }
 
     //Thay đổi trạng thái load trang
@@ -67,7 +65,7 @@ const Voucher = () => {
     }
     const handleOnchangeCheckFalse = () =>{
         setCheck(false);
-        const filter = voucher.filter(f => {
+        const filter = productSale.filter(f => {
             return f.status === false;
         })
         setlistFalse(filter);
@@ -76,27 +74,27 @@ const Voucher = () => {
     //Tìm kiếm
     const handleChangeSearch = (e) =>{
         setSearchTerm(e.target.value)
-        filterVouchers(e.target.value)
+        filterProductSale(e.target.value)
     }
-    const filterVouchers = (searchTerm) =>{
-        const filtered = voucher.filter((item) =>
-            item.voucherCode && item.voucherCode.toLowerCase().includes(searchTerm.toLowerCase())
+    const filterProductSale = (searchTerm) =>{
+        const filtered = productSale.filter((item) =>
+            item.ghiChu && item.ghiChu.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
         setlistFalse(filtered)
         setCurrentPage(1);
     }
-
+    
     //Lấy danh sách
-    const getListVoucher = () =>{
-        axios.get(`https://localhost:7026/api/Vouchers`)
-        .then(res =>{
-            setVoucher(res.data);
-            setKey(res.data);
+    const getListProductSale = () =>{
+        axios.get(`https://localhost:7026/api/ProductSales`)
+        .then(res => {
+            setProductSale(res.data);
+            setKey(res.data)
         })
     }
-    useEffect(() => {
-        getListVoucher();
+    useEffect(()=>{
+        getListProductSale();
     },[])
     return ( 
         <>
@@ -126,20 +124,19 @@ const Voucher = () => {
                         Tất Cả
                     </Button>
                     <Button 
-                        onClick={handleOnchangeCheckFalse}
+                    onClick={handleOnchangeCheckFalse}
                         >
                         Ngưng hoạt động
                     </Button>
                 </Form>
-                <Table >
+                <Table>
                     <thead>
                         <tr>
                             <th>STT</th>
                             <th>Id</th>
-                            <th>VoucherCode</th>
-                            <th>Giá giảm</th>
                             <th>Thời gian bắt đầu</th>
                             <th>Thời gian kết thúc</th>
+                            <th>Phần trăm giảm giá</th>
                             <th>Ghi chú</th>
                             <th>Trạng thái</th>
                             <th>Chức năng</th>
@@ -147,19 +144,50 @@ const Voucher = () => {
                     </thead>
                     <tbody>
                         {
-                            check === true?(
-                                currentVoucherTrue.map((item,index) => {
+                            check === true ?(
+                                currentProductSale.map((item, index) => {
                                     return (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{item.id}</td>
-                                            <td>{item.voucherCode}</td>
-                                            <td>{item.discount}</td>
                                             <td>{item.startTime}</td>
                                             <td>{item.endDate}</td>
-                                            <td>{item.description}</td>
-                                            <td>{item.status?"Hoạt động" : "Ngưng hoạt đông"}</td>
+                                            <td>{item.percentDiscount}</td>
+                                            <td>{item.ghiChu}</td>
+                                            <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
                                             <td>
+                                                    {item.status === true?(
+                                                        <Form>
+                                                            <Button variant="primary" onClick={() => handleShowEdit(item)}>
+                                                                <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
+                                                            </Button>
+                                                            <Button variant="danger" onClick={() => handleShowDelete(item)}>
+                                                                <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
+                                                            </Button>
+                                                        </Form>
+                                                    )
+                                                        :
+                                                        <Button variant="primary" onClick={() => handleShowEdit(item)}>
+                                                            <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
+                                                        </Button>
+                                                    }
+                                                </td>
+                                        </tr>
+                                    )
+                                })
+                            )
+                            :
+                            currentProductSaleFalse.map((item, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.id}</td>
+                                        <td>{item.startTime}</td>
+                                        <td>{item.endDate}</td>
+                                        <td>{item.percentDiscount}</td>
+                                        <td>{item.ghiChu}</td>
+                                        <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
+                                        <td>
                                                 {item.status === true?(
                                                     <Form>
                                                         <Button variant="primary" onClick={() => handleShowEdit(item)}>
@@ -176,42 +204,7 @@ const Voucher = () => {
                                                     </Button>
                                                 }
                                             </td>
-                                        </tr>
-                                        
-                                    )
-                                })
-                            )
-                            :
-                            currentVoucherFalse.map((item,index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{item.id}</td>
-                                        <td>{item.voucherCode}</td>
-                                        <td>{item.discount}</td>
-                                        <td>{item.startTime}</td>
-                                        <td>{item.endDate}</td>
-                                        <td>{item.description}</td>
-                                        <td>{item.status?"Hoạt động" : "Ngưng hoạt đông"}</td>
-                                        <td>
-                                            {item.status === true?(
-                                                <Form>
-                                                    <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                        <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
-                                                    </Button>
-                                                    <Button variant="danger" onClick={() => handleShowDelete(item)}>
-                                                        <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
-                                                    </Button>
-                                                </Form>
-                                            )
-                                                :
-                                                <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                    <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
-                                                </Button>
-                                            }
-                                        </td>
                                     </tr>
-                                    
                                 )
                             })
                         }
@@ -240,16 +233,16 @@ const Voucher = () => {
                     />
                 </div>
             </div>
-            <VoucherCreate
+            <ProductSaleCreate
                 show = {showCreate}
                 handleClose = {handleClose}
             />
-            <VoucherEdit
+            <ProductSaleEdit
                 show = {showEdit}
                 handleClose = {handleClose}
                 data = {data}
             />
-            <VoucherDelete
+            <ProductSaleDelete
                 show = {showDelete}
                 handleClose = {handleClose}
                 data = {data}
@@ -270,4 +263,4 @@ const Voucher = () => {
      );
 }
  
-export default Voucher;
+export default ProductSale;

@@ -32,6 +32,7 @@ const BrandEdit = (props) => {
             formData.append('id', brandEdit.id);
             formData.append('name', brandEdit.name);
             formData.append('imageFile', brandEdit.imageFile)
+            formData.append('image', brandEdit.image)
             formData.append('status', brandEdit.status);
             axios.put(`https://localhost:7026/api/Brands/uploadFile/${brandEdit.id}`, formData)
             handleClose()
@@ -49,7 +50,7 @@ const BrandEdit = (props) => {
         <>
             <Modal show={show} onHide={handleClose}>
                 <ModalHeader closeButton>
-                    Thêm mới thương hiệu
+                    Sửa thương hiệu
                 </ModalHeader>
                 <Modal.Body>
                     <Form encType="multipart/form-data">

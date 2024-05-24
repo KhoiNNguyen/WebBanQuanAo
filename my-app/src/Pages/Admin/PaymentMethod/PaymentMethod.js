@@ -3,28 +3,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Form, FormGroup, Table } from "react-bootstrap";
-import VoucherCreate from "./VoucherCreate";
-import VoucherEdit from "./VoucherEdit";
-import VoucherDelete from "./VoucherDelete";
+import PaymentMethodCreate from "./PaymentMethodCreate";
+import PaymentMethodEdit from "./PaymentMethodEdit";
+import { ToastContainer} from 'react-toastify';
+import PaymentMethodDelete from "./PaymentMethodDelete";
 import ReactPaginate from "react-paginate";
-import { ToastContainer } from "react-toastify";
 
-const Voucher = () => {
-    const [voucher, setVoucher] = useState([]);
+const PaymentMethod = () => {
+    const [paymentMethod, setPaymentMethod] = useState([]);
 
+    const [data, setData] = useState({});
     const [showCreate, setShowCreate] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
 
-    const [data, setData] = useState({});
     const [key, setKey] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [check, setCheck] = useState(true);
 
+    const [check, setCheck] = useState(true);
     const [listFalse, setlistFalse] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
-
 
     const handleClose = () =>{
         setShowCreate(false);
@@ -32,32 +31,32 @@ const Voucher = () => {
         setShowDelete(false)
     }
     const handleShowEdit = (data) =>{
-        setData(data)
         setShowEdit(true)
+        setData(data)
     }
     const handleShowDelete = (data) =>{
-        setData(data)
         setShowDelete(true)
+        setData(data)
     }
 
-    //Chuyển trang
-    const voucherPerPage = 6
-    const indexOfLast = currentPage * voucherPerPage
-    const indexOfFirst = indexOfLast - voucherPerPage
+    //Phân trang
+    const paymentMethodPerPage = 6
+    const indexOfLast = paymentMethodPerPage * currentPage
+    const indexOfFirst = indexOfLast - paymentMethodPerPage
 
-    const totalVoucher = key.length
-    const totalPages = Math.ceil(totalVoucher / voucherPerPage)
-    const currentVoucherTrue = (key.slice(indexOfFirst, indexOfLast))
+    const totalPaymentMethod = key.length
+    const totalPages = Math.ceil(totalPaymentMethod / paymentMethodPerPage)
+    const currentPaymentMethod = key.slice(indexOfFirst,indexOfLast)
 
-    const totalVoucherFalse = listFalse.length
-    const totalPagesFalse = Math.ceil(totalVoucherFalse / voucherPerPage)
-    const currentVoucherFalse = (listFalse.slice(indexOfFirst, indexOfLast))
+    const totalPaymentMethodFalse = listFalse.length
+    const totalPagesFalse = Math.ceil(totalPaymentMethodFalse / paymentMethodPerPage)
+    const currentPaymentMethodFalse = listFalse.slice(indexOfFirst,indexOfLast)
 
     const handlePageClick = (e) =>{
         setCurrentPage(+e.selected + 1)
-        getListVoucher(+e.selected + 1)
+        getListPaymentMethod(+e.selected + 1)
     }
-
+    
     //Thay đổi trạng thái load trang
     const handleRefesh = () =>{
         window.location.reload()
@@ -67,7 +66,7 @@ const Voucher = () => {
     }
     const handleOnchangeCheckFalse = () =>{
         setCheck(false);
-        const filter = voucher.filter(f => {
+        const filter = paymentMethod.filter(f => {
             return f.status === false;
         })
         setlistFalse(filter);
@@ -76,11 +75,11 @@ const Voucher = () => {
     //Tìm kiếm
     const handleChangeSearch = (e) =>{
         setSearchTerm(e.target.value)
-        filterVouchers(e.target.value)
+        filterSizes(e.target.value)
     }
-    const filterVouchers = (searchTerm) =>{
-        const filtered = voucher.filter((item) =>
-            item.voucherCode && item.voucherCode.toLowerCase().includes(searchTerm.toLowerCase())
+    const filterSizes = (searchTerm) =>{
+        const filtered = paymentMethod.filter((item) =>
+            item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
         setlistFalse(filtered)
@@ -88,26 +87,26 @@ const Voucher = () => {
     }
 
     //Lấy danh sách
-    const getListVoucher = () =>{
-        axios.get(`https://localhost:7026/api/Vouchers`)
-        .then(res =>{
-            setVoucher(res.data);
-            setKey(res.data);
+    const getListPaymentMethod = () =>{
+        axios.get(`https://localhost:7026/api/PaymentMethods`)
+        .then(res => {
+            setPaymentMethod(res.data);
+            setKey(res.data)
         })
     }
     useEffect(() => {
-        getListVoucher();
+        getListPaymentMethod();
     },[])
     return ( 
         <>
             <div className="container">
-                <Form className="display">
+            <Form className="display">
                     <FormGroup className="width-80-percent">
                         <input type="text" className="width-100-percent height-40-px" placeholder="Tìm kiếm" onChange={handleChangeSearch} value={searchTerm}/>
                     </FormGroup>
                     <FormGroup className="justify-content-end display width-20-percent ">
                         <Button variant="success" onClick={() =>  setShowCreate(true) } >
-                            <FontAwesomeIcon icon={faPlus} /> Create
+                            <FontAwesomeIcon icon={faPlus}/> Create
                         </Button>
                     </FormGroup>
                 </Form>
@@ -125,93 +124,77 @@ const Voucher = () => {
                         >
                         Tất Cả
                     </Button>
-                    <Button 
+                    <Button
                         onClick={handleOnchangeCheckFalse}
                         >
                         Ngưng hoạt động
                     </Button>
                 </Form>
-                <Table >
+                <Table>
                     <thead>
                         <tr>
                             <th>STT</th>
                             <th>Id</th>
-                            <th>VoucherCode</th>
-                            <th>Giá giảm</th>
-                            <th>Thời gian bắt đầu</th>
-                            <th>Thời gian kết thúc</th>
-                            <th>Ghi chú</th>
+                            <th>Tên phương thức</th>
                             <th>Trạng thái</th>
                             <th>Chức năng</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            check === true?(
-                                currentVoucherTrue.map((item,index) => {
+                            check === true ?(
+                                currentPaymentMethod.map((item,index) => {
                                     return (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{item.id}</td>
-                                            <td>{item.voucherCode}</td>
-                                            <td>{item.discount}</td>
-                                            <td>{item.startTime}</td>
-                                            <td>{item.endDate}</td>
-                                            <td>{item.description}</td>
-                                            <td>{item.status?"Hoạt động" : "Ngưng hoạt đông"}</td>
+                                            <td>{item.name}</td>
+                                            <td>{item.status?"Hoạt động":"Ngưng hoạt đông"}</td>
                                             <td>
-                                                {item.status === true?(
+                                                {item.status === true?
                                                     <Form>
-                                                        <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                            <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
+                                                        <Button variant="primary"   onClick={() =>  handleShowEdit(item)}>
+                                                            <FontAwesomeIcon icon={faEdit} className="color-black"/>
                                                         </Button>
                                                         <Button variant="danger" onClick={() => handleShowDelete(item)}>
-                                                            <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
+                                                            <FontAwesomeIcon icon={faTrash} className="color-black"/>
                                                         </Button>
                                                     </Form>
-                                                )
                                                     :
-                                                    <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                        <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
+                                                    <Button variant="primary"  onClick={() =>  handleShowEdit(item)} >
+                                                        <FontAwesomeIcon icon={faEdit} className="color-black"/>
                                                     </Button>
                                                 }
                                             </td>
                                         </tr>
-                                        
                                     )
                                 })
                             )
                             :
-                            currentVoucherFalse.map((item,index) => {
+                            currentPaymentMethodFalse.map((item,index) => {
                                 return (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{item.id}</td>
-                                        <td>{item.voucherCode}</td>
-                                        <td>{item.discount}</td>
-                                        <td>{item.startTime}</td>
-                                        <td>{item.endDate}</td>
-                                        <td>{item.description}</td>
-                                        <td>{item.status?"Hoạt động" : "Ngưng hoạt đông"}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.status?"Hoạt động":"Ngưng hoạt đông"}</td>
                                         <td>
-                                            {item.status === true?(
+                                            {item.status === true?
                                                 <Form>
-                                                    <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                        <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
+                                                    <Button variant="primary"   onClick={() =>  handleShowEdit(item)}>
+                                                        <FontAwesomeIcon icon={faEdit} className="color-black"/>
                                                     </Button>
                                                     <Button variant="danger" onClick={() => handleShowDelete(item)}>
-                                                        <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
+                                                        <FontAwesomeIcon icon={faTrash} className="color-black"/>
                                                     </Button>
                                                 </Form>
-                                            )
                                                 :
-                                                <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                    <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
+                                                <Button variant="primary"  onClick={() =>  handleShowEdit(item)} >
+                                                    <FontAwesomeIcon icon={faEdit} className="color-black"/>
                                                 </Button>
                                             }
                                         </td>
                                     </tr>
-                                    
                                 )
                             })
                         }
@@ -240,16 +223,16 @@ const Voucher = () => {
                     />
                 </div>
             </div>
-            <VoucherCreate
+            <PaymentMethodCreate
                 show = {showCreate}
                 handleClose = {handleClose}
             />
-            <VoucherEdit
+            <PaymentMethodEdit
                 show = {showEdit}
                 handleClose = {handleClose}
                 data = {data}
             />
-            <VoucherDelete
+            <PaymentMethodDelete
                 show = {showDelete}
                 handleClose = {handleClose}
                 data = {data}
@@ -270,4 +253,4 @@ const Voucher = () => {
      );
 }
  
-export default Voucher;
+export default PaymentMethod;

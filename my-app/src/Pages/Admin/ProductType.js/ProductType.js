@@ -3,16 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Form, FormGroup, Table } from "react-bootstrap";
-import './Size.css'
-import SizeCreate from "./SizeCreate";
-import SizeEdit from "./SizeEdit";
-import SizeDelete from "./SizeDelete";
+import ProductTypeCreate from "./ProductTypeCreate";
+import ProductTypeEdit from "./ProductTypeEdit";
+import ProductTypeDelete from "./ProductTypeDelete";
 import ReactPaginate from "react-paginate";
-import { ToastContainer } from "react-toastify";
+import './ProductType.css'
+import { ToastContainer} from 'react-toastify';
 
-
-const Size = () => {
-    const [size, setSize] = useState([]);
+const ProductType = () => {
+    const [productType, setProductType] = useState([]);
     const [data, setData] = useState({});
     const [showCreate, setShowCreate] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -26,47 +25,33 @@ const Size = () => {
     const handleClose = () =>{
         setShowCreate(false)
         setShowEdit(false)
-        setShowDelete(false)
     }
-    const handleShowEdit = (data) => {
-        setData(data)
+    const handleShowEdit = (data) =>{
         setShowEdit(true)
+        setData(data)
     }
     const handleShowDelete = (data) =>{
-        setData(data)
         setShowDelete(true)
+        setData(data)
     }
 
     //Chuyển trang
-    const sizePerPage = 6
-    const indexOfLast = currentPage * sizePerPage
-    const indexOfFirst = indexOfLast - sizePerPage
+    const productTypePerPage = 6
+    const indexOfLast = productTypePerPage * currentPage
+    const indexOfFirst = indexOfLast - productTypePerPage
 
-    const totalSize = key.length
-    const totalPages = Math.ceil(totalSize / sizePerPage)
-    const currentSizeTrue = (key.slice(indexOfFirst, indexOfLast))
+    const totalProductType = key.length
+    const totalPages = Math.ceil(totalProductType / productTypePerPage)
+    const currentProductType = key.slice(indexOfFirst,indexOfLast)
+    console.log(currentProductType)
 
-    const totalSizeFalse = listFalse.length
-    const totalPagesFalse = Math.ceil(totalSizeFalse / sizePerPage)
-    const currentSizeFalse = (listFalse.slice(indexOfFirst, indexOfLast))
+    const totalProductTypeFalse = listFalse.length
+    const totalPagesFalse = Math.ceil(totalProductTypeFalse / productTypePerPage)
+    const currentProductTypeFalse = listFalse.slice(indexOfFirst,indexOfLast)
 
     const handlePageClick = (e) =>{
-        setCurrentPage(+e.selected + 1)
-        getListSize(+e.selected + 1)
-    }
-
-    //Tìm kiềm
-    const handleChangeSearch = (e) =>{
-        setSearchTerm(e.target.value)
-        filterSizes(e.target.value)
-    }
-    const filterSizes = (searchTerm) =>{
-        const filtered = size.filter((item) =>
-            item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setKey(filtered);
-        setlistFalse(filtered)
-        setCurrentPage(1);
+        setCurrentPage(e.selected + 1)
+        getListProductType(e.selected + 1)
     }
 
     //Thay đổi trạng thái load trang
@@ -78,27 +63,41 @@ const Size = () => {
     }
     const handleOnchangeCheckFalse = () =>{
         setCheck(false);
-        const filter = size.filter(f => {
+        const filter = productType.filter(f => {
             return f.status === false;
         })
         setlistFalse(filter);
     }
 
+    //Tìm kiếm
+    const handleChangeSearch = (e) =>{
+        setSearchTerm(e.target.value)
+        filterProductType(e.target.value)
+    }
+    const filterProductType = (searchTerm) =>{
+        const filtered = productType.filter((item) =>
+            item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setKey(filtered);
+        setlistFalse(filtered)
+        setCurrentPage(1);
+    }
+
     //Lấy danh sách
-    const getListSize = () =>{
-        axios.get(`https://localhost:7026/api/Sizes`)
+    const getListProductType = () =>{
+        axios.get(`https://localhost:7026/api/ProductTypes`)
         .then(res => {
-            setSize(res.data)
+            setProductType(res.data);
             setKey(res.data)
         })
     }
     useEffect(()=>{
-        getListSize();
+        getListProductType();
     },[])
     return ( 
         <>
             <div className="container">
-                <Form className="display">
+            <Form className="display">
                     <FormGroup className="width-80-percent">
                         <input type="text" className="width-100-percent height-40-px" placeholder="Tìm kiếm" onChange={handleChangeSearch} value={searchTerm}/>
                     </FormGroup>
@@ -133,63 +132,73 @@ const Size = () => {
                         <tr>
                             <th className="width-100-px">STT</th>
                             <th className="width-100-px">Id</th>
-                            <th className="width-400-px">Tên</th>
-                            <th>Trạng thái</th>
+                            <th className="width-200-px">Hình ảnh</th>
+                            <th className="width-400-px">Loại sản phẩm</th>
+                            <th className="width-150-px">Giới tính</th>
+                            <th className="width-150-px">Trạng thái</th>
                             <th>Chức năng</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody >
                         {
                             check === true ?(
-                                currentSizeTrue.map((item , index) => (
-                                    <tr key={index}>
-                                        <td>{index +1}</td>
+                                currentProductType.map((item,index) => (
+                                    <tr key={index} >
+                                        <td>{index+1}</td>
                                         <td>{item.id}</td>
+                                        <td>
+                                            <img src={`https://localhost:7026/images/ProductType/${item.thumbnail}`} alt="hình ảnh loại sản phấm" style={{width: "100px",height: "100px"}}/>
+                                        </td>
                                         <td>{item.name}</td>
+                                        <td>{item.gender.name}</td>
                                         <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
                                         <td>
-                                            {item.status === true?
-                                                <Form>
-                                                    <Button variant="primary"  onClick={() =>  handleShowEdit(item)}>
+                                        {item.status === true?
+                                                    <Form>
+                                                        <Button variant="primary" onClick={() => handleShowEdit(item)} >
+                                                            <FontAwesomeIcon icon={faEdit} className="color-black"/>
+                                                        </Button>
+                                                        <Button variant="danger" onClick={() => handleShowDelete(item)}>
+                                                            <FontAwesomeIcon icon={faTrash} className="color-black"/>
+                                                        </Button>
+                                                    </Form>
+                                                    :
+                                                    <Button variant="primary" onClick={() => handleShowEdit(item)} >
                                                         <FontAwesomeIcon icon={faEdit} className="color-black"/>
                                                     </Button>
-                                                    <Button variant="danger" onClick={() =>  handleShowDelete(item)}>
-                                                        <FontAwesomeIcon icon={faTrash} className="color-black"/>
-                                                    </Button>
-                                                </Form>
-                                                :
-                                                <Button variant="primary"  onClick={() =>  handleShowEdit(item)}>
-                                                    <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                                </Button>
-                                            }
+                                                }
                                         </td>
                                     </tr>
                                 ))
                             )
                             :
-                            currentSizeFalse.map((item , index) => (
-                                <tr key={index}>
-                                    <td>{index +1}</td>
-                                    <td>{item.id}</td>
-                                    <td>{item.name}</td>
-                                    <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
-                                    <td>
+                            currentProductTypeFalse.map((item,index) => (
+                                <tr key={index} >
+                                        <td>{index+1}</td>
+                                        <td>{item.id}</td>
+                                        <td>
+                                            <img src={`https://localhost:7026/images/ProductType/${item.thumbnail}`} alt="hình ảnh loại sản phấm" style={{width: "100px",height: "100px"}}/>
+                                        </td>
+                                        <td>{item.name}</td>
+                                        <td>{item.gender.name}</td>
+                                        <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
+                                        <td>
                                         {item.status === true?
-                                            <Form>
-                                                <Button variant="primary"  onClick={() =>  handleShowEdit(item)}>
-                                                    <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                                </Button>
-                                                <Button variant="danger" onClick={() =>  handleShowDelete(item)}>
-                                                    <FontAwesomeIcon icon={faTrash} className="color-black"/>
-                                                </Button>
-                                            </Form>
-                                            :
-                                            <Button variant="primary"  onClick={() =>  handleShowEdit(item)}>
-                                                <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                            </Button>
-                                        }
-                                    </td>
-                                </tr>
+                                                    <Form>
+                                                        <Button variant="primary" onClick={() => handleShowEdit(item)} >
+                                                            <FontAwesomeIcon icon={faEdit} className="color-black"/>
+                                                        </Button>
+                                                        <Button variant="danger" onClick={() => handleShowDelete(item)}>
+                                                            <FontAwesomeIcon icon={faTrash} className="color-black"/>
+                                                        </Button>
+                                                    </Form>
+                                                    :
+                                                    <Button variant="primary" onClick={() => handleShowEdit(item)} >
+                                                        <FontAwesomeIcon icon={faEdit} className="color-black"/>
+                                                    </Button>
+                                                }
+                                        </td>
+                                    </tr>
                             ))
                         }
                     </tbody>
@@ -217,16 +226,16 @@ const Size = () => {
                     />
                 </div>
             </div>
-            <SizeCreate 
+            <ProductTypeCreate
                 show = {showCreate}
                 handleClose = {handleClose}
             />
-            <SizeEdit
+            <ProductTypeEdit
                 show = {showEdit}
                 handleClose = {handleClose}
                 data = {data}
             />
-            <SizeDelete
+            <ProductTypeDelete
                 show = {showDelete}
                 handleClose = {handleClose}
                 data = {data}
@@ -244,7 +253,7 @@ const Size = () => {
                 theme="light"
             />
         </>
-    );
+     );
 }
  
-export default Size;
+export default ProductType;

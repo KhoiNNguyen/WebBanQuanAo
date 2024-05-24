@@ -74,6 +74,10 @@ namespace API_Server.Controllers
                     _context.Brand.Update(brand);
                     await _context.SaveChangesAsync();
                 }
+                else
+                {
+                    await _context.SaveChangesAsync();
+                }
             }
             catch (DbUpdateConcurrencyException)
             {

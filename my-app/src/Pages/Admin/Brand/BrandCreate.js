@@ -34,6 +34,7 @@ const BrandCreate = (props) => {
             .then(() => navigate('/Admin/Brands'))
             handleClose()
             toast.success("Thêm thành công")
+            window.location.reload()
         }
         catch{
             toast.error("Xảy ra lỗi")

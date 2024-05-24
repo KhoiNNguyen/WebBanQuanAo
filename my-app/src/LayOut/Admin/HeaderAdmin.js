@@ -13,6 +13,9 @@ const HeaderAdmin = () => {
                         <Nav.Link href="/Admin/Colors">Màu Sắc</Nav.Link>
                         <Nav.Link href="/Admin/Sizes">Size</Nav.Link>
                         <Nav.Link href="/Admin/Vouchers">Vouchers</Nav.Link>
+                        <Nav.Link href="/Admin/ProductTypes">Loại sản phẩm</Nav.Link>
+                        <Nav.Link href="/Admin/ProductSales">Giảm giá sản phẩm</Nav.Link>
+                        <Nav.Link href="/Admin/PaymentMethods">Phương thức thanh toán</Nav.Link>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                         <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.2">

@@ -15,17 +15,19 @@ namespace API_Server.Controllers
     public class ProductTypesController : ControllerBase
     {
         private readonly API_ServerContext _context;
+        public IWebHostEnvironment _environment;
 
-        public ProductTypesController(API_ServerContext context)
+        public ProductTypesController(API_ServerContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         // GET: api/ProductTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductType>>> GetProductType()
         {
-            return await _context.ProductType.ToListAsync();
+            return await _context.ProductType.Include(p => p.Gender).ToListAsync();
         }
 
         // GET: api/ProductTypes/5
@@ -44,8 +46,8 @@ namespace API_Server.Controllers
 
         // PUT: api/ProductTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProductType(int id, ProductType productType)
+        [HttpPut("uploadFile/{id}")]
+        public async Task<IActionResult> PutProductType(int id,[FromForm] ProductType productType)
         {
             if (id != productType.Id)
             {
@@ -56,7 +58,26 @@ namespace API_Server.Controllers
 
             try
             {
-                await _context.SaveChangesAsync();
+                if (productType.ImageFile != null)
+                {
+                    productType.Thumbnail = "";
+
+                    var fileName = productType.Id.ToString() + Path.GetExtension(productType.ImageFile.FileName);
+                    var uploadFolder = Path.Combine(_environment.WebRootPath, "Images", "ProductType");
+                    var uploadPath = Path.Combine(uploadFolder, fileName);
+                    using (FileStream fs = System.IO.File.Create(uploadPath))
+                    {
+                        await productType.ImageFile.CopyToAsync(fs);
+                        fs.Flush();
+                    }
+                    productType.Thumbnail = fileName;
+                    _context.ProductType.Update(productType);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    await _context.SaveChangesAsync();
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -75,11 +96,28 @@ namespace API_Server.Controllers
 
         // POST: api/ProductTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ProductType>> PostProductType(ProductType productType)
+        [HttpPost("uploadFile")]
+        public async Task<ActionResult<ProductType>> PostProductType([FromForm] ProductType productType)
         {
-            _context.ProductType.Add(productType);
-            await _context.SaveChangesAsync();
+            if (productType.ImageFile != null)
+            {
+                productType.Thumbnail = "";
+                _context.ProductType.Add(productType);
+                await _context.SaveChangesAsync();
+
+
+                var fileName = productType.Id.ToString() + Path.GetExtension(productType.ImageFile.FileName);
+                var uploadFolder = Path.Combine(_environment.WebRootPath, "Images", "ProductType");
+                var uploadPath = Path.Combine(uploadFolder, fileName);
+                using (FileStream fs = System.IO.File.Create(uploadPath))
+                {
+                    await productType.ImageFile.CopyToAsync(fs);
+                    fs.Flush();
+                }
+                productType.Thumbnail = fileName;
+                _context.ProductType.Update(productType);
+                await _context.SaveChangesAsync();
+            }
 
             return CreatedAtAction("GetProductType", new { id = productType.Id }, productType);
         }
@@ -93,8 +131,8 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-
-            _context.ProductType.Remove(productType);
+            productType.Status = false;
+            _context.ProductType.Update(productType);
             await _context.SaveChangesAsync();
 
             return NoContent();
