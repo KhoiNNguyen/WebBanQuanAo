@@ -9,7 +9,6 @@ export const getAllProduct=createAsyncThunk("product/get",async (thunkAPI)=>{
     }
 })
 
-
 const productState={
     product:"",
     isError:false,

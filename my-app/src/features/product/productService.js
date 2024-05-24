@@ -8,6 +8,15 @@ const getProduct=async(userData)=>{
     }
 }
 
+const getBrand=async(userData)=>{
+    const respone = await axios.get(`${base_url}Brands`);
+    if(respone.data){
+        return respone.data;
+    }
+}
+
 export const productService={
     getProduct,
+    getBrand,
+
 }

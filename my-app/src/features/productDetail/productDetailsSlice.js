@@ -9,7 +9,6 @@ export const getAllProductDetail=createAsyncThunk("productDetail/get",async (thu
     }
 })
 
-
 const productDetailState={
     product:"",
     isError:false,
@@ -18,8 +17,8 @@ const productDetailState={
     message:"",
 }
 
-export const productSlice=createSlice({
-    name:"product",
+export const productDetailSlice=createSlice({
+    name:"productDetail",
     initialState:productDetailState,
     reducers:{},
     extraReducers:(builder)=>{
@@ -39,4 +38,4 @@ export const productSlice=createSlice({
     }
 })
 
-export default productSlice.reducer;
+export default productDetailSlice.reducer;
