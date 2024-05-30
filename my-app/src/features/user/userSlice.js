@@ -18,8 +18,20 @@ export const loginUser=createAsyncThunk("auth/login",async (userData,thunkAPI)=>
     }
 })
 
+export const getAllUser=createAsyncThunk("auth/get-user",async (thunkAPI)=>{
+    try{
+        return authService.getUser();
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
+const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;
+
 const initialState={
-    user:"",
+    user:getTokenFromLocalStorage,
     isError:false,
     isSuccess:false,
     isLoading:false,
@@ -58,10 +70,26 @@ export const authSlice=createSlice({
             state.isSuccess=true;
             state.user=action.payload;
             if(state.isSuccess===true){
-                localStorage.setItem('token',action.payload.token)
+                localStorage.setItem('loginsuccess',"success")
                 toast.success("Đăng nhập thành công")
             }
         }).addCase(loginUser.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error
+            if(state.isError===true){
+                toast.error(action.error)
+            }
+        })
+        builder.addCase(getAllUser.pending,(state)=>{
+            state.isLoading=true
+        }).addCase(getAllUser.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.user=action.payload;
+        }).addCase(getAllUser.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
             state.isSuccess=false;

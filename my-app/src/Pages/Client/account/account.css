@@ -13,6 +13,7 @@ a{
 
 .header-account {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   color: #fcaf17;
@@ -194,5 +195,12 @@ p{
 .body-favorite{
   width: 100%;
   height: auto;
-  padding: 20px 30px;
+  padding: 20px 0px;
+  height: 160px;
+}
+
+
+.body-favorite .product-favorite{
+  top: 51.5%;
+    left: 85%;
 }

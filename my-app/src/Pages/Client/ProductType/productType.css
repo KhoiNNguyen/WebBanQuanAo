@@ -1,0 +1,65 @@
+.header-account .title_header span{
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+.left-category{
+    width: 25%;
+}
+
+.right-category{
+    width: 74%;
+}
+
+.mbt-10{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.product-category .row{
+    height: auto;
+}
+
+.product-category .row .col{
+    width:25%;
+}
+
+.btn-size{
+    display: inline-block;
+    background: #F2F2F2;
+    border-radius: 4px;
+    color: #7A7A9D;
+    padding: 0 12px;
+    line-height: 33px;
+    border: 1px #F2F2F2 solid;
+    margin: 5px;
+}
+
+.btn-size:hover{
+    border: 1px solid #333;
+}
+
+.btn-color{
+    display: inline-block;
+    background: #F2F2F2;
+    border-radius: 4px;
+    color: #7A7A9D;
+    padding: 0 12px;
+    line-height: 33px;
+    border: 1px #F2F2F2 solid;
+    margin: 5px;
+
+}
+
+.btn-color:hover{
+    border: 1px solid #333;
+}
+
+.row .col{
+    width: 25%;
+}
+
+.title_header .product-type h4{
+    text-transform: uppercase;
+}

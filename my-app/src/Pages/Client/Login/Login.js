@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import { json, Link, useNavigate } from "react-router-dom";
 import { Row, Container } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 import "./Login.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../features/user/userSlice";
+import { useEffect } from "react";
 
 const loginSchema = yup.object({
   username: yup.string().required("Bạn chưa nhập UserName"),
@@ -14,6 +15,7 @@ const loginSchema = yup.object({
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -24,6 +26,13 @@ const Login = () => {
       dispatch(loginUser(values))
     },
   });
+  const isSuccess=JSON.stringify(localStorage.getItem("loginsuccess"))
+  
+  const navigateHome=()=>{
+    if (isSuccess) {
+      return navigate('/');
+    }
+  }
   return (
     <div className="Container">
       <div className="Inner">
@@ -63,7 +72,7 @@ const Login = () => {
               {formik.touched.password && formik.errors.password}
             </div>
             </div>
-            <button type="submit" className="btn-login w-100">
+            <button type="submit" className="btn-login w-100" onClick={()=>navigateHome()}>
               ĐĂNG NHẬP
             </button>
             <div className="mb-4 forget-password">

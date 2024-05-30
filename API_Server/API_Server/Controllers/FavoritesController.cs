@@ -25,7 +25,10 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Favorite>>> GetFavorite()
         {
-            return await _context.Favorite.ToListAsync();
+            return await _context.Favorite
+                    .Include(p => p.User)
+                    .Include(p => p.Product)
+                    .ToListAsync();
         }
 
         // GET: api/Favorites/5

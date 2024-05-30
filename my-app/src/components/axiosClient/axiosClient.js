@@ -15,10 +15,6 @@ const axiosClient = axios.create({
 });
 
 
-  export const config = {
-   
-  };
-
 axiosClient.interceptors.response.use(
     res => res,
     error => {

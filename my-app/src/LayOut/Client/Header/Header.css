@@ -88,6 +88,7 @@
     display: flex;
     position: relative;
     justify-content: space-between;
+    height: 50px;
 }
 
 .TypeHeader .menu {
@@ -141,7 +142,7 @@
     align-items: center;
 }
 
-.InfoUser .icon{
+.icon{
     font-size: 30px;
     margin-bottom: 10px;
     width: 35px;
@@ -157,6 +158,23 @@
     display: none !important;
 } 
 
+.sub-menu_user{
+    position: absolute;
+    z-index: 1;
+    background: #fff;
+    width: 100%;
+    left: 0;
+    height: auto;
+    display: none !important;
+    flex-direction: column;
+}
+
+.TypeHeader .menu li:hover .sub-menu_user{
+    display: flex !important;
+    height: auto;
+    z-index: 100;
+}
+
 .menu .sub_menu .ImageNam img{
     margin: 20px 9px;
     width: 100%;
@@ -166,4 +184,55 @@
 .info-user_cart{
     display: flex;
     align-items: center;
+}
+
+.sub2_menu li{
+    margin-left: -20%;
+}
+
+.No-account{
+    align-items: center;
+}
+
+.Account{
+    position: relative;
+    width: 200%;
+}
+
+.menu-account{
+    position: absolute;
+    top:92%;
+    left: 100%;
+    padding: 10px;
+    z-index: 100000;
+    background-color: #fff;
+}
+
+.menu-account li{
+    margin: 10px 0px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.Account .name-user{
+    color: #FCAF17;
+    border-bottom: 1px solid rgb(180, 176, 176);
+    margin-bottom: 10px;
+}
+
+.Account .logout{
+    padding-top: 10px;
+    border-top: 1px solid  rgb(180, 176, 176);
+}
+
+.Account ul{
+    padding: 10px;
+    left: -50%;
+}
+
+.Account ul li{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    color: #333;
 }

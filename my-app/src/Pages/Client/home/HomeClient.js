@@ -6,10 +6,11 @@ import { FaStar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getAllProduct } from "../../../features/product/productSlice";
+import { addProDuctFavorite, getAllProduct } from "../../../features/product/productSlice";
 import { getAllProductDetail } from "../../../features/productDetail/productDetailsSlice";
 import { getAllBrand } from "../../../features/brand/brandSlice";
 import { getAllProductType } from "../../../features/productType/productTypeSlice";
+import { CiHeart } from "react-icons/ci";
 
 function HomeClient() {
   const dispatch = useDispatch();
@@ -17,6 +18,15 @@ function HomeClient() {
   useEffect(() => {
     getProduct();
   }, []);
+
+  const addToWish=(id)=>{
+    const userId = JSON.parse(localStorage.getItem("customer")).userId;
+    console.log(userId)
+      dispatch(addProDuctFavorite({
+        userId:userId,
+        productId: id,
+    }))
+  }
 
   const resultDiscount = [];
   const seenProductDetailIds = new Set();
@@ -26,16 +36,11 @@ function HomeClient() {
       !seenProductDetailIds.has(ps.productDetailId) &&
       ps.productSaleId ===1
     ) {
-      const productDetailInfo = productState.productDetail.product.find(pd => pd.id === ps.productDetailId);
-      const combinedProduct = {
-        ...ps,
-        Thumbnail: productDetailInfo ? productDetailInfo.thumbnail : null
+        resultDiscount.push(ps);
+        seenProductDetailIds.add(ps.productDetailId);
       };
-      resultDiscount.push(combinedProduct);
-      seenProductDetailIds.add(ps.productDetailId);
       if (resultDiscount.length === 4) break;
     }
-  }
 
 const resultNikeDt = [];
 for (let i = 0; i < productState.productDetail.product.length; i++) {
@@ -55,16 +60,12 @@ for (let i = 0; i < productState.product.product.length; i++) {
   if (
     !seenProductDetailIdNike.has(ps.productDetailId) && resultNikeDt.some(rnd => rnd.id === ps.productDetailId) // Kiểm tra productDetailId có trong resultNikeDt
   ) {
-    const productDetailInfo = productState.productDetail.product.find(pd => pd.id === ps.productDetailId);
-    const combinedProduct = {
-      ...ps,
-      Thumbnail: productDetailInfo ? productDetailInfo.thumbnail : null
-    };
-    resultNike.push(combinedProduct);
+    resultNike.push(ps);
     seenProductDetailIdNike.add(ps.productDetailId);
+    };
     if (resultNike.length === 4) break;
   }
-}
+
 
 const resultGucciDt = [];
 for (let i = 0; i < productState.productDetail.product.length; i++) {
@@ -84,16 +85,12 @@ for (let i = 0; i < productState.product.product.length; i++) {
   if (
     !seenProductDetailIdGucci.has(ps.productDetailId) && resultGucciDt.some(rnd => rnd.id === ps.productDetailId) // Kiểm tra productDetailId có trong resultGucciDt
   ) {
-    const productDetailInfo = productState.productDetail.product.find(pd => pd.id === ps.productDetailId);
-    const combinedProduct = {
-      ...ps,
-      Thumbnail: productDetailInfo ? productDetailInfo.thumbnail : null
-    };
-    resultGucci.push(combinedProduct);
+    resultGucci.push(ps);
     seenProductDetailIdGucci.add(ps.productDetailId);
+    };
     if (resultGucci.length === 4) break;
   }
-}
+
 
 const resultLVDt = [];
 for (let i = 0; i < productState.productDetail.product.length; i++) {
@@ -113,16 +110,12 @@ for (let i = 0; i < productState.product.product.length; i++) {
   if (
     !seenProductDetailIdLV.has(ps.productDetailId) && resultLVDt.some(rnd => rnd.id === ps.productDetailId) // Kiểm tra productDetailId có trong resultLVDt
   ) {
-    const productDetailInfo = productState.productDetail.product.find(pd => pd.id === ps.productDetailId);
-    const combinedProduct = {
-      ...ps,
-      Thumbnail: productDetailInfo ? productDetailInfo.thumbnail : null
-    };
-    resultLV.push(combinedProduct);
+    resultLV.push(ps);
     seenProductDetailIdLV.add(ps.productDetailId);
+    };
     if (resultLV.length === 4) break;
   }
-}
+
 
 const resultProTypeFemail=[];
 if (productState.productType.product && Array.isArray(productState.productType.product)) {
@@ -137,18 +130,18 @@ for(let i=0;i<productState.productType.product.length;i++){
   console.error("Products are undefined or not an array");
 }
 
-const resultProTypeMail=[];
-if (productState.productType.product && Array.isArray(productState.productType.product)) {
-  for(let i=0;i<productState.productType.product.length;i++){
-    const fm=productState.productType.product[i];
-    if(fm.genderId===1){
-      resultProTypeMail.push(fm)
-    }
-  }
-  } else {
-    console.error("Products are undefined or not an array");
-  }
 
+const resultProTypeMail=[];
+  if (productState.productType.product && Array.isArray(productState.productType.product)) {
+    for(let i=0;i<productState.productType.product.length;i++){
+      const fm=productState.productType.product[i];
+      if(fm.genderId===1){
+        resultProTypeMail.push(fm)
+      }
+    }
+    } else {
+      console.error("Products are undefined or not an array");
+    }
   const getProduct = () => {
     dispatch(getAllProduct());
     dispatch(getAllProductDetail());
@@ -156,7 +149,6 @@ if (productState.productType.product && Array.isArray(productState.productType.p
     dispatch(getAllProductType());
   };
 
-console.log(productState)
   function activeClickFemaleType() {
     var menu_female = document.querySelector(".menu_content_female");
     var menu_male = document.querySelector(".menu_content_male");
@@ -219,6 +211,7 @@ console.log(productState)
               <li>
                 <div className="menu_famale_list-group">
                   <div className="image">
+                  <Link to={`/${product.id}/${product.genderId}`}>
                     <img
                       class="category-desktop-lazyload"
                       width="90"
@@ -226,6 +219,7 @@ console.log(productState)
                       alt="home_danhmuc_1_child_2_title"
                       src={`https://localhost:7026/images/ProductType/${product.thumbnail}`}
                     />
+                    </Link>
                   </div>
                   <div className="title">{product.name}</div>
                 </div>
@@ -234,11 +228,12 @@ console.log(productState)
             </ul>
           </div>
           <div className="menu_content_male">
-            <ul className="menu_female_list">
-            {resultProTypeMail.map((product)=>
+          <ul className="menu_female_list">
+              {resultProTypeMail.map((product)=>
               <li>
                 <div className="menu_famale_list-group">
                   <div className="image">
+                  <Link to={`/${product.id}/${product.genderId}`}>
                     <img
                       class="category-desktop-lazyload"
                       width="90"
@@ -246,11 +241,12 @@ console.log(productState)
                       alt="home_danhmuc_1_child_2_title"
                       src={`https://localhost:7026/images/ProductType/${product.thumbnail}`}
                     />
+                    </Link>
                   </div>
                   <div className="title">{product.name}</div>
                 </div>
               </li>
-              )}  
+              )}
             </ul>
           </div>
         </div>
@@ -268,7 +264,9 @@ console.log(productState)
               <span> Giảm giá đến 50%</span>
             </div>
             <div className="iconSale">
+              <Link to="/ProductSale">
               <span>Xem them </span>
+              </Link>
               <MdOutlineKeyboardArrowRight />
             </div>
           </div>
@@ -287,7 +285,7 @@ console.log(productState)
                       <div className="product_thumnail">
                         <a className="image_thumb">
                           <img
-                            src={`https://localhost:7026/images/products/${product.Thumbnail}`}
+                            src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
                             alt="1"
                           />
                         </a>
@@ -302,6 +300,11 @@ console.log(productState)
                         </div>
                         <div className="color_group"></div>
                       </div>
+                    </div>
+                    <div className="product-favorite"  onClick={() => {addToWish(product.id)}}>
+                      <span>
+                      <CiHeart />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -324,7 +327,9 @@ console.log(productState)
               <span> Gucci</span>
             </div>
             <div className="iconSale">
+              <Link to="/Brand/1">
               <span>Xem them </span>
+              </Link>
               <MdOutlineKeyboardArrowRight />
             </div>
           </div>
@@ -343,7 +348,7 @@ console.log(productState)
                       <div className="product_thumnail">
                         <a className="image_thumb">
                           <img
-                            src={`https://localhost:7026/images/products/${product.Thumbnail}`}
+                            src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
                             alt="1"
                           />
                         </a>
@@ -358,6 +363,11 @@ console.log(productState)
                         </div>
                         <div className="color_group"></div>
                       </div>
+                    </div>
+                    <div className="product-favorite">
+                      <span>
+                      <CiHeart />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -380,7 +390,9 @@ console.log(productState)
               <span> Louis Vuitton</span>
             </div>
             <div className="iconSale">
+              <Link to='/Brand/3'>
               <span>Xem them </span>
+              </Link>
               <MdOutlineKeyboardArrowRight />
             </div>
           </div>
@@ -399,7 +411,7 @@ console.log(productState)
                       <div className="product_thumnail">
                         <a className="image_thumb">
                           <img
-                            src={`https://localhost:7026/images/products/${product.Thumbnail}`}
+                            src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
                             alt="1"
                           />
                         </a>
@@ -414,6 +426,11 @@ console.log(productState)
                         </div>
                         <div className="color_group"></div>
                       </div>
+                    </div>
+                    <div className="product-favorite">
+                      <span>
+                      <CiHeart />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -439,7 +456,9 @@ console.log(productState)
               <span>Nike</span>
             </div>
             <div className="iconSale">
+            <Link to="/Brand/5">
               <span>Xem them </span>
+            </Link>
               <MdOutlineKeyboardArrowRight />
             </div>
           </div>
@@ -458,7 +477,7 @@ console.log(productState)
                       <div className="product_thumnail">
                         <a className="image_thumb">
                           <img
-                            src={`https://localhost:7026/images/products/${product.Thumbnail}`}
+                            src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
                             alt="1"
                           />
                         </a>
@@ -473,6 +492,11 @@ console.log(productState)
                         </div>
                         <div className="color_group"></div>
                       </div>
+                    </div>
+                    <div className="product-favorite">
+                      <span>
+                      <CiHeart />
+                      </span>
                     </div>
                   </div>
                 </div>

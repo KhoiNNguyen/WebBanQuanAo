@@ -1,0 +1,27 @@
+.header-account .title_header span{
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+.left-category{
+    width: 25%;
+}
+
+.right-category{
+    width: 74%;
+}
+
+.mbt-10{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.product-category .row{
+    height: auto;
+    flex-wrap: wrap;
+}
+
+.product-category .row .col{
+    width:25%;
+}

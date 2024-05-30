@@ -1,5 +1,5 @@
 import axios from "axios";
-import { base_url } from "../../components/axiosClient/axiosConfig";
+import { base_url, config } from "../../components/axiosClient/axiosConfig";
 
 const getProduct=async(userData)=>{
     const respone = await axios.get(`${base_url}Products`);
@@ -8,8 +8,8 @@ const getProduct=async(userData)=>{
     }
 }
 
-const getBrand=async(userData)=>{
-    const respone = await axios.get(`${base_url}Brands`);
+const addToWishlist=async(proId)=>{
+    const respone = await axios.post(`${base_url}Favorites`,proId,config);
     if(respone.data){
         return respone.data;
     }
@@ -17,6 +17,6 @@ const getBrand=async(userData)=>{
 
 export const productService={
     getProduct,
-    getBrand,
+    addToWishlist,
 
 }

@@ -26,7 +26,7 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
-            return await _context.Product.ToListAsync();
+            return await _context.Product.Include(p=>p.ProductDetail).ToListAsync();
         }
 
         // GET: api/Products/5
