@@ -26,7 +26,11 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
-            return await _context.Product.Include(p=>p.ProductDetail).ToListAsync();
+            return await _context.Product.Include(s => s.Size)
+                                         .Include(c => c.Color)
+                                         .Include(p => p.ProductDetail.Brand)
+                                         .Include(p => p.ProductDetail.ProductType.Gender)
+                                         .Include(ps => ps.ProductSale).ToListAsync();
         }
 
         // GET: api/Products/5
@@ -94,8 +98,8 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-
-            _context.Product.Remove(product);
+            product.Status = false;
+            _context.Product.Update(product);
             await _context.SaveChangesAsync();
 
             return NoContent();

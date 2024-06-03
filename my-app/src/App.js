@@ -26,6 +26,8 @@ import ProductSale from "./Pages/Admin/ProductSale/ProductSale";
 import CategoryProduct from "./Pages/Client/ProductType";
 import ProductBrand from "./Pages/Client/ProductBrand";
 import ClientProductSale from "./Pages/productSale/ProductSale";
+import Products from "./Pages/Admin/Product/Product";
+import ProductDetailAdmin from "./Pages/Admin/ProductDetail/ProductDetail";
 
 function App() {
   return (
@@ -52,6 +54,8 @@ function App() {
             path="/Admin/PaymentMethods"
             element={<PaymentMethod />}
           ></Route>
+          <Route path='/Admin/Products' element={<Products/>}></Route>
+          <Route path='/Admin/ProductDetails' element={<ProductDetailAdmin/>}></Route>
         </Route>
         <Route path="/" element={<LayOutClient />}>
           <Route index element={<HomeClient />} />
