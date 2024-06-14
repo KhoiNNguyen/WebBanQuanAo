@@ -133,7 +133,7 @@ const ProductType = () => {
                             <th className="width-100-px">STT</th>
                             <th className="width-100-px">Id</th>
                             <th className="width-200-px">Hình ảnh</th>
-                            <th className="width-400-px">Loại sản phẩm</th>
+                            <th className="width-200-px">Loại sản phẩm</th>
                             <th className="width-150-px">Giới tính</th>
                             <th className="width-150-px">Trạng thái</th>
                             <th>Chức năng</th>

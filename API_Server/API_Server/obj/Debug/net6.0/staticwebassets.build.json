@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "dzVVbCD37sYbksbPqjQLOltJCSV4aP8BPjXs/BKDlsE=",
+  "Hash": "YkZ/33Y/TbCZ8jpPU8Fq5QVBMtmLFkt3MGP9GMkceJY=",
   "Source": "API_Server",
   "BasePath": "_content/API_Server",
   "Mode": "Default",
@@ -7529,6 +7529,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\Hình-ảnh-riêng-từng-thương-hiệu\\Uniqlo\\jogger_xanh_dương_3_Uniqlo.png"
+    },
+    {
+      "Identity": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\products\\49.png",
+      "SourceId": "API_Server",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\",
+      "BasePath": "_content/API_Server",
+      "RelativePath": "Images/products/49.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\products\\49.png"
+    },
+    {
+      "Identity": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\products\\50.png",
+      "SourceId": "API_Server",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\",
+      "BasePath": "_content/API_Server",
+      "RelativePath": "Images/products/50.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\products\\50.png"
     },
     {
       "Identity": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\products\\ao_ba_lo_cam_1_Nike.png",

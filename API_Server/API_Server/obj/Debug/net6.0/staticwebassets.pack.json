@@ -1841,6 +1841,14 @@
       "PackagePath": "staticwebassets\\Images\\brands\\uniqlo-logo.png"
     },
     {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\products\\49.png",
+      "PackagePath": "staticwebassets\\Images\\products\\49.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\products\\50.png",
+      "PackagePath": "staticwebassets\\Images\\products\\50.png"
+    },
+    {
       "Id": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\products\\ao_ba_lo_cam_1_Nike.png",
       "PackagePath": "staticwebassets\\Images\\products\\ao_ba_lo_cam_1_Nike.png"
     },

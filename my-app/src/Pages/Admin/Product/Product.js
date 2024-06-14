@@ -2,7 +2,7 @@ import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button, Table ,Form, FormGroup} from "react-bootstrap";
+import { Button, Table ,Form, FormGroup, Dropdown} from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import ProductCreate from "./ProductCreate";
 import ProductEdit from "./ProductEdit";
@@ -11,6 +11,7 @@ import ReactPaginate from "react-paginate";
 
 const Products = () => {
     const [product, setProduct] = useState([]);
+    const [size, setSize] = useState([]);
     const [data, setData] = useState({});
     const [showCreate, setShowCreate] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -93,8 +94,15 @@ const Products = () => {
             setKey(res.data)
         })
     }
+    const getListSize = () =>{
+        axios.get(`https://localhost:7026/api/Sizes`)
+        .then(res => {
+            setSize(res.data)
+        })
+    }
     useEffect(()=>{
         getListProduct();
+        getListSize();
     },[])
     return ( 
         <>
@@ -109,7 +117,7 @@ const Products = () => {
                         </Button>
                     </FormGroup>
                 </Form>
-                <Form className="margin-top-10px">
+                <Form className="margin-top-10px" style={{display:"flex"}}>
                     <Button
                         variant="success" 
                         className="margin-right-10px"
@@ -124,9 +132,25 @@ const Products = () => {
                         Tất Cả
                     </Button>
                     <Button
-                        onClick={handleOnchangeCheckFalse}>
+                        onClick={handleOnchangeCheckFalse}
+                        className="margin-right-10px">
                         Hết hàng
                     </Button>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            Size
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            {
+                                size.map(item =>{
+                                    return(
+                                        <Dropdown.Item href="#/action-1">{item.name}</Dropdown.Item>
+                                    )
+                                })
+                            }
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Form>
                 <Table>
                     <thead>

@@ -1,0 +1,159 @@
+
+.product{
+    border: solid 2px;
+    border-radius: 0.5rem;
+    width: 32%;
+    height: 14rem;
+    color: black;
+}
+nav ul{
+    padding: 0;
+    display: flex;
+}
+
+nav ul li{  
+    list-style: none;
+}
+nav ul:nth-child(1) li:nth-child(1){
+    background-image: url("../../../../public/Image/1.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+nav ul:nth-child(1) li:nth-child(2){
+    background-image: url("../../../../public/Image/detail.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+nav ul:nth-child(1) li:nth-child(3){
+    background-image: url("../../../../public/Image/productType.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(2) li:nth-child(1){
+    background-image: url("../../../../public/Image/hoadon.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(2) li:nth-child(2){
+    background-image: url("../../../../public/Image/hoadondetail.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(2) li:nth-child(3){
+    background-image: url("../../../../public/Image/voucher.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(3) li:nth-child(1){
+    background-image: url("../../../../public/Image/productdiscount.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(3) li:nth-child(2){
+    background-image: url("../../../../public/Image/account.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(3) li:nth-child(3){
+    background-image: url("../../../../public/Image/favorite.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(4) li:nth-child(1){
+    background-image: url("../../../../public/Image/comment.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(4) li:nth-child(2){
+    background-image: url("../../../../public/Image/mango-logo.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(4) li:nth-child(3){
+    background-image: url("../../../../public/Image/color.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(5) li:nth-child(1){
+    background-image: url("../../../../public/Image/size.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(5) li:nth-child(2){
+    background-image: url("../../../../public/Image/payment.png");
+    background-repeat: no-repeat;
+    background-size: 430px 230px;
+    object-fit: cover;
+}
+ul:nth-child(1) li:nth-child(1):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(1) li:nth-child(2):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(1) li:nth-child(3):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(2) li:nth-child(1):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(2) li:nth-child(2):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(2) li:nth-child(3):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(3) li:nth-child(1):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(3) li:nth-child(2):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(3) li:nth-child(3):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(4) li:nth-child(1):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(4) li:nth-child(2):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(4) li:nth-child(3):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(5) li:nth-child(1):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+ul:nth-child(5) li:nth-child(2):hover{
+    background-size: 430px 240px;
+    transition: 0.5s;
+}
+nav ul li:nth-child(2),nav ul li:nth-child(3){
+    margin-left: 1rem;
+}

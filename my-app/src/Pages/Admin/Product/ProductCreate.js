@@ -73,7 +73,16 @@ const ProductCreate = (props) => {
                     <Form encType="multipart/form-data">
                         <FormGroup>
                             <FormLabel>Tên sản phẩm: </FormLabel>
-                            <FormControl name="name" type="text" onChange={handleChange}></FormControl>
+                            <FormSelect  name="name" onChange={handleChange}>
+                            <option> None </option>
+                            {
+                                productDetail.map(item =>{
+                                    return(
+                                        <option >{item.name} </option>
+                                    )
+                                })
+                            }
+                            </FormSelect>
                         </FormGroup>
                         <FormGroup>
                             <FormLabel>Giá: </FormLabel>

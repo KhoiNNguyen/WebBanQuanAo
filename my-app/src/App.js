@@ -1,7 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LauOutAdmin from "./LayOut/Admin/LayOutAdmin";
-import HomeAdmin from "./Pages/Admin/HomeAdmin";
 import LayOutClient from "./LayOut/Client/LayOutClient";
 import HomeClient from "./Pages/Client/home/HomeClient";
 import Brand from "./Pages/Admin/Brand/Brand";
@@ -28,6 +27,7 @@ import ProductBrand from "./Pages/Client/ProductBrand";
 import ClientProductSale from "./Pages/productSale/ProductSale";
 import Products from "./Pages/Admin/Product/Product";
 import ProductDetailAdmin from "./Pages/Admin/ProductDetail/ProductDetail";
+import HomeAdmin from './Pages/Admin/Home/HomeAdmin';
 
 function App() {
   return (

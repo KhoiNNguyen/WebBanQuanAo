@@ -84,6 +84,8 @@ namespace API_Server.Controllers
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
             _context.Product.Add(product);
+            //product.ProductDetail.Quantity = product.Quantity + product.ProductDetail.Quantity;
+            //_context.Product.Update(product);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
