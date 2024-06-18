@@ -15,20 +15,17 @@ namespace API_Server.Controllers
     public class ProductDetailsController : ControllerBase
     {
         private readonly API_ServerContext _context;
-        public IWebHostEnvironment _environment;
 
-        public ProductDetailsController(API_ServerContext context, IWebHostEnvironment environment)
+        public ProductDetailsController(API_ServerContext context)
         {
             _context = context;
-            _environment = environment;
         }
 
         // GET: api/ProductDetails
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDetail>>> GetProductDetail()
         {
-            return await _context.ProductDetail.Include(b => b.Brand)
-                                                .Include(pt => pt.ProductType).ToListAsync();
+            return await _context.ProductDetail.Include(p=>p.ProductType).ToListAsync();
         }
 
         // GET: api/ProductDetails/5
@@ -47,8 +44,8 @@ namespace API_Server.Controllers
 
         // PUT: api/ProductDetails/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("uploadFile/{id}")]
-        public async Task<IActionResult> PutProductDetail(int id, [FromForm] ProductDetail productDetail)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProductDetail(int id, ProductDetail productDetail)
         {
             if (id != productDetail.Id)
             {
@@ -59,26 +56,7 @@ namespace API_Server.Controllers
 
             try
             {
-                if (productDetail.ImageFile != null)
-                {
-                    productDetail.Thumbnail = "";
-
-                    var fileName = productDetail.Id.ToString() + Path.GetExtension(productDetail.ImageFile.FileName);
-                    var uploadFolder = Path.Combine(_environment.WebRootPath, "Images", "products");
-                    var uploadPath = Path.Combine(uploadFolder, fileName);
-                    using (FileStream fs = System.IO.File.Create(uploadPath))
-                    {
-                        await productDetail.ImageFile.CopyToAsync(fs);
-                        fs.Flush();
-                    }
-                    productDetail.Thumbnail = fileName;
-                    _context.ProductDetail.Update(productDetail);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    await _context.SaveChangesAsync();
-                }
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -97,28 +75,11 @@ namespace API_Server.Controllers
 
         // POST: api/ProductDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("uploadFile")]
-        public async Task<ActionResult<ProductDetail>> PostProductDetail([FromForm] ProductDetail productDetail)
+        [HttpPost]
+        public async Task<ActionResult<ProductDetail>> PostProductDetail(ProductDetail productDetail)
         {
-            if (productDetail.ImageFile != null)
-            {
-                productDetail.Thumbnail = "";
-                _context.ProductDetail.Add(productDetail);
-                await _context.SaveChangesAsync();
-
-
-                var fileName = productDetail.Id.ToString() + Path.GetExtension(productDetail.ImageFile.FileName);
-                var uploadFolder = Path.Combine(_environment.WebRootPath, "Images", "products");
-                var uploadPath = Path.Combine(uploadFolder, fileName);
-                using (FileStream fs = System.IO.File.Create(uploadPath))
-                {
-                    await productDetail.ImageFile.CopyToAsync(fs);
-                    fs.Flush();
-                }
-                productDetail.Thumbnail = fileName;
-                _context.ProductDetail.Update(productDetail);
-                await _context.SaveChangesAsync();
-            }
+            _context.ProductDetail.Add(productDetail);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProductDetail", new { id = productDetail.Id }, productDetail);
         }
@@ -132,8 +93,8 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-            productDetail.Status = false;
-            _context.ProductDetail.Update(productDetail);
+
+            _context.ProductDetail.Remove(productDetail);
             await _context.SaveChangesAsync();
 
             return NoContent();

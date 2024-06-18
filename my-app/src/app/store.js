@@ -7,6 +7,11 @@ import productReducer from "../features/productType/productTypeSlice";
 import colorSlice from "../features/color/colorSlice";
 import sizeSlice from "../features/size/sizeSlice";
 import wishlistSlice from "../features/wishlist/wishlistSlice";
+import imageSlice from "../features/image/imageSlice";
+import cartSlice from "../features/cart/cartSlice";
+import voucherSlice from "../features/voucher/voucherSlice";
+import invoiceSlice from "../features/invoice/invoiceSlide";
+import invoiceDetailSlide from "../features/invoiceDetail/invoiceDetailSlice";
 
 export const store=configureStore({
     reducer:{
@@ -18,5 +23,10 @@ export const store=configureStore({
         color:colorSlice,
         size:sizeSlice,
         wishlist:wishlistSlice,
+        image:imageSlice,
+        cart:cartSlice,
+        voucher:voucherSlice,
+        invoice:invoiceSlice,
+        invoiceDetail:invoiceDetailSlide,
     }
 })

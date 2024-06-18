@@ -6,7 +6,7 @@ import * as yup from "yup";
 import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../features/user/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const loginSchema = yup.object({
   username: yup.string().required("Bạn chưa nhập UserName"),
@@ -26,13 +26,13 @@ const Login = () => {
       dispatch(loginUser(values))
     },
   });
-  const isSuccess=JSON.stringify(localStorage.getItem("loginsuccess"))
   
-  const navigateHome=()=>{
-    if (isSuccess) {
-      return navigate('/');
+  const navigateHome = () => {
+    const isSuccess = localStorage.getItem("loginsuccess");
+    if (isSuccess === "success") {
+        navigate('/');
     }
-  }
+};
   return (
     <div className="Container">
       <div className="Inner">
@@ -49,8 +49,8 @@ const Login = () => {
                 type="text"
                 className="form-control"
                 name="username"
-                value={formik.values.username}
                 placeholder="Username"
+                value={formik.values.username}
                 onBlur={formik.handleBlur("username")}
                 onChange={formik.handleChange("username")}
               />

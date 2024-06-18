@@ -11,6 +11,11 @@ import { getAllProductDetail } from "../../../features/productDetail/productDeta
 import { getAllBrand } from "../../../features/brand/brandSlice";
 import { getAllProductType } from "../../../features/productType/productTypeSlice";
 import { CiHeart } from "react-icons/ci";
+import { getAllUser } from "../../../features/user/userSlice";
+import { getAllImage } from "../../../features/image/imageSlice";
+
+const customer = JSON.parse(localStorage.getItem("customer"));
+const userId = customer?.userId;
 
 function HomeClient() {
   const dispatch = useDispatch();
@@ -20,12 +25,14 @@ function HomeClient() {
   }, []);
 
   const addToWish=(id)=>{
-    const userId = JSON.parse(localStorage.getItem("customer")).userId;
-    console.log(userId)
+    if(userId)
       dispatch(addProDuctFavorite({
         userId:userId,
         productId: id,
     }))
+    else{
+      alert("vui long dawng nhap de su dung")
+    }
   }
 
   const resultDiscount = [];
@@ -36,7 +43,11 @@ function HomeClient() {
       !seenProductDetailIds.has(ps.productDetailId) &&
       ps.productSaleId ===1
     ) {
-        resultDiscount.push(ps);
+      const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+        resultDiscount.push({
+          ...ps,
+          thumbnail:ps_image?.name
+        });
         seenProductDetailIds.add(ps.productDetailId);
       };
       if (resultDiscount.length === 4) break;
@@ -48,7 +59,11 @@ for (let i = 0; i < productState.productDetail.product.length; i++) {
   if (
     ps.brandId === 5
   ) {
-    resultNikeDt.push(ps);
+    const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+    resultNikeDt.push({
+      ...ps,
+      thumbnail:ps_image?.name
+    });
     if (resultNikeDt.length === 4) break;
   }
 }
@@ -60,7 +75,11 @@ for (let i = 0; i < productState.product.product.length; i++) {
   if (
     !seenProductDetailIdNike.has(ps.productDetailId) && resultNikeDt.some(rnd => rnd.id === ps.productDetailId) // Kiểm tra productDetailId có trong resultNikeDt
   ) {
-    resultNike.push(ps);
+    const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+    resultNike.push({
+      ...ps,
+      thumbnail:ps_image?.name
+    });
     seenProductDetailIdNike.add(ps.productDetailId);
     };
     if (resultNike.length === 4) break;
@@ -85,7 +104,12 @@ for (let i = 0; i < productState.product.product.length; i++) {
   if (
     !seenProductDetailIdGucci.has(ps.productDetailId) && resultGucciDt.some(rnd => rnd.id === ps.productDetailId) // Kiểm tra productDetailId có trong resultGucciDt
   ) {
-    resultGucci.push(ps);
+    
+    const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+    resultGucci.push({
+      ...ps,
+      thumbnail:ps_image?.name
+    });
     seenProductDetailIdGucci.add(ps.productDetailId);
     };
     if (resultGucci.length === 4) break;
@@ -98,7 +122,12 @@ for (let i = 0; i < productState.productDetail.product.length; i++) {
   if (
     ps.brandId === 3
   ) {
-    resultLVDt.push(ps);
+    
+    const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+    resultLVDt.push({
+      ...ps,
+      thumbnail:ps_image?.name
+    });
     if (resultLVDt.length === 4) break;
   }
 }
@@ -110,7 +139,12 @@ for (let i = 0; i < productState.product.product.length; i++) {
   if (
     !seenProductDetailIdLV.has(ps.productDetailId) && resultLVDt.some(rnd => rnd.id === ps.productDetailId) // Kiểm tra productDetailId có trong resultLVDt
   ) {
-    resultLV.push(ps);
+    
+    const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+    resultLV.push({
+      ...ps,
+      thumbnail:ps_image?.name
+    });
     seenProductDetailIdLV.add(ps.productDetailId);
     };
     if (resultLV.length === 4) break;
@@ -147,6 +181,8 @@ const resultProTypeMail=[];
     dispatch(getAllProductDetail());
     dispatch(getAllBrand());
     dispatch(getAllProductType());
+    dispatch(getAllUser());
+    dispatch(getAllImage())
   };
 
   function activeClickFemaleType() {
@@ -186,6 +222,18 @@ const resultProTypeMail=[];
       console.error("Không tìm thấy một hoặc nhiều phần tử.");
     }
   }
+
+  function formatPrice(price) {
+    // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
+    price = parseInt(price);
+  
+    // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
+    // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
+    return price.toLocaleString('vi-VN') + 'đ';
+  }
+
+
+  console.log(resultDiscount)
   return (
     <>
       <SlideShow />
@@ -282,21 +330,21 @@ const resultProTypeMail=[];
                       </span>
                     </div>
                     <div className="item_content">
-                      <div className="product_thumnail">
-                        <a className="image_thumb">
+                      <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
+                      <Link to={`/ProductDetail/${product.id}`} className="image_thumb">
                           <img
-                            src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
+                            src={`https://localhost:7026/images/products/${product.thumbnail}`}
                             alt="1"
                           />
-                        </a>
+                        </Link>
                       </div>
                       <div className="product_info">
                         <div className="product_name">
-                          <span>{product.name}</span>
+                          <span className="name_product">{product.name}</span>
                         </div>
                         <div className="price">
-                          <span className="price_new">{product.price}</span>
-                          <span className="price_current">{product.price}</span>
+                          <span className="price_new">{formatPrice(product.price-product.price*(product.productSale.percentDiscount/100))}</span>
+                          <span className="price_current">{formatPrice(product.price)}</span>
                         </div>
                         <div className="color_group"></div>
                       </div>
@@ -345,21 +393,24 @@ const resultProTypeMail=[];
                       </span>
                     </div>
                     <div className="item_content">
-                      <div className="product_thumnail">
-                        <a className="image_thumb">
+                    <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
+
+                      <Link to={`/ProductDetail/${product.id}`} className="image_thumb">
                           <img
-                            src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
+                            src={`https://localhost:7026/images/products/${product.thumbnail}`}
                             alt="1"
                           />
-                        </a>
+                        </Link>
                       </div>
                       <div className="product_info">
+                        <Link>
                         <div className="product_name">
-                          <span>{product.name}</span>
+                          <span className="name_product">{product.name}</span>
                         </div>
+                        </Link>
                         <div className="price">
-                          <span className="price_new">{product.price}</span>
-                          <span className="price_current">{product.price}</span>
+                          <span className="price_new">{formatPrice(product.price)}</span>
+                          <span className="price_current">{formatPrice(product.price)}</span>
                         </div>
                         <div className="color_group"></div>
                       </div>
@@ -408,21 +459,21 @@ const resultProTypeMail=[];
                       </span>
                     </div>
                     <div className="item_content">
-                      <div className="product_thumnail">
-                        <a className="image_thumb">
+                    <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
+                    <Link to={`/ProductDetail/${product.id}`} className="image_thumb">
                           <img
-                            src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
+                            src={`https://localhost:7026/images/products/${product.thumbnail}`}
                             alt="1"
                           />
-                        </a>
+                        </Link>
                       </div>
                       <div className="product_info">
                         <div className="product_name">
-                          <span>{product.name}</span>
+                          <span  className="name_product">{product.name}</span>
                         </div>
                         <div className="price">
-                          <span className="price_new">{product.price}</span>
-                          <span className="price_current">{product.price}</span>
+                          <span className="price_new">{formatPrice(product.price)}</span>
+                          <span className="price_current">{formatPrice(product.price)}</span>
                         </div>
                         <div className="color_group"></div>
                       </div>
@@ -474,21 +525,21 @@ const resultProTypeMail=[];
                       </span>
                     </div>
                     <div className="item_content">
-                      <div className="product_thumnail">
-                        <a className="image_thumb">
+                    <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
+                      <Link to={`/ProductDetail/${product.id}`} className="image_thumb">
                           <img
-                            src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
+                            src={`https://localhost:7026/images/products/${product.thumbnail}`}
                             alt="1"
                           />
-                        </a>
+                        </Link>
                       </div>
                       <div className="product_info">
                         <div className="product_name">
-                          <span>{product.name}</span>
+                          <span className="name_product">{product.name}</span>
                         </div>
                         <div className="price">
-                          <span className="price_new">{product.price}</span>
-                          <span className="price_current">{product.price}</span>
+                          <span className="price_new">{formatPrice(product.price)}</span>
+                          <span className="price_current">{formatPrice(product.price)}</span>
                         </div>
                         <div className="color_group"></div>
                       </div>

@@ -1,6 +1,6 @@
 .title-login{
     margin:0 auto;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 26px;
     margin: 0;
     padding: 0;
@@ -92,7 +92,7 @@ button[disabled=disabled], button:disabled {
     font-weight: bold;
     border-radius: 4px;
     font-size: 18px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin-bottom: 10px;
 }
 

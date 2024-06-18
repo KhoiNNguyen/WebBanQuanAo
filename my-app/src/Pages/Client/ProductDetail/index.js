@@ -5,29 +5,200 @@ import { IoTicketOutline } from "react-icons/io5";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { AiOutlineLike } from "react-icons/ai";
 import { BiSolidError } from "react-icons/bi";
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { getAllProduct } from '../../../features/product/productSlice';
+import { getAllProductDetail } from '../../../features/productDetail/productDetailsSlice';
+import { getAllProductType } from '../../../features/productType/productTypeSlice';
+import { useParams } from 'react-router-dom';
+import { getAllImage } from '../../../features/image/imageSlice';
+import { getAllSize } from '../../../features/size/sizeSlice';
+import { getAllColor } from '../../../features/color/colorSlice';
+import { addToCart, getAllCart } from '../../../features/cart/cartSlice';
 
 const ProductDetail = () => {
+  const dispatch=useDispatch();
+  const productState=useSelector(state=>state)
+  const param =useParams();
+  const [quantity,setQuantity]=useState(1)
+  const [productid,setProductid]=useState(Number(param.productId))
+  
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleChangColor=(id)=>{
+    setProductid(id)
+  }
+
+  const handleChangSize=(id)=>{
+    setProductid(id)
+  }
+
+  console.log(productid)
+  useEffect(()=>{
+    getProduct();
+  },[])
+  
+  const resultProduct=[];
+  let pricenew = null; // Khai báo pricenew bên ngoài vòng lặp
+  if (
+    productState.product.product &&
+    Array.isArray(productState.product.product)
+  ) 
+  {
+    for(let i=0;i<productState.product.product.length;i++){
+      const fm=productState.product.product[i];
+      if(fm.id===productid){
+        resultProduct.push(fm);
+        pricenew = fm.price - fm.price * (fm.productSale.percentDiscount / 100);
+    }
+  }
+  }
+
+  console.log(resultProduct)
+  const uploadCart=()=>{
+    const userId = JSON.parse(localStorage.getItem("customer")).userId;
+    dispatch(addToCart({
+      productId:productid,
+      userId:userId,
+      quantity:quantity,
+      price:pricenew,
+    }))
+    setTimeout(() => {
+      dispatch(getAllCart())
+    }, 300); 
+  }
+
+  const getProduct=()=>{
+    dispatch(getAllProduct());
+    dispatch(getAllProductDetail())
+    dispatch(getAllProductType())
+    dispatch(getAllImage())
+    dispatch(getAllSize())
+    dispatch(getAllColor())
+  }
+
+  const resultProductDetail=[];
+  const productId = resultProduct.map(rp => rp.id);
+  if (
+    productState.image.product &&
+    Array.isArray(productState.image.product)
+  ) 
+  {
+    for(let i=0;i<productState.image.product.length;i++){
+      const detail = productState.image.product[i];
+    if (productId.includes(detail.productId)) {
+      resultProductDetail.push(detail);
+    }
+  }
+  }
+
+  const resultColor=[];
+  if (
+    productState.product.product &&
+    Array.isArray(productState.product.product)
+  ) 
+  {
+    for(let i=0;i<productState.product.product.length;i++){
+      const detail = productState.product.product[i];
+    if (resultProduct.some(product=>product.sizeId===detail.sizeId&&product.productDetailId===detail.productDetailId)) {
+      resultColor.push(detail);
+    }
+  }
+  }
+
+  console.log(resultColor)
+
+  const resultProductType=[];
+  const productDetailId = resultProduct.map(rp => rp.productDetailId);
+
+  if (
+    productState.productDetail.product &&
+    Array.isArray(productState.productDetail.product)
+  ) 
+  {
+    for(let i=0;i<productState.productDetail.product.length;i++){
+      const detail = productState.productDetail.product[i];
+    if (productDetailId.includes(detail.id)) {
+      resultProductType.push(detail);
+    }
+  }
+  }
+
+  const resultDetail=[];
+  
+  if (
+    productState.product.product &&
+    Array.isArray(productState.product.product)
+  ) 
+  {
+    for(let i=0;i<productState.product.product.length;i++){
+      const detail = productState.product.product[i];
+      if (productDetailId.includes(detail.productDetailId)) {
+        resultDetail.push(detail);
+      }
+    }
+  }
+  
+  const resultSize=[]
+  const productcolorId = resultProduct.map(rp => rp.colorId);
+  if (
+    resultDetail &&
+    Array.isArray(resultDetail)
+  ) 
+  {
+    for(let i=0;i<resultDetail.length;i++){
+      const detail = resultDetail[i];
+    if (productcolorId.includes(detail.colorId)) {
+      resultSize.push(detail);
+    }
+  }
+  }
+  
+  function formatPrice(price) {
+    // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
+    price = parseInt(price);
+  
+    // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
+    // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
+    return price.toLocaleString('vi-VN') + 'đ';
+  }
+
+
   return(
     <div className='Inner'>
         <div className='direction'>
-          <span>Quan Jean</span>
-          <span><strong> / Quan Jean kaki kiểu</strong> </span>
+          {resultProductType.map(item=>
+          <>
+          <span className=' name_product'>{item.productType.name}</span>
+          <span><strong> / {item.name}</strong> </span>
+          </>
+          )}
         </div>
       <div className='ContainerDetail'>
         <div className='Left'>
           <div className='all-image'>
+            {resultProductDetail.map((product)=>
             <div className='one-image'>
-              <img src="./Image/Logo/ao_thun_đen_1_Hermes.png" />
+              <img src={`https://localhost:7026/images/products/${product.name}`}
+              alt="1" />
             </div>
+            )}
+            {resultProductType.map(product=>
             <div className='one-image'>
-              <img src="./Image/Logo/ao_thun_đen_1_Hermes.png" />
-            </div>
-            <div className='one-image'>
-              <img src="./Image/Logo/ao_thun_đen_1_Hermes.png" />
-            </div>
+          <img src={`https://localhost:7026/images/ProductType/${product.productType.thumbnailSize}`} alt='1' />
+        </div>
+            )}
           </div>
           <div className='info-detail'>
-            <h5>Đặc tính nổi bật</h5>
+            <h5 className="name_product">Đặc tính nổi bật</h5>
             <ul>
               <li>Thành phần: 73.8% Cotton, 24.4% Polyester, 1.8% Spandex</li>
               <li>Quần có độ bền rất cao, co giãn tốt&nbsp;giúp bạn yên tâm sử dụng trong thời gian dài&nbsp;</li>
@@ -55,7 +226,7 @@ const ProductDetail = () => {
                     <FaStar />
                     <FaStar />
                     </div>
-                    <p>( <span>6 </span><span>đánh giá</span> )</p>
+                    <p>( <span className='name_product'>6 </span><span className='name_product'>đánh giá</span> )</p>
                   </div>
                   <div className='filter-rate'>
                     <div className='list-filter'>
@@ -104,46 +275,55 @@ const ProductDetail = () => {
           </div>
         </div>
         <div className='Right'>
-        <div className='name-product'>
-          <h5>Quần Jean Thiết kế thời trang phong cach mùa hè</h5>
-        </div>
-        <div className='rate'>
-        <FaStar />
-        <FaStar />
-        <FaStar />
-        <FaStar />
-        <FaStar />
-        </div>
-        <div className='quantity-sale'>(6 đánh giá của khách hàng)</div>
-        <div className='price'>300.000d</div>
+          {resultProduct.map(product=>
+            <>
+            <div className='name-product'>
+              <h5 >{product.name}</h5>
+            </div>
+            <div className='rate'>
+            <FaStar />
+            <FaStar />
+            <FaStar />
+            <FaStar />
+            <FaStar />
+            </div>
+            <div className='quantity-sale name_product'>(6 đánh giá của khách hàng)</div>
+            <div className='price'>
+            <span className="price_new">{formatPrice(product.price-product.price*(product.productSale.percentDiscount/100))}</span>
+             <span className="price_current">{formatPrice(product.price)}</span>
+            </div>
+            </>
+          )}
         <div className='color'>
-          <p>Màu sắc:</p>
-          <div className='btn-color'>
+          <p className=' name_product'>Màu sắc:</p>
+          <div className='btn-color-productDt'>
+            {resultColor.map(product=>
+              productid===product.id?<button  key={product.id} id='btn-active' className='btn mr-2'>{product.color.name}</button>:<button  key={product.id} className='btn mr-2' onClick={()=>handleChangColor(product.id)}>{product.color.name}</button>
+            )}
           </div>
-        </div>
-        <div className='Table-size'>
-          <img src='/Image/Logo/AoSize@1x.jpg' alt='1' />
-        </div>
+        </div>  
         <div className='size'>
-          <p>Kích thước:</p>
-          <div className='btn-size'>
-            <button>XL</button>
+          <p className=' name_product'>Kích thước:</p>
+          <div className='btn-size-detail'>
+            {resultSize.map(product=>
+              productid===product.id?<button id='btn-active' className='size-btn'>{product.size.name}</button>:<button className='size-btn' onClick={()=>handleChangSize(product.id)}>{product.size.name}</button>
+            )}
           </div>
         </div>
         <div className='Quantity'>
-          <button>-</button>
-          <button>1</button>
-          <button>+</button>
+          <button onClick={decreaseQuantity}>-</button>
+          <input value={quantity} />
+          <button onClick={increaseQuantity}>+</button>
         </div>
-        <div className='add-cart'>
+        <div className='add-cart' onClick={uploadCart}>
           <button> <CiShoppingCart style={{"font-size":30}} /> Thêm vào giỏ hàng</button>
         </div>
         <div className='buynow'>
-          <button>Mua ngay</button>
+          <button className="name_product">Mua ngay</button>
         </div>
         <div className='info-voucher'>
-          <p><IoTicketOutline className='info-icon'/> Mã giảm giá sẽ được ap dụng trong hóa đơn</p>
-          <p><FaArrowRightArrowLeft className='info-icon' /> Đổi trả miễn phí trong vòng 24h</p>
+          <p><IoTicketOutline className='info-icon name_product'/> Mã giảm giá sẽ được ap dụng trong hóa đơn</p>
+          <p><FaArrowRightArrowLeft className='info-icon name_product' /> Đổi trả miễn phí trong vòng 24h</p>
         </div>
         </div>
       </div>
@@ -164,7 +344,7 @@ const ProductDetail = () => {
                                     </a>
                                 </div>
                             <div className="product_info">
-                                <div className="product_name"><span>Ao Thun Nữ</span></div>
+                                <div className="product_name"><span className="name_product">Ao Thun Nữ</span></div>
                                 <div className="price">
                                     <span className="price_new">99.000đ</span>
                                     <span className="price_current">199.000đ</span>

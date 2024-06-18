@@ -15,14 +15,11 @@ function SlideShow() {
 
   return (
     <Carousel activeIndex={index} onSelect={handleSelect} className='Inner'>
-      <Carousel.Item>
-        <img src="https://bizweb.dktcdn.net/100/438/408/themes/946371/assets/slider_1.jpg?1713777153245"  alt="Banner Big Redmi 12" />  
+       <Carousel.Item>
+        <img src="./Image/Logo/banner2.png"  alt="Banner Big Redmi 12" />  
       </Carousel.Item>
       <Carousel.Item>
-      <img src="https://bizweb.dktcdn.net/100/438/408/themes/946371/assets/slider_1.jpg?1713777153245"  alt="Banner Big Redmi 12" />  
-      </Carousel.Item>
-      <Carousel.Item>
-      <img src="https://bizweb.dktcdn.net/100/438/408/themes/946371/assets/slider_1.jpg?1713777153245"  alt="Banner Big Redmi 12" />  
+      <img src="./Image/Logo/slider_4.png"  alt="Banner Big Redmi 12" />  
       </Carousel.Item>
     </Carousel>
   );

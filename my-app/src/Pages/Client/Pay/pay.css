@@ -37,16 +37,11 @@
     width: 50%;
 }
 
-.form-info-address{
-    display: flex;
-    flex-direction: column;
-}
-
 .info-pay label{
     display: flex;
     align-items: center;
     font-size: 14px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
    
 }
 
@@ -62,13 +57,14 @@
 .right-pay{
     width: 40%;
     margin-top: 40px;
+    margin-bottom: 5rem;
 }
 
 .right-pay input{
     width: 67%;
 }
 
-.right-pay button{
+.container-pay button{
     width: 30%;
     height: 50px;
     background-color:#e8b95b;
@@ -82,5 +78,33 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-top: .5rem; 
+}
+
+.cart-product-price{
+    display: inline-block;
+    font-size: 14px;
+    line-height: 26px;
+    border-radius: 13px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    position: absolute;
+    bottom: 0px;
+}
+
+.form-pay{
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-pay .info-user-pay input{
+    width: 97%;
+    box-sizing: border-box;
+}
+
+.btn-pay-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
     padding-top: .5rem;
+    margin-top: 2rem;
 }

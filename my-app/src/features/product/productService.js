@@ -15,8 +15,16 @@ const addToWishlist=async(proId)=>{
     }
 }
 
+const removeToWishList=async(idFavorite)=>{
+    const response = await axios.delete(`https://localhost:7026/api/Favorites/${idFavorite}`)
+    if(response.data){
+        localStorage.setItem("favorite", JSON.stringify(response.data));
+        return response.data;
+    }
+}
+
 export const productService={
     getProduct,
     addToWishlist,
-
+    removeToWishList,
 }

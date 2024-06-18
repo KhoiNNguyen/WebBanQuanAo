@@ -18,44 +18,44 @@ function Account() {
                     <div className='avater'>
                         <img src='./Image/Logo/account_ava.jpg' alt='1'/>
                     </div>
-                    <span>Khoi Nguyen</span>
+                    <span className='name_product'>Khoi Nguyen</span>
                     <div className='logout'>
-                    <button>Đăng xuất</button>
+                    <button className='name_product'>Đăng xuất</button>
                     </div>
                 </div>
                 <div className='function-account'>
                     <Link to='/Account'>
                     <div className='func myaccount active'>
-                    <PiUserCircleLight className='icon-account' /> <span>Tài khoản của tôi</span>
+                    <PiUserCircleLight className='icon-account' /> <span className='name_product'>Tài khoản của tôi</span>
                     </div>
                     </Link>
                     <Link to='/Account/Order'>
                     <div className='func myorder'>
-                       <LiaFileInvoiceSolid className='icon-account'/> <span>Đơn hàng của tôi</span>
+                       <LiaFileInvoiceSolid className='icon-account'/> <span className='name_product'>Đơn hàng của tôi</span>
                     </div>
                     </Link>
                     <Link to='/Account/Address'>
                     <div className='func address'>
-                        <CiLocationOn className='icon-account'/> <span>Địa chỉ của tôi</span>
+                        <CiLocationOn className='icon-account'/> <span className='name_product'>Địa chỉ của tôi</span>
                     </div>
                     </Link>
                     <Link to='/Account/Favorite'>
                     <div className='func favorite'>
-                        <CiHeart className='icon-account'/> <span>Danh sách yêu thích</span>
+                        <CiHeart className='icon-account'/> <span className='name_product'>Danh sách yêu thích</span>
                     </div>
                     </Link>
                 </div>
             </div>
-            <div className='Left' style={{"background-color": "#ffffff"}}>
+            <div className='right' style={{"background-color": "#ffffff"}}>
                 <div className='header-right'>
-                    <h1>Thông tin cá nhân</h1>
-                    <button>Sửa thông tin</button>
+                    <h1 className='name_product'>Thông tin cá nhân</h1>
+                    <button className='name_product'>Sửa thông tin</button>
                 </div>
                 <div className='form-info'>
-                    <p>Họ và tên: Nguyễn Khôi Nguyên</p>
-                    <p>Địa chỉ email: khoinguyen.8803@gmail.com</p>
-                    <p>Điện thoại: 0368075277</p>
-                    <p>Địa chỉ: Hẽm 20 đường 77 phường Tân quy Quận 7</p>
+                    <p className='name_product'>Họ và tên: Nguyễn Khôi Nguyên</p>
+                    <p className='name_product'>Địa chỉ email: khoinguyen.8803@gmail.com</p>
+                    <p className='name_product'>Điện thoại: 0368075277</p>
+                    <p className='name_product'>Địa chỉ: Hẽm 20 đường 77 phường Tân quy Quận 7</p>
                 </div>
             </div>
             </div>

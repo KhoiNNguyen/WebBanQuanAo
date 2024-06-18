@@ -6,17 +6,32 @@ import "./Header.css";
 import { Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useId, useState } from "react";
 import { getAllBrand } from "../../../features/brand/brandSlice";
 import { getAllProductType } from "../../../features/productType/productTypeSlice";
 import { CiLogout } from "react-icons/ci";
 import { getAllUser } from "../../../features/user/userSlice";
+import { getAllCart } from "../../../features/cart/cartSlice";
 
 function HeaderClient() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userId = JSON.parse(localStorage.getItem("customer"))?.userId;
+  const customer = JSON.parse(localStorage.getItem("customer"));
+  const userId = customer?.userId;
   const productState = useSelector((state) => state);
+  const [lengthCart,setLengthCart]=useState(0)
+  useEffect(() => {
+    let count = 0;
+    if (productState.cart.product && Array.isArray(productState.cart.product)) {
+      for (let i = 0; i < productState?.cart.product.length; i++) {
+        if (productState.cart.product[i].userId === userId) {
+          count++;
+        }
+      }
+    }
+    setLengthCart(count);  
+  },[productState?.cart?.product, userId]);
+
   useEffect(() => {
     getProduct();
   }, []);
@@ -115,20 +130,26 @@ function HeaderClient() {
   }
 
   const resultUser = [];
-  if (productState.auth.user && Array.isArray(productState.auth.user)) {
-    for (let i = 0; i < productState.brand.product.length; i++) {
-      const fm = productState.auth.user[i];
-      if (fm != null) resultUser.push(fm);
+  if (productState.auth.product && Array.isArray(productState.auth.product)) {
+    for (let i = 0; i < productState.auth.product.length; i++) {
+      const fm = productState.auth.product[i];
+      if (fm != null) 
+        resultUser.push(fm);
     }
   } else {
-    console.error("user are undefined or not an array");
+    console.error("Users are undefined or not an array");
   }
-  console.log(resultUser);
+
+  //lọc ra những sản phẩm của user nào
+  
+
   const getProduct = () => {
     dispatch(getAllBrand());
     dispatch(getAllProductType());
     dispatch(getAllUser());
+    dispatch(getAllCart());
   };
+
   return (
     <>
       <div className="Header">
@@ -250,7 +271,7 @@ function HeaderClient() {
                   </ul>
                 </li>
                 <li>
-                  Thương Hiệu
+                  THƯƠNG HIỆU
                   <ul className="sub_menu row1">
                     {resultBrand.map((product) => (
                       <li className="col">
@@ -269,10 +290,11 @@ function HeaderClient() {
             <div className="TypeHeader">
               <ul className="menu">
                 <li>
-                  <Link to="/Cart" className="info-user_cart">
+                  <Link to="/Cart" className="info-user_cart cart">
                     <div className="icon">
                       <BsHandbag />
                     </div>
+                      <span className="number-cart">{lengthCart}</span>
                     Giỏ Hàng
                   </Link>
                 </li>

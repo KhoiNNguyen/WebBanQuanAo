@@ -13,9 +13,13 @@ namespace API_Server.Models
         [DisplayName("Số Lượng")]
         public int Quantity { get; set; }
 
+        [DisplayName("Giá")]
+        public int? Price { get; set; }
+
         [DisplayName("Người Dùng")]
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
+        
     }
 }

@@ -6,15 +6,17 @@ import { LiaFileInvoiceSolid } from "react-icons/lia";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProduct } from "../../../features/product/productSlice";
+import { getAllProduct, removeProductFarvorite } from "../../../features/product/productSlice";
 import { getAllUserWishList } from "../../../features/wishlist/wishlistSlice";
 import { useEffect } from "react";
 import { getAllProductDetail } from "../../../features/productDetail/productDetailsSlice";
+import { PiTrashSimpleThin } from "react-icons/pi";
 
 function Favorite() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state);
-  const userId = JSON.stringify(localStorage.getItem("customer").userId);
+  const customer = JSON.parse(localStorage.getItem("customer"));
+  const userId = customer.userId;
   useEffect(() => {
     getProduct();
   }, []);
@@ -38,12 +40,12 @@ function Favorite() {
   ) {
     for (let i = 0; i < productState.wishlist.product.length; i++) {
       const fm = productState.wishlist.product[i];
-      if (fm.useeId === userId) {
+      if (fm.userId === userId) {
         const productDetail = resultProDetail.find(
-          (pd) => pd.id === fm.productId
+          (pd) => pd.id === fm.product.productDetailId
         );
         if (productDetail) {
-          resultFavorite.push({ ...fm, ...productDetail });
+          resultFavorite.push({...fm, thumbnail: productDetail.thumbnail });
         }
       } else {
         console.error("Products are undefined or not an array");
@@ -51,12 +53,28 @@ function Favorite() {
     }
   }
 
+  const removeFromWishList = (id) => {
+    dispatch(removeProductFarvorite(id));
+    setTimeout(() => {
+      dispatch(getAllUserWishList())
+    }, 300);     
+  };
+
   console.log(resultFavorite);
   const getProduct = () => {
     dispatch(getAllProduct());
     dispatch(getAllProductDetail());
     dispatch(getAllUserWishList());
   };
+
+  function formatPrice(price) {
+    // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
+    price = parseInt(price);
+  
+    // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
+    // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
+    return price.toLocaleString('vi-VN') + 'đ';
+  }
 
   console.log(productState);
   return (
@@ -103,11 +121,12 @@ function Favorite() {
               </Link>
             </div>
           </div>
-          <div className="Left" style={{ "background-color": "#ffffff" }}>
+          <div className="right" style={{ "background-color": "#ffffff" }}>
             <div className="header-right">
-              <h1>Sản phẩm yêu thích</h1>
+              <h1 className='name_product'>Sản phẩm yêu thích</h1>
             </div>
             <div className="body-favorite row">
+              {resultFavorite.length===0&&<div className="text-center">Chua Co San Pham Trong ds</div>}
               {resultFavorite.map((product) => (
                 <div class="col">
                   <div className="item_product_main">
@@ -118,12 +137,12 @@ function Favorite() {
                     </div>
                     <div className="item_content">
                       <div className="product_thumnail">
-                        <a className="image_thumb">
+                        <Link to={`/ProductDetail/${product.id}`} className="image_thumb img">
                           <img
                            src={`https://localhost:7026/images/products/${product.thumbnail}`}
                             alt="n"
                           />
-                        </a>
+                        </Link>
                       </div>
                       <div className="product_info">
                         <div className="product_name">
@@ -136,9 +155,9 @@ function Favorite() {
                         <div className="color_group"></div>
                       </div>
                     </div>
-                    <div className="product-favorite">
+                    <div className="product-favorite" onClick={()=>removeFromWishList(product.id)}>
                       <span>
-                      <CiHeart />
+                      <PiTrashSimpleThin />
                       </span>
                     </div>
                   </div>

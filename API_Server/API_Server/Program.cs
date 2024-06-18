@@ -1,4 +1,4 @@
-using API_Server.Models;
+﻿using API_Server.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -6,14 +6,18 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using API_Server.Data;
-
-
+using API_Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<API_ServerContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("API_ServerContext") ?? throw new InvalidOperationException("Connection string 'API_ServerContext' not found.")));
-
+builder.Services.AddHttpContextAccessor();
 // Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 //config cho identity
 builder.Services.AddIdentity<User, IdentityRole>()

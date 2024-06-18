@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API_Server.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -295,12 +295,13 @@ namespace API_Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InvoiceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AddressShip = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneShip = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Total = table.Column<double>(type: "float", nullable: false),
                     DiscoundTotal = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PaymentMethodId = table.Column<int>(type: "int", nullable: false),
-                    VoucherId = table.Column<int>(type: "int", nullable: false)
+                    VoucherId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -320,8 +321,7 @@ namespace API_Server.Migrations
                         name: "FK_Invoice_Voucher_VoucherId",
                         column: x => x.VoucherId,
                         principalTable: "Voucher",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -334,7 +334,8 @@ namespace API_Server.Migrations
                     Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
-                    ProductTypeId = table.Column<int>(type: "int", nullable: false)
+                    ProductTypeId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -439,6 +440,7 @@ namespace API_Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>

@@ -13,7 +13,7 @@
 
 .header-cart span {
   margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding: 0 20px;
   font-size: 16px;
   background: #fff;
@@ -24,7 +24,7 @@
 .header-cart .total-cart {
   padding-left: 21px;
   color: #7a7a9d;
-  font-family: "SVN-Gilroy";
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 500;
 }
 
@@ -32,7 +32,7 @@
 .cart-header-info {
     padding: 20px 0 0;
     background: #f8f8f8;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: bold;
     display: flex;
 }
@@ -122,14 +122,14 @@
 
 .name-cart-info{
     flex: 0 0 50%;
-    max-width: 50%;
+    max-width: 47%;
 }
 
 .cart-product-name {
     margin-bottom: 8px;
     font-size: 14px;
     line-height: 18px;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     display: block;
     color: #000;
 }
@@ -140,8 +140,7 @@
     line-height: 26px;
     border-radius: 13px;
     color: #363636;
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     position: absolute;
     bottom: 0px;
     font-weight: 500;
@@ -156,6 +155,7 @@
     flex: 0 0 20%;
     max-width: 20%;
     order: unset;
+    display: flex;
     align-items: unset;
     flex-direction: row;
     justify-content: center;
@@ -186,7 +186,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
@@ -201,7 +201,7 @@
 
 .right-cart .title-cart{
     font-weight: 500;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
 }
 

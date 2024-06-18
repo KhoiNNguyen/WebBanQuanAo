@@ -52,6 +52,9 @@ namespace API_Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("Price")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -209,6 +212,9 @@ namespace API_Server.Migrations
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PhoneShip")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -218,7 +224,7 @@ namespace API_Server.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("VoucherId")
+                    b.Property<int?>("VoucherId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -344,6 +350,9 @@ namespace API_Server.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Thumbnail")
                         .HasColumnType("nvarchar(max)");
@@ -757,9 +766,7 @@ namespace API_Server.Migrations
 
                     b.HasOne("API_Server.Models.Voucher", "Voucher")
                         .WithMany()
-                        .HasForeignKey("VoucherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VoucherId");
 
                     b.Navigation("PaymentMethod");
 

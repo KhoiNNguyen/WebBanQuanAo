@@ -4,8 +4,51 @@ import { CiHeart } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { LiaFileInvoiceSolid } from "react-icons/lia";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getAllInvoice } from "../../../features/invoice/invoiceSlide";
+import { getAllProduct } from "../../../features/product/productSlice";
+import { getAllInvoiceDetail } from "../../../features/invoiceDetail/invoiceDetailSlice";
 
 function Order() {
+  const dispatch = useDispatch();
+  const productState = useSelector((state) => state);
+  const customer = JSON.parse(localStorage.getItem("customer"));
+  const userId = customer?.userId;
+  useEffect(() => {
+    getProduct();
+  }, []);
+  const resultCartProduct = [];
+
+  if (
+    productState.product.product &&
+    Array.isArray(productState.product.product) &&
+    productState.invoice.product &&
+    Array.isArray(productState.invoice.product)
+  ) {
+    for (let i = 0; i < productState.invoice.product.length; i++) {
+      const fm = productState.invoice.product[i];
+      if (fm.userId === userId) {
+          resultCartProduct.push(fm);
+        }
+      }
+    }
+  
+  console.log(resultCartProduct)
+  const getProduct = () => {
+    dispatch(getAllInvoice());
+    dispatch(getAllProduct());
+    dispatch(getAllInvoiceDetail());
+  };
+
+  function formatPrice(price) {
+    // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
+    price = parseInt(price);
+
+    // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
+    // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
+    return price.toLocaleString("vi-VN") + "đ";
+  }
   return (
     <div className="background-all">
       <div className="Inner">
@@ -18,57 +61,83 @@ function Order() {
               <div className="avater">
                 <img src="/Image/Logo/account_ava.jpg" alt="1" />
               </div>
-              <span>Khoi Nguyen</span>
+              <span className="name_product">Khoi Nguyen</span>
               <div className="logout">
-                <button>Đăng xuất</button>
+                <button className="name_product">Đăng xuất</button>
               </div>
             </div>
             <div className="function-account">
               <Link to="/Account">
                 <div className="func myaccount">
                   <PiUserCircleLight className="icon-account" />{" "}
-                  <span>Tài khoản của tôi</span>
+                  <span className="name_product">Tài khoản của tôi</span>
                 </div>
               </Link>
               <Link to="/Account/Order">
                 <div className="func myorder active">
                   <LiaFileInvoiceSolid className="icon-account" />{" "}
-                  <span>Đơn hàng của tôi</span>
+                  <span className="name_product">Đơn hàng của tôi</span>
                 </div>
               </Link>
               <Link to="/Account/Address">
                 <div className="func address">
                   <CiLocationOn className="icon-account" />{" "}
-                  <span>Địa chỉ của tôi</span>
+                  <span className="name_product">Địa chỉ của tôi</span>
                 </div>
               </Link>
               <Link to="/Account/Favorite">
                 <div className="func favorite">
                   <CiHeart className="icon-account" />{" "}
-                  <span>Danh sách yêu thích</span>
+                  <span className="name_product">Danh sách yêu thích</span>
                 </div>
               </Link>
             </div>
           </div>
-          <div className="Left" style={{ "background-color": "#ffffff" }}>
+          <div className="right" style={{ "background-color": "#ffffff" }}>
             <div className="header-right">
-              <h1>Đơn hàng của tôi</h1>
-              <h1>0 đơn hàng</h1>
+              <h1 className="name_product">Đơn hàng của tôi</h1>
             </div>
-            <table className="table table1 table-order">
-                <thead>
-                    <tr>
-                    <th>Mã đơn hàng</th>
-                    <th>Địa chỉ</th>
-                    <th>Giá thị đơn hàng</th>
-                    <th>Trạng thái vận chuyển</th>
+            <table className="table1">
+              <thead className="thead-default">
+                <tr>
+                  <th>Mã đơn hàng</th>
+                  <th>Ngày mua</th>
+                  <th>Địa chỉ</th>
+                  <th>
+                    Giá trị
+                    <br />
+                    Đơn hàng
+                  </th>
+                  <th>
+                    Trạng thái
+                    <br />
+                    Thanh Toán
+                  </th>
+                  <th>
+                    Trạng thái
+                    <br />
+                    giao hàng
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {resultCartProduct ? (
+                  resultCartProduct.map((product) => (
+                    <tr key={product.id}>
+                      <td>{product.id}</td>
+                      <td>{product.invoiceDate}</td>
+                      <td>{product.addressShip}</td>
+                      <td>{product.discoundTotal}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colSpan={6}><p>Không có đơn hàng nào</p></td>
-                    </tr>
-                </tbody>
+                  ))
+                ) : (
+                  <tr>
+                    <td colspan="6">
+                      <p>Không có đơn hàng nào.</p>
+                    </td>{" "}
+                  </tr>
+                )}
+              </tbody>
             </table>
           </div>
         </div>

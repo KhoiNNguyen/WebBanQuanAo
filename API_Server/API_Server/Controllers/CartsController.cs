@@ -25,7 +25,7 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cart>>> GetCart()
         {
-            return await _context.Cart.ToListAsync();
+            return await _context.Cart.Include(p=>p.Product).Include(p=>p.User).ToListAsync();
         }
 
         // GET: api/Carts/5
@@ -40,6 +40,40 @@ namespace API_Server.Controllers
             }
 
             return cart;
+        }
+
+        [HttpPut("UpdateQuantityCart/{id}")]
+        public async Task<IActionResult> UpdateQuantityCart(int id,Cart cart) 
+        {
+            // Lấy giỏ hàng từ database để cập nhật số lượng
+            var existingCart = await _context.Cart.FindAsync(id);
+
+            if (existingCart == null)
+            {
+                // Trả về phản hồi hoặc chuyển hướng
+                return NotFound();
+            }
+
+                // Lưu giỏ hàng trở lại databse
+                existingCart.Quantity = cart.Quantity;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CartExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+
         }
 
         // PUT: api/Carts/5

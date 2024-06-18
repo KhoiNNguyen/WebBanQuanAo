@@ -54,12 +54,24 @@ function ProductBrand() {
           !seenProductBrand.has(ps.productDetailId) &&
           ps.productDetail.brandId === Number(brandId.brandId)
         ) {
-            resultBrand.push(ps);
+          const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+          resultBrand.push({
+            ...ps,
+            thumbnail:ps_image?.name
+          });
             seenProductBrand.add(ps.productDetailId);
         }
       }
     }
 
+    function formatPrice(price) {
+      // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
+      price = parseInt(price);
+    
+      // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
+      // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
+      return price.toLocaleString('vi-VN') + 'đ';
+    }
   return (
     <>
       <div className="background-all">
@@ -110,29 +122,29 @@ function ProductBrand() {
                 <div className="row">
                     {resultBrand.map((product)=>
                   <div class="col">
-                    <div className="item_product_main">
+                    <div className="item_product_main brand">
                       <div className="product_review">
                         <span>
                           <FaStar /> 5
                         </span>
                       </div>
-                      <div className="item_content">
+                      <div className="item_content ">
                         <div className="product_thumnail">
-                          <a className="image_thumb">
+                          <Link  to={`/ProductDetail/${product.id}`}  className="image_thumb">
                             <img
-                               src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
+                               src={`https://localhost:7026/images/products/${product.thumbnail}`}
                                alt="n"
                             />
-                          </a>
+                          </Link>
                         </div>
                         <div className="product_info">
                             <div className="product_name">
-                              <span>{product.name}</span>
+                              <span className="name_product">{product.name}</span>
                             </div>
                             <div className="price">
-                              <span className="price_new">{product.price}</span>
+                              <span className="price_new">{formatPrice(product.price)}</span>
                               <span className="price_current">
-                                {product.price}
+                                {formatPrice(product.price)}
                               </span>
                             </div>
                             <div className="color_group"></div>

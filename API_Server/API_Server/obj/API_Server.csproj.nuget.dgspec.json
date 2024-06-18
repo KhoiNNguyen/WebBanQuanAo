@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\API_Server.csproj": {}
+    "D:\\WebBanQuanAo\\API_Server\\API_Server\\API_Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\API_Server.csproj": {
+    "D:\\WebBanQuanAo\\API_Server\\API_Server\\API_Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\API_Server.csproj",
+        "projectUniqueName": "D:\\WebBanQuanAo\\API_Server\\API_Server\\API_Server.csproj",
         "projectName": "API_Server",
-        "projectPath": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\API_Server.csproj",
-        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\obj\\",
+        "projectPath": "D:\\WebBanQuanAo\\API_Server\\API_Server\\API_Server.csproj",
+        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+        "outputPath": "D:\\WebBanQuanAo\\API_Server\\API_Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -47,6 +47,10 @@
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.28, )"
+            },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[6.0.31, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",

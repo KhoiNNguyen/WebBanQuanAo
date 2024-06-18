@@ -7,8 +7,8 @@ const getColor = async (id) => {
         return response.data;
     }
 }
-const brandService = {
+const colorService = {
     getColor,
 }
 
-export default brandService
+export default colorService

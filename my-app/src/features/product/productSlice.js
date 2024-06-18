@@ -1,5 +1,6 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import { productService } from "./productService";
+import { toast } from "react-toastify";
 
 export const getAllProduct=createAsyncThunk("product/get",async (thunkAPI)=>{
     try{
@@ -9,9 +10,17 @@ export const getAllProduct=createAsyncThunk("product/get",async (thunkAPI)=>{
     }
 })
 
-export const addProDuctFavorite=createAsyncThunk("product/wishlist",async (proId,thunkAPI)=>{
+export const addProDuctFavorite=createAsyncThunk("product/add-wishlist",async (proId,thunkAPI)=>{
     try{
         return await productService.addToWishlist(proId);
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
+export const removeProductFarvorite=createAsyncThunk("product/remove-wishlist",async (proId,thunkAPI)=>{
+    try{
+        return await productService.removeToWishList(proId)
     }catch(error){
         return thunkAPI.rejectWithValue(error)
     }
@@ -50,13 +59,31 @@ export const productSlice=createSlice({
             state.isError=false;
             state.isSuccess=true;
             state.addToWishlist=action.payload;
-            state.message="Thêm sản phẩm vào Danh Sách yêu thích thành công"
+            if(state.isSuccess===true){
+                toast.success("Thêm vào danh sách yêu thích thành công")
+            }
         }).addCase(addProDuctFavorite.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
             state.isSuccess=false;
             state.message=action.error;
         })
+        .addCase(removeProductFarvorite.pending, (state) => {
+            state.isLoading = true;
+          })
+          .addCase(removeProductFarvorite.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.removeProductFarvorite = action.payload;
+          })
+          .addCase(removeProductFarvorite.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+            
+          })
     }
 })
 

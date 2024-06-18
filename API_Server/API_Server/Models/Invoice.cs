@@ -12,6 +12,8 @@ namespace API_Server.Models
 
         [DisplayName("Địa Chỉ Giao Hàng")]
         public string AddressShip { get; set; }
+        [DisplayName("Số Điện Thoại")]
+        public string PhoneShip { get; set; }
 
         [DisplayName("Tổng Tiền")]
         public double Total { get; set; }
@@ -31,7 +33,7 @@ namespace API_Server.Models
         public int PaymentMethodId { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         [DisplayName("Voucher")]
-        public int VoucherId { get; set; }
+        public int? VoucherId { get; set; }
         public Voucher Voucher { get; set; }
     }
 }

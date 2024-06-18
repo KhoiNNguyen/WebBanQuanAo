@@ -26,11 +26,12 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
-            return await _context.Product.Include(s => s.Size)
-                                         .Include(c => c.Color)
-                                         .Include(p => p.ProductDetail.Brand)
-                                         .Include(p => p.ProductDetail.ProductType.Gender)
-                                         .Include(ps => ps.ProductSale).ToListAsync();
+            return await _context.Product
+                .Include(p=>p.ProductDetail)
+                .Include(p=>p.ProductSale)
+                .Include(p=>p.Size)
+                .Include(p=>p.Color)
+                .ToListAsync();
         }
 
         // GET: api/Products/5
@@ -84,8 +85,6 @@ namespace API_Server.Controllers
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
             _context.Product.Add(product);
-            //product.ProductDetail.Quantity = product.Quantity + product.ProductDetail.Quantity;
-            //_context.Product.Update(product);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
@@ -100,8 +99,8 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-            product.Status = false;
-            _context.Product.Update(product);
+
+            _context.Product.Remove(product);
             await _context.SaveChangesAsync();
 
             return NoContent();

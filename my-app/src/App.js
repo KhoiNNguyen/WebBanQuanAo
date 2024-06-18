@@ -71,7 +71,9 @@ function App() {
           <Route path="/:productTypeId/:genderId" element={<CategoryProduct />}></Route>
           <Route path="/Brand/:brandId" element={<ProductBrand />}></Route>
           <Route path="/ProductSale" element={<ClientProductSale />}></Route>
+          <Route path="/ProductDetail/:productId" element={<ProductDetail />}></Route>  
         </Route>
+
       </Routes>
     </BrowserRouter>
   );

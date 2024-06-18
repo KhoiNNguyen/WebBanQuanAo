@@ -25,7 +25,7 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InvoiceDetail>>> GetInvoiceDetail()
         {
-            return await _context.InvoiceDetail.ToListAsync();
+            return await _context.InvoiceDetail.Include(p=>p.Invoice).Include(p => p.Product).ToListAsync();
         }
 
         // GET: api/InvoiceDetails/5
@@ -81,6 +81,38 @@ namespace API_Server.Controllers
             _context.InvoiceDetail.Add(invoiceDetail);
             await _context.SaveChangesAsync();
 
+            // Truy xuất thông tin sản phẩm từ cơ sở dữ liệu
+            var product = await _context.Product.FindAsync(invoiceDetail.ProductId);
+            if (product == null)
+            {
+                return NotFound("Sản phẩm không tồn tại.");
+            }
+
+            var productDetail = await _context.ProductDetail.FindAsync(product.ProductDetailId);
+            if (productDetail == null)
+            {
+                return NotFound("Chi tiết sản phẩm không tồn tại.");
+            }
+
+            // Kiểm tra xem sản phẩm có đủ số lượng để giảm hay không
+            if (product.Quantity < invoiceDetail.Quantity || productDetail.Quantity < invoiceDetail.Quantity)
+            {
+                return BadRequest("Không đủ số lượng sản phẩm tồn kho.");
+            }
+
+            // Giảm số lượng sản phẩm
+            product.Quantity -= invoiceDetail.Quantity;
+            productDetail.Quantity -= invoiceDetail.Quantity;
+
+            // Cập nhật thông tin sản phẩm trong cơ sở dữ liệu
+            _context.Product.Update(product);
+            _context.ProductDetail.Update(productDetail);
+
+            // Lưu các thay đổi vào cơ sở dữ liệu
+            await _context.SaveChangesAsync();
+
+
+            // Trả về kết quả
             return CreatedAtAction("GetInvoiceDetail", new { id = invoiceDetail.Id }, invoiceDetail);
         }
 
