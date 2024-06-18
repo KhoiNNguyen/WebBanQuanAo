@@ -15,7 +15,6 @@ const LauOutAdmin = () => {
                             <label for="nav-toggle">
                                 <span><FaBars /></span>
                             </label>
-                            Dashboard
                         </h4>
                         <div className="user-warper">
                             <h4><FaGear /></h4>

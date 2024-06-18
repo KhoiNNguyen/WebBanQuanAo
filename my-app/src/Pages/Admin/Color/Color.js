@@ -19,8 +19,6 @@ const Color = () => {
     const [data, setData] = useState({});
     const [currentPage, setCurrentPage] = useState(1);  
     const [searchTerm, setSearchTerm] = useState('');
-    const [listFalse, setlistFalse] = useState([]);
-    const [check, setCheck] = useState(true);
 
     const handleClose = () =>{
         setShowCreate(false)
@@ -45,13 +43,8 @@ const Color = () => {
     const totalPages = Math.ceil(totalColors / colorsPerPage)
     const currentColorsTrue = (key.slice(indexOfFirst, indexOfLast));
 
-    const totalColorsFalse = listFalse.length; // Tổng số sản phẩm false
-    const totalPagesFalse = Math.ceil(totalColorsFalse / colorsPerPage);// Tổng số trang hiển thị false
-    const currentColorsFalse = (listFalse.slice(indexOfFirst, indexOfLast));
-
     const handlePageClick = (e) =>{
         setCurrentPage(+e.selected + 1)
-        getListColor(+e.selected + 1)
     }
 
     //Tìm Kiếm
@@ -64,23 +57,24 @@ const Color = () => {
             item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
-        setlistFalse(filtered)
         setCurrentPage(1);
     }
 
     //Thay đổi trạng thái load trang
     const handleRefesh = () =>{
-        window.location.reload()
+        getListColor()
     }
     const handleOnchangeCheckTrue = () =>{
-        setCheck(true);
+        const filter = color.filter(f => {
+            return f.status === true;
+        })
+        setKey(filter);
     }
     const handleOnchangeCheckFalse = () =>{
-        setCheck(false);
         const filter = color.filter(f => {
             return f.status === false;
         })
-        setlistFalse(filter);
+        setKey(filter);
     }
 
     //Lấy danh sách
@@ -124,7 +118,7 @@ const Color = () => {
                         Ngưng hoạt động
                     </Button>
                 </Form>
-                <Table>
+                <Table className="margin-top-10px">
                     <thead>
                         <tr>
                             <th className="width-100-px">STT</th>
@@ -136,36 +130,7 @@ const Color = () => {
                     </thead>
                     <tbody>
                         {
-                            check === true ? (
-                                currentColorsTrue.map((item,index)=>{
-                                    return(
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{item.id}</td>
-                                            <td>{item.name}</td>
-                                            <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
-                                            <td>
-                                                {item.status === true?
-                                                        <Form>
-                                                            <Button variant="primary" onClick={() =>  handleShowEdit(item)}>
-                                                                <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
-                                                            </Button>
-                                                            <Button variant="danger" onClick={() =>  handleShowDelete(item)}>
-                                                                <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
-                                                            </Button>
-                                                        </Form>
-                                                        :
-                                                        <Button variant="primary" onClick={() =>  handleShowEdit(item)}>
-                                                            <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
-                                                        </Button>
-                                                }
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            )
-                            :
-                            currentColorsFalse.map((item,index)=>{
+                            currentColorsTrue.map((item,index)=>{
                                 return(
                                     <tr key={index}>
                                         <td>{index + 1}</td>
@@ -191,7 +156,6 @@ const Color = () => {
                                     </tr>
                                 )
                             })
-                            
                         }
                     </tbody>
                 </Table>
@@ -202,7 +166,7 @@ const Color = () => {
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={3}
-                        pageCount={check===true ? totalPages : totalPagesFalse}
+                        pageCount={totalPages}
                         previousLabel="< previous"
 
                         pageClassName="page-item"

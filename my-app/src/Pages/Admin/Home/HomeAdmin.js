@@ -1,92 +1,155 @@
-import { FaProductHunt, FaRegComment } from "react-icons/fa";
+import { useEffect, useState } from 'react';
 import './Home.css'
-import { BsInfoCircle } from "react-icons/bs";
-import { NavLink } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleInfo, faFileInvoice, faHeart, faMoneyBill, faShirt, faUser } from "@fortawesome/free-solid-svg-icons";
-import { IoTicketSharp } from "react-icons/io5";
-import { BiSolidDiscount } from "react-icons/bi";
-import { GrPaint } from "react-icons/gr";
-import { MdPhotoSizeSelectLarge } from "react-icons/md";
-import { RiProductHuntLine } from "react-icons/ri";
+import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill } from "react-icons/bs";
+import { PiInvoice } from 'react-icons/pi';
+import axios from 'axios';
+import HomeChart from './HomeChart';
 
 const HomeAdmin = () => {
+    const [productDetail, setProductDetail] = useState([]);
+    const [user, setUser] = useState([]);
+    const [productType, setProductType] = useState([]);
+    const [invoice, setInvoice] = useState([]);
+    const getListUser = () =>{
+        axios.get(`https://localhost:7026/api/Users`)
+        .then(res =>{
+            setUser(res.data);
+        })
+    }
+    const getListProductType = () =>{
+        axios.get(`https://localhost:7026/api/ProductTypes`)
+        .then(res => {
+            setProductType(res.data);
+        })
+    }
+    const getListProductDetail = () =>{
+        axios.get(`https://localhost:7026/api/ProductDetails`)
+        .then(res =>{
+            setProductDetail(res.data);
+        })
+    }
+    const getListInvoice = () =>{
+        axios.get(`https://localhost:7026/api/Invoices`)
+        .then(res =>{
+            setInvoice(res.data);
+        })
+    }
+    useEffect(()=>{
+        getListProductDetail();
+        getListUser();
+        getListProductType();
+        getListInvoice();
+    },[])
+    var arr = [
+        {
+            invoiceDate : "2024-06-17T14:39:28.362Z",
+            total: 200,
+        },
+        {
+            invoiceDate : "10-01-2003",
+            total: 100,
+        },
+        {
+            invoiceDate : "10-01-2003",
+            total: 100,
+        },
+        {
+            invoiceDate : "10-02-2003",
+            total: 200,
+        },
+        {
+            invoiceDate : "10-03-2003",
+            total: 300,
+        },
+        {
+            invoiceDate : "10-03-2003",
+            total: 300,
+        },
+        {
+            invoiceDate : "10-03-2003",
+            total: 300,
+        },
+        {
+            invoiceDate : "10-04-2003",
+            total: 400,
+        },
+        {
+            invoiceDate : "10-07-2003",
+            total: 200,
+        },
+        {
+            invoiceDate : "2024-06-17T14:39:28.362Z",
+            total: 200,
+        },
+        {
+            invoiceDate : "10-08-2003",
+            total: 300,
+        },
+        {
+            invoiceDate : "10-09-2003",
+            total: 400,
+        },
+        {
+            invoiceDate : "10-10-2003",
+            total: 500,
+        },
+        {
+            invoiceDate : "10-11-2003",
+            total: 500,
+        },
+        {
+            invoiceDate : "10-12-2003",
+            total: 600,
+        },
+        {
+            invoiceDate : "10-05-2003",
+            total: 500,
+        },
+    ]
     return ( 
         <>
-            <div >
-                <nav>
-                    <ul >
-                        <li className="product">
-                            <NavLink href="/Admin/Products" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Sản Phẩm</NavLink>
-                            <FaProductHunt style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        <li className="product">
-                            <NavLink href="/Admin/ProductDetails" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Chi tiết sản Phẩm</NavLink>
-                            <BsInfoCircle style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        <li className="product">
-                            <NavLink href="/Admin/ProductTypes" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Loại sản Phẩm</NavLink>
-                            <RiProductHuntLine style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        
-                    </ul>
-                    <ul >
-                        <li className="product">
-                            <NavLink href="/Admin/#" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Hóa đơn</NavLink>
-                            <FontAwesomeIcon icon={faFileInvoice} style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/>  
-                        </li>
-                        <li className="product">
-                            <NavLink href="/Admin/#" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Chi tiết hóa đơn</NavLink>
-                            <FontAwesomeIcon icon={faCircleInfo} style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        <li className="product">
-                            <NavLink href="/Admin/Vouchers" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Vouchers</NavLink>
-                            <IoTicketSharp style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        
-                    </ul>
-                    <ul >
-                        <li className="product">
-                            <NavLink href="/Admin/ProductSales" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Giảm giá sản Phẩm</NavLink>
-                            <BiSolidDiscount style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        <li className="product">
-                            <NavLink href="/Admin/#" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Tài khoản</NavLink>
-                            <FontAwesomeIcon icon={faUser} style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        <li className="product">
-                            <NavLink href="/Admin/#" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Yêu thích</NavLink>
-                            <FontAwesomeIcon icon={faHeart} style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        
-                    </ul>
-                    <ul >
-                        <li className="product">
-                            <NavLink href="/Admin/#" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Bình luận</NavLink>
-                            <FaRegComment style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        <li className="product">
-                            <NavLink href="/Admin/Brands" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Thương hiệu</NavLink>
-                            <FontAwesomeIcon icon={faShirt} style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        <li className="product">
-                            <NavLink href="/Admin/Colors" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Màu sắc</NavLink>
-                            <GrPaint style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        
-                    </ul>
-                    <ul >
-                        <li className="product">
-                            <NavLink href="/Admin/Sizes" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>Size</NavLink>
-                            <MdPhotoSizeSelectLarge style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                        <li className="product">
-                            <NavLink href="/Admin/PaymentMethods" style={{fontSize: "2rem", borderBottom: "solid 2px",textAlign:"center"}}>P.Thức thanh toán</NavLink>
-                            <FontAwesomeIcon icon={faMoneyBill} style={{fontSize: "2rem",marginLeft:"19rem",marginTop: "8rem"}}/> 
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <main className="main-container">
+                <div className="main-title">
+                    <h3>DASHBOARD</h3>
+                </div>
+                <div className="main-cards">
+                    <div className="card">
+                        <div className="card-inner">
+                            <h3>SẢN PHẨM</h3>
+                            <BsFillArchiveFill className="card-icon"/>
+                        </div>
+                        <h1>{productDetail.length}</h1>
+                    </div>
+                    <div className="card">
+                        <div className="card-inner">
+                            <h3>NGƯỜI DÙNG</h3>
+                            <BsPeopleFill className="card-icon"/>
+                        </div>
+                        <h1>{user.length}</h1>
+                    </div> 
+                    <div className="card">
+                        <div className="card-inner">
+                            <h3>LOẠI SẢN PHẨM</h3>
+                            <BsFillGrid3X3GapFill className="card-icon"/>
+                        </div>
+                        <h1>{productType.length}</h1>
+                    </div>  
+                    <div className="card">
+                        <div className="card-inner">
+                            <h3>HÓA ĐƠN</h3>
+                            <PiInvoice className="card-icon"/>
+                        </div>
+                        <h1>{invoice.length}</h1>
+                    </div> 
+                </div>
+                <div className="charts">
+                    <HomeChart 
+                        arr = {arr}
+                    />
+
+                </div>
+            </main>
+            
         </>
      );
 }

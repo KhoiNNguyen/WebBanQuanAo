@@ -49,5 +49,9 @@ namespace API_Server.Data
 
         public DbSet<API_Server.Models.Gender> Gender { get; set; }
 
+        public DbSet<API_Server.Models.ShippingStatus> ShippingStatus { get; set; }
+
+        public DbSet<API_Server.Models.PaymentStatus> PaymentStatus { get; set; }
+
     }
 }

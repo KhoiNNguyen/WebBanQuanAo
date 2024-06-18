@@ -19,8 +19,6 @@ const ProductDetailAdmin = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [key, setKey] = useState([]);
-    const [check, setCheck] = useState(true);
-    const [listFalse, setlistFalse] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -47,28 +45,25 @@ const ProductDetailAdmin = () => {
     const totalPages = Math.ceil(totalProductDetail / productDetailPerPage)
     const currentProductDetail = key.slice(indexOfFirst, indexOfLast)
 
-    const totalProductDetailFalse = listFalse.length
-    const totalPagesFalse = Math.ceil(totalProductDetailFalse / productDetailPerPage)
-    const currentProductDetailFalse = listFalse.slice(indexOfFirst, indexOfLast)
-
     const handlePageClick = (e) =>{
         setCurrentPage(+e.selected + 1)
-        getListProductDetail(+e.selected + 1)
     }
 
     //Thay đổi trạng thái load trang
     const handleRefesh = () =>{
-        window.location.reload()
+        getListProductDetail()
     }
     const handleOnchangeCheckTrue = () =>{
-        setCheck(true);
+        const filter = productDetail.filter(f => {
+            return f.status === true;
+        })
+        setKey(filter);
     }
     const handleOnchangeCheckFalse = () =>{
-        setCheck(false);
         const filter = productDetail.filter(f => {
             return f.status === false;
         })
-        setlistFalse(filter);
+        setKey(filter);
     }
 
 
@@ -82,7 +77,6 @@ const ProductDetailAdmin = () => {
             item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
-        setlistFalse(filtered)
         setCurrentPage(1);
     }
 
@@ -122,7 +116,7 @@ const ProductDetailAdmin = () => {
                         className="margin-right-10px"
                         onClick={handleOnchangeCheckTrue}
                         >
-                        Tất Cả
+                        Hoạt động
                     </Button>
                     <Button
                         onClick={handleOnchangeCheckFalse}
@@ -130,7 +124,7 @@ const ProductDetailAdmin = () => {
                         Ngưng hoạt động
                     </Button>
                 </Form>
-                <Table>
+                <Table className="margin-top-10px">
                     <thead>
                         <tr>
                             <th>STT</th>
@@ -145,41 +139,7 @@ const ProductDetailAdmin = () => {
                     </thead>
                     <tbody>
                         {
-                            check === true ?(
-                                currentProductDetail.map((item, index) =>{
-                                    return(
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>
-                                                <img src={`https://localhost:7026/images/products/${item.thumbnail}`} alt="hình ảnh loại sản phấm" style={{width: "170px",height: "200px"}}/>
-                                            </td>
-                                            <td>{item.name}</td>
-                                            <td>{item.quantity}</td>
-                                            <td>{item.brand.name}</td>
-                                            <td>{item.productType.name}</td>
-                                            <td>{item.status?"Còn hàng":"Hết hàng"}</td>
-                                            <td>
-                                                {item.status === true?
-                                                    <Form>
-                                                        <Button variant="primary" onClick={() =>{handleShowEdit(item)}}>
-                                                            <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                                        </Button>
-                                                        <Button variant="danger" onClick={() =>{handleShowDelete(item)}}>
-                                                            <FontAwesomeIcon icon={faTrash} className="color-black"/>
-                                                        </Button>
-                                                    </Form>
-                                                    :
-                                                    <Button variant="primary" onClick={() =>{handleShowEdit(item)}}>
-                                                        <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                                    </Button>
-                                                }
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            )
-                            :
-                            currentProductDetailFalse.map((item, index) =>{
+                            currentProductDetail.map((item, index) =>{
                                 return(
                                     <tr key={index}>
                                         <td>{index + 1}</td>
@@ -220,7 +180,7 @@ const ProductDetailAdmin = () => {
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={3}
-                        pageCount={check===true ? totalPages : totalPagesFalse}
+                        pageCount={totalPages}
                         previousLabel="< previous"
 
                         pageClassName="page-item"

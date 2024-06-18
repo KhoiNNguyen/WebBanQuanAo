@@ -99,8 +99,8 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-
-            _context.Product.Remove(product);
+            product.Status = false;
+            _context.Product.Update(product);
             await _context.SaveChangesAsync();
 
             return NoContent();

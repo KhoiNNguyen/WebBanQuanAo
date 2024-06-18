@@ -20,9 +20,6 @@ const PaymentMethod = () => {
     const [key, setKey] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [check, setCheck] = useState(true);
-    const [listFalse, setlistFalse] = useState([]);
-
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleClose = () =>{
@@ -48,28 +45,26 @@ const PaymentMethod = () => {
     const totalPages = Math.ceil(totalPaymentMethod / paymentMethodPerPage)
     const currentPaymentMethod = key.slice(indexOfFirst,indexOfLast)
 
-    const totalPaymentMethodFalse = listFalse.length
-    const totalPagesFalse = Math.ceil(totalPaymentMethodFalse / paymentMethodPerPage)
-    const currentPaymentMethodFalse = listFalse.slice(indexOfFirst,indexOfLast)
 
     const handlePageClick = (e) =>{
         setCurrentPage(+e.selected + 1)
-        getListPaymentMethod(+e.selected + 1)
     }
     
     //Thay đổi trạng thái load trang
     const handleRefesh = () =>{
-        window.location.reload()
+        getListPaymentMethod()
     }
     const handleOnchangeCheckTrue = () =>{
-        setCheck(true);
+        const filter = paymentMethod.filter(f => {
+            return f.status === true;
+        })
+        setKey(filter);
     }
     const handleOnchangeCheckFalse = () =>{
-        setCheck(false);
         const filter = paymentMethod.filter(f => {
             return f.status === false;
         })
-        setlistFalse(filter);
+        setKey(filter);
     }
 
     //Tìm kiếm
@@ -82,7 +77,6 @@ const PaymentMethod = () => {
             item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
-        setlistFalse(filtered)
         setCurrentPage(1);
     }
 
@@ -122,7 +116,7 @@ const PaymentMethod = () => {
                         className="margin-right-10px"
                         onClick={handleOnchangeCheckTrue}
                         >
-                        Tất Cả
+                        Hoạt động
                     </Button>
                     <Button
                         onClick={handleOnchangeCheckFalse}
@@ -130,7 +124,7 @@ const PaymentMethod = () => {
                         Ngưng hoạt động
                     </Button>
                 </Form>
-                <Table>
+                <Table className="margin-top-10px">
                     <thead>
                         <tr>
                             <th>STT</th>
@@ -142,36 +136,7 @@ const PaymentMethod = () => {
                     </thead>
                     <tbody>
                         {
-                            check === true ?(
-                                currentPaymentMethod.map((item,index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{item.id}</td>
-                                            <td>{item.name}</td>
-                                            <td>{item.status?"Hoạt động":"Ngưng hoạt đông"}</td>
-                                            <td>
-                                                {item.status === true?
-                                                    <Form>
-                                                        <Button variant="primary"   onClick={() =>  handleShowEdit(item)}>
-                                                            <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                                        </Button>
-                                                        <Button variant="danger" onClick={() => handleShowDelete(item)}>
-                                                            <FontAwesomeIcon icon={faTrash} className="color-black"/>
-                                                        </Button>
-                                                    </Form>
-                                                    :
-                                                    <Button variant="primary"  onClick={() =>  handleShowEdit(item)} >
-                                                        <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                                    </Button>
-                                                }
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            )
-                            :
-                            currentPaymentMethodFalse.map((item,index) => {
+                            currentPaymentMethod.map((item,index) => {
                                 return (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
@@ -207,7 +172,7 @@ const PaymentMethod = () => {
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={3}
-                        pageCount={check===true ? totalPages : totalPagesFalse}
+                        pageCount={totalPages}
                         previousLabel="< previous"
 
                         pageClassName="page-item"

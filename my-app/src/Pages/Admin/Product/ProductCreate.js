@@ -25,9 +25,9 @@ const ProductCreate = (props) => {
         try{
             e.preventDefault();
             axios.post(`https://localhost:7026/api/Products`,productCreate)
-            handleClose()
+            .then(handleClose())
             toast.success("Thêm thành công")
-            // window.location.reload();
+            window.location.reload();
         }
         catch{
             toast.error("Thêm thất bại")

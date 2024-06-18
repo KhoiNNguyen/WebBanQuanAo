@@ -23,8 +23,6 @@ const Brand = () => {
     const [data, setData] = useState({});
     const [currentPage, setCurrentPage] = useState(1);  
     const [searchTerm, setSearchTerm] = useState('');
-    const [check, setCheck] = useState(true);
-    const [listFalse, setlistFalse] = useState([]);
     // const [number, setNumber] = useState(0);
 
     const  handleClose = () => {
@@ -44,18 +42,20 @@ const Brand = () => {
     }
 
     const handleRefesh = () =>{
-        window.location.reload();
+        getBrandList();
     }
     //Thay đổi trang thành trạng thái hoạt động hoặc không hoạt động
     const handleOnchangeCheckFalse = () => {
-        setCheck(false);
         const filter = brands.filter(f => {
             return f.status === false;
         })
-        setlistFalse(filter);
+        setKey(filter);
     }
     const handleOnchangeCheckTrue = () => {
-        setCheck(true);
+        const filter = brands.filter(f => {
+            return f.status === true;
+        })
+        setKey(filter);
     }
     //Tìm kiếm
     const handleChangeSearch = (e) =>{
@@ -67,7 +67,6 @@ const Brand = () => {
             brand.name && brand.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
-        setlistFalse(filtered)
         setCurrentPage(1);
     }
     
@@ -80,13 +79,8 @@ const Brand = () => {
     const totalPages = Math.ceil(totalBrands / brandsPerPage);// Tổng số trang hiển thị
     const currentBrandsTrue = (key.slice(indexOfFirstBrand, indexOfLastBrand));
 
-    const totalBrandsFalse = listFalse.length; // Tổng số sản phẩm false
-    const totalPagesFalse = Math.ceil(totalBrandsFalse / brandsPerPage);// Tổng số trang hiển thị false
-    const currentBrandsFalse = (listFalse.slice(indexOfFirstBrand, indexOfLastBrand));
-
     const handlePageClick = (e) =>{
         setCurrentPage(+e.selected + 1)
-        getBrandList(+e.selected + 1)
     }
 
     //Lấy danh sách data
@@ -123,14 +117,14 @@ const Brand = () => {
                     <Button 
                         className="margin-right-10px"
                         onClick={handleOnchangeCheckTrue } >
-                        Tất Cả
+                        Hoạt động
                     </Button>
                     <Button 
                         onClick= {handleOnchangeCheckFalse} >
                         Ngưng hoạt động
                     </Button>
                 </Form>
-                <Table>
+                <Table className="margin-top-10px">
                     <thead>
                         <tr>
                             <th className="width-80-px">STT</th>
@@ -143,69 +137,35 @@ const Brand = () => {
                     </thead>
                     <tbody>
                         {
-                            check === true ?(
-                                currentBrandsTrue.map((item,index) =>{
-                                    return (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{item.id}</td>
-                                            <td>
-                                                <img src={`https://localhost:7026/images/brands/${item.image}`} alt="hình ảnh thương hiệu" style={{width: "50px",height: "50px"}}/>
-                                            </td>
-                                            <td>{item.name}</td>
-                                            <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
-                                            <td>
-                                                {item.status === true?(
-                                                    <Form>
-                                                        <Button variant="primary" onClick={() =>  handleShowEdit(item)}>
-                                                            <FontAwesomeIcon icon={faPenToSquare} style={{color:"black"}}/>
-                                                        </Button>
-                                                        <Button variant="danger" onClick={() =>  handleShowDelete(item)}>
-                                                            <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
-                                                        </Button>
-                                                    </Form>
-                                                )
-                                                    :
+                            currentBrandsTrue.map((item,index) =>{
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.id}</td>
+                                        <td>
+                                            <img src={`https://localhost:7026/images/brands/${item.image}`} alt="hình ảnh thương hiệu" style={{width: "50px",height: "50px"}}/>
+                                        </td>
+                                        <td>{item.name}</td>
+                                        <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
+                                        <td>
+                                            {item.status === true?(
+                                                <Form>
                                                     <Button variant="primary" onClick={() =>  handleShowEdit(item)}>
                                                         <FontAwesomeIcon icon={faPenToSquare} style={{color:"black"}}/>
                                                     </Button>
-                                                }
-                                            </td>
-                                            
-                                        </tr>
-                                    )  
-                                })
-                            )
-                                :
-                                currentBrandsFalse.map((item,index) =>{
-                                    return (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{item.id}</td>
-                                            <td>
-                                                <img src={`https://localhost:7026/images/brands/${item.image}`} alt="hình ảnh thương hiệu" style={{width: "50px",height: "50px"}}/>
-                                            </td>
-                                            <td>{item.name}</td>
-                                            <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
-                                            <td>
-                                                {item.status === true?(
-                                                    <Form>
-                                                        <Button variant="primary" onClick={() =>  handleShowEdit(item)}>
-                                                            <FontAwesomeIcon icon={faPenToSquare} style={{color:"black"}}/>
-                                                        </Button>
-                                                        <Button variant="danger" onClick={() =>  handleShowDelete(item)}>
-                                                            <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
-                                                        </Button>
-                                                    </Form>
-                                                )
-                                                    :
-                                                    <Button variant="primary" onClick={() =>  handleShowEdit(item)}>
-                                                        <FontAwesomeIcon icon={faPenToSquare} style={{color:"black"}}/>
+                                                    <Button variant="danger" onClick={() =>  handleShowDelete(item)}>
+                                                        <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
                                                     </Button>
-                                                }
-                                            </td>
-                                            
-                                        </tr>
+                                                </Form>
+                                            )
+                                                :
+                                                <Button variant="primary" onClick={() =>  handleShowEdit(item)}>
+                                                    <FontAwesomeIcon icon={faPenToSquare} style={{color:"black"}}/>
+                                                </Button>
+                                            }
+                                        </td>
+                                        
+                                    </tr>
                                 )  
                             })
                         }
@@ -218,7 +178,7 @@ const Brand = () => {
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={3}
-                        pageCount={check===true ? totalPages : totalPagesFalse}
+                        pageCount={totalPages}
                         previousLabel="< previous"
 
                         pageClassName="page-item"

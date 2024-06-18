@@ -63,7 +63,7 @@ const HeaderAdmin = () => {
                             <NavLink href="/Admin/PaymentMethods" className="navLink active"><span><FontAwesomeIcon icon={faMoneyBill}/></span><span> Phương thức thanh toán</span></NavLink>
                         </li>
                         <li>
-                            <NavLink href="" className="navLink active"><span><FontAwesomeIcon icon={faUser}/></span><span> Tài khoản</span></NavLink>
+                            <NavLink href="/Admin/Users" className="navLink active"><span><FontAwesomeIcon icon={faUser}/></span><span> Tài khoản</span></NavLink>
                         </li>
 
                     </ul>

@@ -28,7 +28,7 @@ namespace EshopIdentity.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
-            _context = context;
+            _context = context; 
         }
 
         // GET: api/User
@@ -55,30 +55,16 @@ namespace EshopIdentity.Controllers
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(string id, User user)
+        public async Task<IActionResult> PutUser(string id)
         {
-            if (id != user.Id)
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            user.Status = true;
+            _context.User.Update(user);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -88,16 +74,6 @@ namespace EshopIdentity.Controllers
             return _context.User.Any(e => e.Id == id);
         }
 
-        // POST: api/User
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]
@@ -109,7 +85,8 @@ namespace EshopIdentity.Controllers
                 return NotFound();
             }
 
-            _context.User.Remove(user);
+            user.Status = false;
+            _context.User.Update(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -194,19 +171,23 @@ namespace EshopIdentity.Controllers
 
         [HttpPost]
         [Route("register-admin")]
-        public async Task<IActionResult> RegisterAdmin(string Username, string Password, string Email)
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdmin registerAdmin)
         {
-            var userExists = await _userManager.FindByNameAsync(Username);
+            var userExists = await _userManager.FindByNameAsync(registerAdmin.Username);
             if (userExists != null)
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
             User user = new User()
             {
-                Email = Email,
+                Email = registerAdmin.Email,
+                Phone = registerAdmin.Phone,
+                FullName = registerAdmin.FullName,
+                Address = registerAdmin.Address,
+                Status = registerAdmin.Status,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = Username
+                UserName = registerAdmin.Username
             };
-            var result = await _userManager.CreateAsync(user, Password);
+            var result = await _userManager.CreateAsync(user, registerAdmin.Password);
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError);
 

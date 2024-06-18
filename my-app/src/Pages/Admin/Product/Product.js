@@ -12,6 +12,7 @@ import ReactPaginate from "react-paginate";
 const Products = () => {
     const [product, setProduct] = useState([]);
     const [size, setSize] = useState([]);
+    const [color, setColor] = useState([]);
     const [data, setData] = useState({});
     const [showCreate, setShowCreate] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -19,9 +20,6 @@ const Products = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [key, setKey] = useState([]);
-
-    const [check, setCheck] = useState(true);
-    const [listFalse, setlistFalse] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -48,28 +46,26 @@ const Products = () => {
     const totalPages = Math.ceil(totalProduct / productPerPage)
     const currentProuduct = key.slice(indexOfFirst,indexOfLast)
 
-    const totalProductFalse = listFalse.length
-    const totalPagesFalse = Math.ceil(totalProductFalse / productPerPage)
-    const currentProuductFalse = listFalse.slice(indexOfFirst,indexOfLast)
 
     const handlePageClick = (e) =>{
         setCurrentPage(+e.selected + 1)
-        getListProduct(+e.selected + 1)
     }
 
     //Thay đổi trạng thái load trang
     const handleRefesh = () =>{
-        window.location.reload()
+        getListProduct()
     }
     const handleOnchangeCheckTrue = () =>{
-        setCheck(true);
+        const filter = product.filter(f => {
+            return f.status === true;
+        })
+        setKey(filter);
     }
     const handleOnchangeCheckFalse = () =>{
-        setCheck(false);
         const filter = product.filter(f => {
             return f.status === false;
         })
-        setlistFalse(filter);
+        setKey(filter);
     }
 
     //Tìm kiếm
@@ -82,9 +78,23 @@ const Products = () => {
             item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
-        setlistFalse(filtered)
         setCurrentPage(1);
     }
+    //Filter
+    const filterSize = (id) =>{
+        const filterSize = product.filter((item) =>{
+            return item.sizeId === id
+            }
+        );
+        setKey(filterSize)
+    }
+    const filterColor = (id) =>{
+        const filterColor = product.filter(item =>{
+            return item.colorId === id
+        })
+        setKey(filterColor)
+    }
+
 
     //Lấy danh sách
     const getListProduct = () =>{
@@ -100,9 +110,16 @@ const Products = () => {
             setSize(res.data)
         })
     }
+    const getListColor = () =>{
+        axios.get(`https://localhost:7026/api/Colors`)
+        .then((res) => {
+            setColor(res.data)
+        })
+    }
     useEffect(()=>{
         getListProduct();
         getListSize();
+        getListColor()
     },[])
     return ( 
         <>
@@ -129,14 +146,14 @@ const Products = () => {
                         className="margin-right-10px"
                         onClick={handleOnchangeCheckTrue}
                         >
-                        Tất Cả
+                        Còn hàng
                     </Button>
                     <Button
                         onClick={handleOnchangeCheckFalse}
                         className="margin-right-10px">
                         Hết hàng
                     </Button>
-                    <Dropdown>
+                    <Dropdown className="margin-right-10px">
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                             Size
                         </Dropdown.Toggle>
@@ -145,14 +162,29 @@ const Products = () => {
                             {
                                 size.map(item =>{
                                     return(
-                                        <Dropdown.Item href="#/action-1">{item.name}</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => filterSize(item.id)}>{item.name}</Dropdown.Item>
+                                    )
+                                })
+                            }
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Dropdown >
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            Color
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            {
+                                color.map(item =>{
+                                    return(
+                                        <Dropdown.Item onClick={() => filterColor(item.id)}>{item.name}</Dropdown.Item>
                                     )
                                 })
                             }
                         </Dropdown.Menu>
                     </Dropdown>
                 </Form>
-                <Table>
+                <Table className="margin-top-10px">
                     <thead>
                         <tr>
                             <th>STT</th>
@@ -168,40 +200,7 @@ const Products = () => {
                     </thead>
                     <tbody>
                         {
-                            check === true ?(
-                                currentProuduct.map((item,index) =>{
-                                    return(
-                                        <tr key={index}>
-                                            <td>{index+1}</td>
-                                            <td>{item.name}</td>
-                                            <td>{item.price}</td>
-                                            <td>{item.size.name}</td>
-                                            <td>{item.color.name}</td>
-                                            <td>{item.quantity}</td>
-                                            <td>{item.productSale.percentDiscount}%</td>
-                                            <td>{item.status?"Còn hàng":"Hết hàng"}</td>
-                                            <td>
-                                                {item.status === true?
-                                                    <Form>
-                                                        <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                            <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
-                                                        </Button>
-                                                        <Button variant="danger" onClick={() => handleShowDelete(item)}>
-                                                            <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
-                                                        </Button>
-                                                    </Form>
-                                                    :
-                                                    <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                        <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
-                                                    </Button>
-                                                }
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            )
-                            :
-                            currentProuductFalse.map((item,index) =>{
+                            currentProuduct.map((item,index) =>{
                                 return(
                                     <tr key={index}>
                                         <td>{index+1}</td>
@@ -241,7 +240,7 @@ const Products = () => {
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={3}
-                        pageCount={check===true ? totalPages : totalPagesFalse}
+                        pageCount={totalPages}
                         previousLabel="< previous"
 
                         pageClassName="page-item"

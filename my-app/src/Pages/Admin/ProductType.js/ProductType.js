@@ -18,9 +18,7 @@ const ProductType = () => {
     const [showDelete, setShowDelete] = useState(false);
     const [key, setKey] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [check, setCheck] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [listFalse, setlistFalse] = useState([]);
 
     const handleClose = () =>{
         setShowCreate(false)
@@ -43,30 +41,26 @@ const ProductType = () => {
     const totalProductType = key.length
     const totalPages = Math.ceil(totalProductType / productTypePerPage)
     const currentProductType = key.slice(indexOfFirst,indexOfLast)
-    console.log(currentProductType)
-
-    const totalProductTypeFalse = listFalse.length
-    const totalPagesFalse = Math.ceil(totalProductTypeFalse / productTypePerPage)
-    const currentProductTypeFalse = listFalse.slice(indexOfFirst,indexOfLast)
 
     const handlePageClick = (e) =>{
         setCurrentPage(e.selected + 1)
-        getListProductType(e.selected + 1)
     }
 
     //Thay đổi trạng thái load trang
     const handleRefesh = () =>{
-        window.location.reload()
+        getListProductType()
     }
     const handleOnchangeCheckTrue = () =>{
-        setCheck(true);
+        const filter = productType.filter(f => {
+            return f.status === true;
+        })
+        setKey(filter);
     }
     const handleOnchangeCheckFalse = () =>{
-        setCheck(false);
         const filter = productType.filter(f => {
             return f.status === false;
         })
-        setlistFalse(filter);
+        setKey(filter);
     }
 
     //Tìm kiếm
@@ -79,7 +73,6 @@ const ProductType = () => {
             item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
-        setlistFalse(filtered)
         setCurrentPage(1);
     }
 
@@ -119,7 +112,7 @@ const ProductType = () => {
                         className="margin-right-10px"
                         onClick={handleOnchangeCheckTrue}
                         >
-                        Tất Cả
+                        Hoạt động
                     </Button>
                     <Button
                         onClick={handleOnchangeCheckFalse}
@@ -127,7 +120,7 @@ const ProductType = () => {
                         Ngưng hoạt động
                     </Button>
                 </Form>
-                <Table>
+                <Table className="margin-top-10px">
                     <thead>
                         <tr>
                             <th className="width-100-px">STT</th>
@@ -141,64 +134,33 @@ const ProductType = () => {
                     </thead>
                     <tbody >
                         {
-                            check === true ?(
-                                currentProductType.map((item,index) => (
-                                    <tr key={index} >
-                                        <td>{index+1}</td>
-                                        <td>{item.id}</td>
-                                        <td>
-                                            <img src={`https://localhost:7026/images/ProductType/${item.thumbnail}`} alt="hình ảnh loại sản phấm" style={{width: "100px",height: "100px"}}/>
-                                        </td>
-                                        <td>{item.name}</td>
-                                        <td>{item.gender.name}</td>
-                                        <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
-                                        <td>
-                                        {item.status === true?
-                                                    <Form>
-                                                        <Button variant="primary" onClick={() => handleShowEdit(item)} >
-                                                            <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                                        </Button>
-                                                        <Button variant="danger" onClick={() => handleShowDelete(item)}>
-                                                            <FontAwesomeIcon icon={faTrash} className="color-black"/>
-                                                        </Button>
-                                                    </Form>
-                                                    :
-                                                    <Button variant="primary" onClick={() => handleShowEdit(item)} >
-                                                        <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                                    </Button>
-                                                }
-                                        </td>
-                                    </tr>
-                                ))
-                            )
-                            :
-                            currentProductTypeFalse.map((item,index) => (
+                            currentProductType.map((item,index) => (
                                 <tr key={index} >
-                                        <td>{index+1}</td>
-                                        <td>{item.id}</td>
-                                        <td>
-                                            <img src={`https://localhost:7026/images/ProductType/${item.thumbnail}`} alt="hình ảnh loại sản phấm" style={{width: "100px",height: "100px"}}/>
-                                        </td>
-                                        <td>{item.name}</td>
-                                        <td>{item.gender.name}</td>
-                                        <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
-                                        <td>
-                                        {item.status === true?
-                                                    <Form>
-                                                        <Button variant="primary" onClick={() => handleShowEdit(item)} >
-                                                            <FontAwesomeIcon icon={faEdit} className="color-black"/>
-                                                        </Button>
-                                                        <Button variant="danger" onClick={() => handleShowDelete(item)}>
-                                                            <FontAwesomeIcon icon={faTrash} className="color-black"/>
-                                                        </Button>
-                                                    </Form>
-                                                    :
+                                    <td>{index+1}</td>
+                                    <td>{item.id}</td>
+                                    <td>
+                                        <img src={`https://localhost:7026/images/ProductType/${item.thumbnail}`} alt="hình ảnh loại sản phấm" style={{width: "100px",height: "100px"}}/>
+                                    </td>
+                                    <td>{item.name}</td>
+                                    <td>{item.gender.name}</td>
+                                    <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
+                                    <td>
+                                    {item.status === true?
+                                                <Form>
                                                     <Button variant="primary" onClick={() => handleShowEdit(item)} >
                                                         <FontAwesomeIcon icon={faEdit} className="color-black"/>
                                                     </Button>
-                                                }
-                                        </td>
-                                    </tr>
+                                                    <Button variant="danger" onClick={() => handleShowDelete(item)}>
+                                                        <FontAwesomeIcon icon={faTrash} className="color-black"/>
+                                                    </Button>
+                                                </Form>
+                                                :
+                                                <Button variant="primary" onClick={() => handleShowEdit(item)} >
+                                                    <FontAwesomeIcon icon={faEdit} className="color-black"/>
+                                                </Button>
+                                            }
+                                    </td>
+                                </tr>
                             ))
                         }
                     </tbody>
@@ -210,7 +172,7 @@ const ProductType = () => {
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={3}
-                        pageCount={check===true ? totalPages : totalPagesFalse}
+                        pageCount={totalPages}
                         previousLabel="< previous"
 
                         pageClassName="page-item"
