@@ -38,7 +38,11 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoice()
         {
-            return await _context.Invoice.ToListAsync();
+            return await _context.Invoice.Include(v => v.Voucher)
+                                        .Include(u => u.User)
+                                        .Include(ship => ship.ShippingStatus)
+                                        .Include(pt => pt.PaymentStatus)
+                                        .Include(pm => pm.PaymentMethod).ToListAsync();
         }
 
         // GET: api/Invoices/5

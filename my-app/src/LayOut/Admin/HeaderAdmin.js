@@ -33,10 +33,10 @@ const HeaderAdmin = () => {
                             <NavLink href="/Admin/ProductTypes" className="navLink active"><span><RiProductHuntLine/></span><span> Loại sản phẩm</span></NavLink>
                         </li>
                         <li>
-                            <NavLink href="" className="navLink active"><span><FontAwesomeIcon icon={faFileInvoice}/></span><span> Hóa đơn</span></NavLink>
+                            <NavLink href="/Admin/Invoices" className="navLink active"><span><FontAwesomeIcon icon={faFileInvoice}/></span><span> Hóa đơn</span></NavLink>
                         </li>
                         <li>
-                            <NavLink href="" className="navLink active"><span><FontAwesomeIcon icon={faCircleInfo}/></span><span> Chi tiết hóa đơn</span></NavLink>
+                            <NavLink href="/Admin/InvoiceDetails" className="navLink active"><span><FontAwesomeIcon icon={faCircleInfo}/></span><span> Chi tiết hóa đơn</span></NavLink>
                         </li>
                         <li>
                             <NavLink href="/Admin/Vouchers" className="navLink active"><span><IoTicketSharp/></span><span> Vouchers</span></NavLink>

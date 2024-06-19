@@ -25,7 +25,10 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InvoiceDetail>>> GetInvoiceDetail()
         {
-            return await _context.InvoiceDetail.Include(p=>p.Invoice).Include(p => p.Product).ToListAsync();
+            return await _context.InvoiceDetail.Include(i => i.Invoice)
+                                    .Include(p => p.Product.Color)
+                                    .Include(p => p.Product.Size)
+                                    .Include(p => p.Product).ToListAsync();
         }
 
         // GET: api/InvoiceDetails/5

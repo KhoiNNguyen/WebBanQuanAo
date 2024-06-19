@@ -212,11 +212,14 @@ namespace API_Server.Migrations
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
 
+                    b.Property<int>("PaymentStatusId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneShip")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<int>("ShippingStatusId")
+                        .HasColumnType("int");
 
                     b.Property<double>("Total")
                         .HasColumnType("float");
@@ -230,6 +233,10 @@ namespace API_Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("PaymentStatusId");
+
+                    b.HasIndex("ShippingStatusId");
 
                     b.HasIndex("UserId");
 
@@ -284,6 +291,22 @@ namespace API_Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PaymentMethod");
+                });
+
+            modelBuilder.Entity("API_Server.Models.PaymentStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentStatus");
                 });
 
             modelBuilder.Entity("API_Server.Models.Product", b =>
@@ -422,6 +445,22 @@ namespace API_Server.Migrations
                     b.HasIndex("GenderId");
 
                     b.ToTable("ProductType");
+                });
+
+            modelBuilder.Entity("API_Server.Models.ShippingStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShippingStatus");
                 });
 
             modelBuilder.Entity("API_Server.Models.Size", b =>
@@ -760,6 +799,18 @@ namespace API_Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API_Server.Models.PaymentStatus", "PaymentStatus")
+                        .WithMany()
+                        .HasForeignKey("PaymentStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API_Server.Models.ShippingStatus", "ShippingStatus")
+                        .WithMany()
+                        .HasForeignKey("ShippingStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("API_Server.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -769,6 +820,10 @@ namespace API_Server.Migrations
                         .HasForeignKey("VoucherId");
 
                     b.Navigation("PaymentMethod");
+
+                    b.Navigation("PaymentStatus");
+
+                    b.Navigation("ShippingStatus");
 
                     b.Navigation("User");
 

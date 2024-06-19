@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "I+2Q2ClqAu5/qfDmSenff2B05OiJMRhIKm9uwacnxFA=",
+  "Hash": "+xuk2nCFFduypgOgQWZTgL7vZkoofEDip6K+s8u0Jas=",
   "Source": "API_Server",
   "BasePath": "_content/API_Server",
   "Mode": "Default",
@@ -7548,6 +7548,23 @@
       "OriginalItemSpec": "wwwroot\\Images\\products\\47.png"
     },
     {
+      "Identity": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\products\\48.png",
+      "SourceId": "API_Server",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\",
+      "BasePath": "_content/API_Server",
+      "RelativePath": "Images/products/48.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\products\\48.png"
+    },
+    {
       "Identity": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\products\\49.png",
       "SourceId": "API_Server",
       "SourceType": "Discovered",
@@ -14482,6 +14499,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\ProductType\\16.png"
+    },
+    {
+      "Identity": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\ProductType\\17.png",
+      "SourceId": "API_Server",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\",
+      "BasePath": "_content/API_Server",
+      "RelativePath": "Images/ProductType/17.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\ProductType\\17.png"
     },
     {
       "Identity": "C:\\Users\\Acer\\OneDrive\\Máy tính\\WebBanQuanAo\\API_Server\\API_Server\\wwwroot\\Images\\ProductType\\18.png",

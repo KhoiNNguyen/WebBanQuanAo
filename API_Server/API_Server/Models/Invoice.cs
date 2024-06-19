@@ -21,9 +21,6 @@ namespace API_Server.Models
         [DisplayName("Tổng Tiền Giảm")]
         public double DiscoundTotal { get; set; }
 
-        [DisplayName("Trạng Thái")]
-        public bool Status { get; set; }
-
         [DisplayName("Người Dùng")]
         public string UserId { get; set; }
         [ForeignKey("UserId")]
@@ -35,5 +32,9 @@ namespace API_Server.Models
         [DisplayName("Voucher")]
         public int? VoucherId { get; set; }
         public Voucher Voucher { get; set; }
+        public int ShippingStatusId { get; set; }
+        public ShippingStatus ShippingStatus { get; set; }
+        public int PaymentStatusId { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
     }
 }

@@ -27,6 +27,8 @@ import Products from "./Pages/Admin/Product/Product";
 import ProductDetailAdmin from "./Pages/Admin/ProductDetail/ProductDetail";
 import HomeAdmin from './Pages/Admin/Home/HomeAdmin';
 import User from "./Pages/Admin/User/User";
+import Invoice from "./Pages/Admin/Invoice/Invoice";
+import InvoiceDetail from "./Pages/Admin/InvoiceDetail/InvoiceDetail";
 
 function App() {
   return (
@@ -45,6 +47,8 @@ function App() {
           <Route path='/Admin/Products' element={<Products/>}></Route>
           <Route path='/Admin/ProductDetails' element={<ProductDetailAdmin/>}></Route>
           <Route path='/Admin/Users' element={<User/>}></Route>
+          <Route path='/Admin/Invoices' element={<Invoice/>}></Route>
+          <Route path='/Admin/InvoiceDetails' element={<InvoiceDetail />}></Route>
         </Route>
         <Route path="/" element={<LayOutClient />}>
           <Route index element={<HomeClient />} />

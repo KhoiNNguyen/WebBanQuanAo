@@ -40,72 +40,72 @@ const HomeAdmin = () => {
         getListProductType();
         getListInvoice();
     },[])
-    var arr = [
-        {
-            invoiceDate : "2024-06-17T14:39:28.362Z",
-            total: 200,
-        },
-        {
-            invoiceDate : "10-01-2003",
-            total: 100,
-        },
-        {
-            invoiceDate : "10-01-2003",
-            total: 100,
-        },
-        {
-            invoiceDate : "10-02-2003",
-            total: 200,
-        },
-        {
-            invoiceDate : "10-03-2003",
-            total: 300,
-        },
-        {
-            invoiceDate : "10-03-2003",
-            total: 300,
-        },
-        {
-            invoiceDate : "10-03-2003",
-            total: 300,
-        },
-        {
-            invoiceDate : "10-04-2003",
-            total: 400,
-        },
-        {
-            invoiceDate : "10-07-2003",
-            total: 200,
-        },
-        {
-            invoiceDate : "2024-06-17T14:39:28.362Z",
-            total: 200,
-        },
-        {
-            invoiceDate : "10-08-2003",
-            total: 300,
-        },
-        {
-            invoiceDate : "10-09-2003",
-            total: 400,
-        },
-        {
-            invoiceDate : "10-10-2003",
-            total: 500,
-        },
-        {
-            invoiceDate : "10-11-2003",
-            total: 500,
-        },
-        {
-            invoiceDate : "10-12-2003",
-            total: 600,
-        },
-        {
-            invoiceDate : "10-05-2003",
-            total: 500,
-        },
-    ]
+    // var arr = [
+    //     {
+    //         invoiceDate : "2024-06-17T14:39:28.362Z",
+    //         total: 200,
+    //     },
+    //     {
+    //         invoiceDate : "10-01-2003",
+    //         total: 100,
+    //     },
+    //     {
+    //         invoiceDate : "10-01-2003",
+    //         total: 100,
+    //     },
+    //     {
+    //         invoiceDate : "10-02-2003",
+    //         total: 200,
+    //     },
+    //     {
+    //         invoiceDate : "10-03-2003",
+    //         total: 300,
+    //     },
+    //     {
+    //         invoiceDate : "10-03-2003",
+    //         total: 300,
+    //     },
+    //     {
+    //         invoiceDate : "10-03-2003",
+    //         total: 300,
+    //     },
+    //     {
+    //         invoiceDate : "10-04-2003",
+    //         total: 400,
+    //     },
+    //     {
+    //         invoiceDate : "10-07-2003",
+    //         total: 200,
+    //     },
+    //     {
+    //         invoiceDate : "2024-06-17T14:39:28.362Z",
+    //         total: 200,
+    //     },
+    //     {
+    //         invoiceDate : "10-08-2003",
+    //         total: 300,
+    //     },
+    //     {
+    //         invoiceDate : "10-09-2003",
+    //         total: 400,
+    //     },
+    //     {
+    //         invoiceDate : "10-10-2003",
+    //         total: 500,
+    //     },
+    //     {
+    //         invoiceDate : "10-11-2003",
+    //         total: 500,
+    //     },
+    //     {
+    //         invoiceDate : "10-12-2003",
+    //         total: 600,
+    //     },
+    //     {
+    //         invoiceDate : "10-05-2003",
+    //         total: 500,
+    //     },
+    // ]
     return ( 
         <>
             <main className="main-container">
@@ -144,7 +144,7 @@ const HomeAdmin = () => {
                 </div>
                 <div className="charts">
                     <HomeChart 
-                        arr = {arr}
+                        arr = {invoice}
                     />
 
                 </div>
