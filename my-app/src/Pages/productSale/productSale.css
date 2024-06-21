@@ -16,3 +16,8 @@
     display: flex;
     align-items: center;
 }
+
+.left-category .active{
+    border: solid 1px #333;
+  color: #333;
+}

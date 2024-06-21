@@ -1,0 +1,16 @@
+.search{
+    width: 100%;
+}
+.search-header{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding:40px 0px 20px 0px;
+ color: #fac126;
+ font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+
+.product-category .row1 .col {
+    width: 20%;
+}

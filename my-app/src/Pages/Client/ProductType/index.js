@@ -8,12 +8,44 @@ import { getAllColor } from "../../../features/color/colorSlice";
 import { getAllSize } from "../../../features/size/sizeSlice";
 import { getAllProduct } from "../../../features/product/productSlice";
 import { getAllProductDetail } from "../../../features/productDetail/productDetailsSlice";
+import { getAllImage } from "../../../features/image/imageSlice";
 
 function CategoryProduct() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state);
   const [productType, setProductType] = useState([]);
-  const param = useParams();
+  const param = useParams();  
+  const priceRanges = {
+    under500k: { min: 0, max: 200000 },
+    from500kTo1M: { min: 200000, max: 500000 },
+    from1MTo2M: { min: 500000, max: 1000000 },
+    above2M: { min: 1000000, max: Infinity },
+  };
+  
+  const filterPrice = (range) => {
+    const { min, max } = priceRanges[range];
+    let filteredProducts = resultTypeAll.filter((item) => {
+      const price = item.price; // giả sử giá sản phẩm nằm trong thuộc tính 'price'
+      return price >= min && price <= max;
+    });
+    const uniqueFilteredProducts = [];
+    const seenProductType = new Set();
+    for (let i = 0; i < filteredProducts.length; i++) {
+      const ps = filteredProducts[i];
+      if (
+        !seenProductType.has(ps.productDetailId) &&
+        ps.productDetail.productTypeId === Number(param.productTypeId)
+      ) {
+        const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+        uniqueFilteredProducts.push({
+          ...ps,
+          thumbnail:ps_image?.name
+        });
+        seenProductType.add(ps.productDetailId);
+      }
+    }
+    setProductType(uniqueFilteredProducts);
+  };
   useEffect(() => {
     getProduct();
   }, []);
@@ -23,6 +55,7 @@ function CategoryProduct() {
     dispatch(getAllSize());
     dispatch(getAllProduct());
     dispatch(getAllProductDetail());
+    dispatch(getAllImage());
   };
 
   const resultSize = [];
@@ -64,11 +97,24 @@ function CategoryProduct() {
         !seenProductType.has(ps.productDetailId) &&
         ps.productDetail.productTypeId === Number(param.productTypeId)
       ) {
-        resultType.push(ps);
+        const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+        resultType.push({
+          ...ps,
+          thumbnail:ps_image?.name
+        });
         seenProductType.add(ps.productDetailId);
       }
     }
   }
+
+  useEffect(() => {
+    // Tìm các phần tử chung dựa trên tên
+    const commonElements = resultType.filter((rt) =>
+      resultTypeGenderDetail.some((rf) => rf.name === rt.productDetail.name)
+    );
+
+    setProductType(commonElements);
+  }, [param.productTypeId,productState]);
 
   const categoryProduct = [];
   if (
@@ -83,14 +129,6 @@ function CategoryProduct() {
     }
   }
 
-  useEffect(() => {
-    // Tìm các phần tử chung dựa trên tên
-    const commonElements = resultType.filter((rt) =>
-      resultTypeGenderDetail.some((rf) => rf.name === rt.productDetail.name)
-    );
-
-    setProductType(commonElements);
-  }, [param.productTypeId]);
 
   const resultTypeAll = [];
   if (
@@ -109,15 +147,19 @@ function CategoryProduct() {
     let size = resultTypeAll.filter((item) => item.sizeId === id);
     const sizeone = [];
     const seenProductType = new Set();
-      for (let i = 0; i < size.length; i++) {
-        const ps = size[i];
-        if (
-          !seenProductType.has(ps.productDetailId) &&
-          ps.productDetail.productTypeId === Number(param.productTypeId)
-        ) {
-          sizeone.push(ps);
-          seenProductType.add(ps.productDetailId);
-        }
+    for (let i = 0; i < size.length; i++) {
+      const ps = size[i];
+      if (
+        !seenProductType.has(ps.productDetailId) &&
+        ps.productDetail.productTypeId === Number(param.productTypeId)
+      ) {
+        const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+          sizeone.push({
+            ...ps,
+            thumbnail:ps_image?.name
+          });
+        seenProductType.add(ps.productDetailId);
+      }
     }
     setProductType(sizeone);
   };
@@ -126,25 +168,29 @@ function CategoryProduct() {
     let color = resultTypeAll.filter((item) => item.colorId === id);
     const colorone = [];
     const seenProductType = new Set();
-      for (let i = 0; i < color.length; i++) {
-        const ps = color[i];
-        if (
-          !seenProductType.has(ps.productDetailId) &&
-          ps.productDetail.productTypeId === Number(param.productTypeId)
-        ) {
-          colorone.push(ps);
-          seenProductType.add(ps.productDetailId);
-        }
+    for (let i = 0; i < color.length; i++) {
+      const ps = color[i];
+      if (
+        !seenProductType.has(ps.productDetailId) &&
+        ps.productDetail.productTypeId === Number(param.productTypeId)
+      ) {
+        const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
+        colorone.push({
+          ...ps,
+          thumbnail:ps_image?.name
+        });
+        seenProductType.add(ps.productDetailId);
+      }
     }
     setProductType(colorone);
   };
   function formatPrice(price) {
     // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
     price = parseInt(price);
-  
+
     // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
     // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
-    return price.toLocaleString('vi-VN') + 'đ';
+    return price.toLocaleString("vi-VN") + "đ";
   }
   console.log(productType);
   return (
@@ -191,14 +237,46 @@ function CategoryProduct() {
                   <span>Màu Sắc</span>
                 </div>
                 {resultColor.map((color) => (
-                  <button className="btn-color" onClick={()=>{filterColor(color.id)}}>{color.name}</button>
+                  <button
+                    className="btn-color"
+                    onClick={() => {
+                      filterColor(color.id);
+                    }}
+                  >
+                    {color.name}
+                  </button>
                 ))}
               </div>
               <div className="price-category mbt-10">
                 <div>
                   <span>Khoảng Giá</span>
                 </div>
-                <button>Xanh</button>
+                <div className="price-filter">
+                  <button
+                    className="btn-size"
+                    onClick={() => filterPrice("under500k")}
+                  >
+                    Nhỏ hơn 200.000đ
+                  </button>
+                  <button
+                    className="btn-size"
+                    onClick={() => filterPrice("from500kTo1M")}
+                  >
+                    Từ 200.000đ đến 500.000đ
+                  </button>
+                  <button
+                    className="btn-size"
+                    onClick={() => filterPrice("from1MTo2M")}
+                  >
+                    Từ 500.000 đến 1.000.000đ
+                  </button>
+                  <button
+                    className="btn-size"
+                    onClick={() => filterPrice("above2M")}
+                  >
+                    Lớn hơn 1.000.000
+                  </button>
+                </div>
               </div>
             </div>
             <div
@@ -220,9 +298,12 @@ function CategoryProduct() {
                         </div>
                         <div className="item_content ">
                           <div className="product_thumnail">
-                            <Link  to={`/ProductDetail/${product.id}`}  className="image_thumb">
+                            <Link
+                              to={`/ProductDetail/${product.id}`}
+                              className="image_thumb"
+                            >
                               <img
-                                src={`https://localhost:7026/images/products/${product.productDetail.thumbnail}`}
+                                src={`https://localhost:7026/images/products/${product.thumbnail}`}
                                 alt="n"
                               />
                             </Link>
@@ -232,7 +313,9 @@ function CategoryProduct() {
                               <span>{product.name}</span>
                             </div>
                             <div className="price">
-                              <span className="price_new">{formatPrice(product.price)}</span>
+                              <span className="price_new">
+                                {formatPrice(product.price)}
+                              </span>
                               <span className="price_current">
                                 {formatPrice(product.price)}
                               </span>

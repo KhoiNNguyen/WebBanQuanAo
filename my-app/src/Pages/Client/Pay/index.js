@@ -12,9 +12,6 @@ import * as yup from "yup";
 import { getAllVoucher } from "../../../features/voucher/voucherSlice";
 import { addInvoice } from "../../../features/invoice/invoiceSlide";
 import { addInvoiceDetail } from "../../../features/invoiceDetail/invoiceDetailSlice";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { base_url } from "../../../components/axiosClient/axiosConfig";
 
 const shippingSchema = yup.object({
   username: yup.string().required("Bạn chưa nhập UserName"),
@@ -35,17 +32,9 @@ function Pay() {
   const [voucher, setVoucher] = useState("");
   const [voucherDiscount, setVoucherDiscount] = useState({});
   const [finalTotal, setFinalTotal] = useState(totalCart);
-  const [paymentUrl, setPaymentUrl] = useState("");
-  const navigate = useNavigate();
   const handleVoucherChange = (event) => {
     setVoucher(event.target.value);
   };
-
-  useEffect(() => {
-    if (paymentUrl) {
-      window.location.href = paymentUrl;
-    }
-  }, [paymentUrl]);
 
   const handleApplyVoucher = (event) => {
     event.preventDefault();
@@ -131,66 +120,54 @@ function Pay() {
           };
           const finalInvoiceDetail = {
             ...invoiceDetails, // Sao chép các thuộc tính của invoiceDetails
-            unitPrice: invoiceId.discoundTotal=== 0 ? totalCart : finalTotal,
+            unitPrice: invoiceId.discoundTotal === 0 ? totalCart : finalTotal,
           };
           dispatch(addInvoiceDetail(finalInvoiceDetail));
         }
       } else if (Number(paymentMethodId) === 2) {
-        //try {
-        //     for (let i = 0; i < resultCartProduct.length; i++) {
-        //         const invoiceDetails = {
-        //             invoiceId: invoiceId.id,
-        //             productId: resultCartProduct[i].productId,
-        //             quantity: resultCartProduct[i].quantity,
-        //         };
-        //         const finalInvoiceDetail = {
-        //             ...invoiceDetails,
-        //             unitPrice: invoiceId.discoundTotal === 0 ? totalCart : finalTotal,
-        //         };
-        //         await dispatch(addInvoiceDetail(finalInvoiceDetail));
-        //         console.log(finalInvoiceDetail);
-        //     }
-        //     // Gọi API để tạo URL thanh toán VNPay
-        //     const response = await axios.post(
-        //         `${base_url}Invoices/${invoiceId.id}/pay`,
-        //         JSON.stringify({ invoiceId: invoiceId.id }), // Đảm bảo payload là JSON string
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json', // Đảm bảo header đúng
-        //             },
-        //         }
-        //     );
-            
-        //     const { paymentUrl } = response.data;
-        //     setPaymentUrl(paymentUrl);
-        // } catch (error) {
-        //     console.error('Error creating payment URL:', error);
-        //     navigate('/'); // Điều hướng về trang chủ nếu có lỗi
-        // }
         try {
-          const response = await fetch('https://localhost:7026/api/Invoices/create-payment', {
-              method: 'POST',
+          for (let i = 0; i < resultCartProduct.length; i++) {
+            const invoiceDetails = {
+              invoiceId: invoiceId.id,
+              productId: resultCartProduct[i].productId,
+              quantity: resultCartProduct[i].quantity,
+            };
+            const finalInvoiceDetail = {
+              ...invoiceDetails,
+              unitPrice: invoiceId.discoundTotal === 0 ? totalCart : finalTotal,
+            };
+            await dispatch(addInvoiceDetail(finalInvoiceDetail));
+            console.log(finalInvoiceDetail);
+          }
+          // Gọi API để tạo URL thanh toán VNPay
+          const response = await fetch(
+            `https://localhost:7026/api/Invoices/${invoiceId.id}/create-payment`,
+            {
+              method: "POST",
               headers: {
-                  'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
-          });
+            }
+          );
 
           if (!response.ok) {
-              throw new Error('Network response was not ok');
+            throw new Error("Network response was not ok");
           }
 
           const data = await response.json();
           const { paymentUrl } = data;
           window.location.href = paymentUrl;
-      } catch (error) {
-          console.error('There was an error creating the payment!', error);
+        } catch (error) {
+          console.error("There was an error creating the payment!", error);
+        }
       }
-}
-  }
+    },
   });
+  
   useEffect(() => {
     getProduct();
   }, []);
+
   useEffect(() => {
     let sum = 0;
     for (let i = 0; i < productState.cart.product?.length; i++) {

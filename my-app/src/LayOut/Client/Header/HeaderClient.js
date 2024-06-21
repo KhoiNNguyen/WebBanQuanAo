@@ -18,6 +18,7 @@ function HeaderClient() {
   const navigate = useNavigate();
   const customer = JSON.parse(localStorage.getItem("customer"));
   const userId = customer?.userId;
+  const [searchTerm, setSearchTerm] = useState('');
   const productState = useSelector((state) => state);
   const [lengthCart,setLengthCart]=useState(0)
   useEffect(() => {
@@ -141,7 +142,11 @@ function HeaderClient() {
   }
 
   //lọc ra những sản phẩm của user nào
-  
+  const handleSearch = () => {
+    if (searchTerm.trim() !== '') {
+      navigate(`/search/${searchTerm}`);
+    }
+  };
 
   const getProduct = () => {
     dispatch(getAllBrand());
@@ -159,14 +164,16 @@ function HeaderClient() {
               <Link to="/">
                 <img src="/Image/Logo/NG.png" alt="hinh anh" />
               </Link>
-              <Form className="Search">
+              <Form className="Search" onSubmit={(e) => e.preventDefault()}>
                 <input
                   type="text"
                   placeholder="Tìm kiếm..."
                   name="search"
+                  value={searchTerm}
                   id="search"
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <button className="findSearch">
+                <button  onClick={handleSearch} className="findSearch">
                   <RiFindReplaceLine />
                 </button>
               </Form>
