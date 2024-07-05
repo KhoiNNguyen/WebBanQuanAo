@@ -48,8 +48,36 @@ namespace API_Server.Controllers
 
         // PUT: api/ProductDetails/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProductDetail(int id, ProductDetail productDetail)
+        {
+            if (id != productDetail.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(productDetail).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductDetailExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
         [HttpPut("uploadFile/{id}")]
-        public async Task<IActionResult> PutProductDetail(int id, [FromForm] ProductDetail productDetail)
+        public async Task<IActionResult> PutProductDetailFile(int id, [FromForm] ProductDetail productDetail)
         {
             if (id != productDetail.Id)
             {
@@ -98,8 +126,17 @@ namespace API_Server.Controllers
 
         // POST: api/ProductDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<ProductDetail>> PostProductDetail(ProductDetail productDetail)
+        {
+            _context.ProductDetail.Add(productDetail);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetProductDetail", new { id = productDetail.Id }, productDetail);
+        }
+
         [HttpPost("uploadFile")]
-        public async Task<ActionResult<ProductDetail>> PostProductDetail([FromForm] ProductDetail productDetail)
+        public async Task<ActionResult<ProductDetail>> PostProductDetailFile([FromForm] ProductDetail productDetail)
         {
             if (productDetail.ImageFile != null)
             {

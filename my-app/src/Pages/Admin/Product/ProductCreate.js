@@ -9,6 +9,7 @@ const ProductCreate = (props) => {
     const [color, setColor] = useState([]);
     const [productSale, setProductSale] = useState([]);
     const [productDetail, setProductDetail] = useState([]);
+    const [product, setProduct] = useState([]);
     const {show, handleClose} = props
 
     const handleChange = (e) =>{
@@ -24,10 +25,48 @@ const ProductCreate = (props) => {
     const handleSubmit = (e) =>{
         try{
             e.preventDefault();
+            const listProductDetailForId = productDetail.filter(item =>{
+                return item.id.toString() === productCreate.productDetailId.toString()
+            })
+            const productDetailQuantity = []
+            listProductDetailForId.map(item => {
+                return productDetailQuantity.push(item.quantity)
+            })
+
+            const listProductForId = product.filter(item => {
+                return productCreate.productDetailId.toString() === item.productDetailId.toString()
+            })
+            const quantity = []
+            listProductForId.map(item => {
+                return quantity.push(item.quantity)
+            })
+
+            const sumQuantity = quantity.reduce((accumulator, currentValue) => {
+                return accumulator + currentValue;
+            }, 0);
             axios.post(`https://localhost:7026/api/Products`,productCreate)
-            .then(handleClose())
+            handleClose()
             toast.success("Thêm thành công")
-            window.location.reload();
+            const objectProductDetail = listProductDetailForId[0]
+            const obj = {
+                id: objectProductDetail.id,
+                name: objectProductDetail.name,
+                quantity: (+sumQuantity + +productCreate.quantity),
+                brandId: objectProductDetail.brandId,
+                productTypeId: objectProductDetail.productTypeId,
+                thumbnail: objectProductDetail.thumbnail,
+                status: objectProductDetail.status,
+            }
+            console.log(obj);
+            axios.put(`https://localhost:7026/api/ProductDetails/${obj.id}`,obj)
+            // console.log('productCreate.productDetailId:', productCreate.productDetailId);
+            // console.log('product:', product);
+            // console.log('listProductForId:', listProductForId);
+            // console.log('quantity:', quantity);
+            // console.log('sumQuantity:', sumQuantity);
+            // console.log('productDetailQuantity:', productDetailQuantity);
+            // console.log('listProductDetailForId:', listProductDetailForId);
+            // console.log('productCreate:', productCreate);
         }
         catch{
             toast.error("Thêm thất bại")
@@ -57,7 +96,14 @@ const ProductCreate = (props) => {
             setProductDetail(res.data)
         })
     }
+    const getListProduct = () =>{
+        axios.get(`https://localhost:7026/api/Products`)
+        .then((res) => {
+            setProduct(res.data);
+        })
+    }
     useEffect(()=>{
+        getListProduct()
         getListSize()
         getListColor()
         getListProductSale()
@@ -73,16 +119,7 @@ const ProductCreate = (props) => {
                     <Form encType="multipart/form-data">
                         <FormGroup>
                             <FormLabel>Tên sản phẩm: </FormLabel>
-                            <FormSelect  name="name" onChange={handleChange}>
-                            <option> None </option>
-                            {
-                                productDetail.map(item =>{
-                                    return(
-                                        <option >{item.name} </option>
-                                    )
-                                })
-                            }
-                            </FormSelect>
+                            <FormControl name="name" type="text" onChange={handleChange}></FormControl>
                         </FormGroup>
                         <FormGroup>
                             <FormLabel>Giá: </FormLabel>

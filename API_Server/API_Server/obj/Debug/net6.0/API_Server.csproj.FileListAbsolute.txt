@@ -576,3 +576,5 @@ C:\Users\Acer\OneDrive\Máy tính\WebBanQuanAo\API_Server\API_Server\bin\Debug\n
 C:\Users\Acer\OneDrive\Máy tính\WebBanQuanAo\API_Server\API_Server\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
 D:\WebBanQuanAo\API_Server\API_Server\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Facebook.dll
 D:\WebBanQuanAo\API_Server\API_Server\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
+C:\Users\Acer\OneDrive\Máy tính\WebBanQuanAo\API_Server\API_Server\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Facebook.dll
+C:\Users\Acer\OneDrive\Máy tính\WebBanQuanAo\API_Server\API_Server\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll

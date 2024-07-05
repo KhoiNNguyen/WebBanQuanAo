@@ -11,6 +11,9 @@ import { ToastContainer} from 'react-toastify';
 import BrandEdit from "./BrandEdit";
 import BrandDelete from "./BrandDelete";
 import ReactPaginate from 'react-paginate';
+import { CSVLink } from "react-csv";
+import { CiExport, CiImport } from "react-icons/ci";
+import BrandImport from "./BrandImport";
 //xuất hiện thông báo: npm install --save-exact react-toastify@8.2.0
 //phan trang: npm install react-paginate --save
 
@@ -20,6 +23,7 @@ const Brand = () => {
     const [showCreate, setshowCreate] = useState(false);
     const [showEdit, setshowEdit] = useState(false);
     const [showDelete, setshowDelete] = useState(false);
+    const [showImport, setShowImport] = useState(false);
     const [data, setData] = useState({});
     const [currentPage, setCurrentPage] = useState(1);  
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,6 +33,7 @@ const Brand = () => {
         setshowCreate(false) ;
         setshowEdit(false) ;
         setshowDelete(false) ;
+        setShowImport(false)
     }
 
     const handleShowEdit = (data) =>{
@@ -42,7 +47,7 @@ const Brand = () => {
     }
 
     const handleRefesh = () =>{
-        getBrandList();
+       getBrandList()
     }
     //Thay đổi trang thành trạng thái hoạt động hoặc không hoạt động
     const handleOnchangeCheckFalse = () => {
@@ -94,6 +99,7 @@ const Brand = () => {
     useEffect(() => {
         getBrandList()
     }, [])
+    //npm install react-csv papaparse
     return ( 
         <>
             <div className="container margin-top-10px">
@@ -102,27 +108,47 @@ const Brand = () => {
                         <input type="text" className="width-100-percent height-40-px" placeholder="Tìm kiếm" onChange={handleChangeSearch} value={searchTerm}/>
                     </FormGroup>
                     <FormGroup className="justify-content-end display width-20-percent ">
+                        
                         <Button variant="success" onClick={() =>  setshowCreate(true) } >
                             <FontAwesomeIcon icon={faPlus} /> Create
                         </Button>
                     </FormGroup>
                 </Form>
-                <Form className="margin-top-10px">
-                    <Button
-                        variant="success" 
-                        className="margin-right-10px"
-                        onClick={handleRefesh } >
-                        Refesh
-                    </Button>
-                    <Button 
-                        className="margin-right-10px"
-                        onClick={handleOnchangeCheckTrue } >
-                        Hoạt động
-                    </Button>
-                    <Button 
-                        onClick= {handleOnchangeCheckFalse} >
-                        Ngưng hoạt động
-                    </Button>
+                <Form className="margin-top-10px display ">
+                    <div className="width-80-percent">
+                        <Button
+                            variant="success" 
+                            className="margin-right-10px"
+                            onClick={handleRefesh } >
+                            Refesh
+                        </Button>
+                        <Button 
+                            className="margin-right-10px"
+                            onClick={handleOnchangeCheckTrue } >
+                            Hoạt động
+                        </Button>
+                        <Button 
+                            onClick= {handleOnchangeCheckFalse} 
+                            className="margin-right-10px">
+                            Ngưng hoạt động
+                        </Button>
+                    </div>
+                    <div className="width-20-percent justify-content-end display">
+                        <CSVLink 
+                            data={brands} 
+                            separator={";"}
+                            filename={"brand.csv"}
+                            className="btn btn-primary margin-right-10px"
+                        > <CiExport /> Export</CSVLink>
+                        <form>
+                            <label htmlFor="import" className="btn btn-warning"><CiImport/> Import</label>
+                            <input 
+                                id="import" 
+                                hidden
+                                onClick={() =>  setShowImport(true)}
+                            ></input>
+                        </form>
+                    </div>  
                 </Form>
                 <Table className="margin-top-10px">
                     <thead>
@@ -206,6 +232,10 @@ const Brand = () => {
                     show={showDelete} 
                     handleClose={handleClose}
                     data={data}
+                />
+                <BrandImport 
+                    show = {showImport}
+                    handleClose={handleClose}
                 />
             </div>
             <ToastContainer

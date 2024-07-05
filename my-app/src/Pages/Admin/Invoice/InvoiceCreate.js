@@ -76,6 +76,7 @@ const InvoiceCreate = (props) => {
         getListPaymentStatus()
         getListShippingStaus()
     },[])
+    console.log("aaa",invoiceCreate);
     return ( 
         <>
             <Modal show={show} onHide={handleClose}>
@@ -106,6 +107,7 @@ const InvoiceCreate = (props) => {
                                         <option value={item.id} >{item.userName} </option>
                                     )
                                 })
+                                
                             }
                             </FormSelect>
                         </FormGroup>
@@ -125,15 +127,17 @@ const InvoiceCreate = (props) => {
                         <FormGroup>
                             <FormLabel>Voucher: </FormLabel>
                             <FormSelect  name="voucherId" onChange={handleChange}>
-                            <option> None </option>
-                            {
-                                voucher.map(item =>{
-                                    return(
-                                        <option value={item.id}>{item.description} </option>
-                                        
-                                    )
-                                })
-                            }
+                                <option> None </option>
+                                {
+                                    voucher.map(item =>{
+                                        return(
+                                            <>
+                                                <option value={item.id}>{item.description}</option>
+                                                {/* <option value={item.discount} >{item.description}</option> */}
+                                            </>
+                                        )
+                                    })
+                                }
                             </FormSelect>
                         </FormGroup>
                         <FormGroup>
@@ -164,7 +168,7 @@ const InvoiceCreate = (props) => {
                         </FormGroup>
                         <FormGroup>
                             <FormLabel>DiscountTotal: </FormLabel>
-                            <FormControl name="discoundTotal" type="text" placeholder="total - voucher" onChange={handleChange}></FormControl>
+                            <FormControl name="discoundTotal" type="text" placeholder="total trừ voucher" onChange={handleChange}></FormControl>
                         </FormGroup>
                     </Form>
                 </Modal.Body>

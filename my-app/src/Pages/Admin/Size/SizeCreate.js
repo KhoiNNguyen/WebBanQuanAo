@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { Button, Form, FormCheck, FormControl, FormGroup, FormLabel, Modal, ModalHeader } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const SizeCreate = (props) => {
+    const navigate = useNavigate()
     const [sizeCreate, setSizeCreate] = useState();
     const {show,handleClose} = props
 
@@ -21,7 +23,8 @@ const SizeCreate = (props) => {
         try{
             e.preventDefault();
             axios.post(`https://localhost:7026/api/Sizes`,sizeCreate)
-            .then(handleClose())
+            .then(() => navigate('/Admin/Sizes'))
+            handleClose()
             toast.success("Thêm thành công")
             window.location.reload();
         }

@@ -4,11 +4,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Form, FormGroup, Table } from "react-bootstrap";
 import './Size.css'
-import SizeCreate from "./SizeCreate";
 import SizeEdit from "./SizeEdit";
 import SizeDelete from "./SizeDelete";
 import ReactPaginate from "react-paginate";
 import { ToastContainer } from "react-toastify";
+import SizeCreate from "./SizeCreate";
+import { CiExport, CiImport } from "react-icons/ci";
+import { CSVLink } from "react-csv";
+import SizeImport from "./SizeImport";
 
 
 const Size = () => {
@@ -20,11 +23,14 @@ const Size = () => {
     const [key, setKey] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
+    const [showImport, setShowImport] = useState(false);
+
 
     const handleClose = () =>{
         setShowCreate(false)
         setShowEdit(false)
         setShowDelete(false)
+        setShowImport(false)
     }
     const handleShowEdit = (data) => {
         setData(data)
@@ -102,31 +108,46 @@ const Size = () => {
                         </Button>
                     </FormGroup>
                 </Form>
-                <Form className="margin-top-10px">
-                    <Button
-                        variant="success" 
-                        className="margin-right-10px"
-                        onClick={handleRefesh}
-                        >
-                        Refesh
-                    </Button>
-                    <Button 
-                        className="margin-right-10px"
-                        onClick={handleOnchangeCheckTrue}
-                        >
-                        Hoạt động
-                    </Button>
-                    <Button
-                        onClick={handleOnchangeCheckFalse}
-                        >
-                        Ngưng hoạt động
-                    </Button>
+                <Form className="margin-top-10px display ">
+                    <div className="width-80-percent">
+                        <Button
+                            variant="success" 
+                            className="margin-right-10px"
+                            onClick={handleRefesh } >
+                            Refesh
+                        </Button>
+                        <Button 
+                            className="margin-right-10px"
+                            onClick={handleOnchangeCheckTrue } >
+                            Hoạt động
+                        </Button>
+                        <Button 
+                            onClick= {handleOnchangeCheckFalse} 
+                            className="margin-right-10px">
+                            Ngưng hoạt động
+                        </Button>
+                    </div>
+                    <div className="width-20-percent justify-content-end display">
+                        <CSVLink 
+                            data={size} 
+                            separator={";"}
+                            filename={"size.csv"}
+                            className="btn btn-primary margin-right-10px"
+                        > <CiExport /> Export</CSVLink>
+                        <form>
+                            <label htmlFor="import" className="btn btn-warning"><CiImport/> Import</label>
+                            <input 
+                                id="import" 
+                                hidden
+                                onClick={() =>  setShowImport(true)}
+                            ></input>
+                        </form>
+                    </div>  
                 </Form>
                 <Table className="margin-top-10px">
                     <thead>
                         <tr>
                             <th className="width-100-px">STT</th>
-                            <th className="width-100-px">Id</th>
                             <th className="width-400-px">Tên</th>
                             <th>Trạng thái</th>
                             <th>Chức năng</th>
@@ -137,7 +158,6 @@ const Size = () => {
                             currentSizeTrue.map((item , index) => (
                                 <tr key={index}>
                                     <td>{index +1}</td>
-                                    <td>{item.id}</td>
                                     <td>{item.name}</td>
                                     <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
                                     <td>
@@ -184,7 +204,7 @@ const Size = () => {
                     />
                 </div>
             </div>
-            <SizeCreate 
+            <SizeCreate
                 show = {showCreate}
                 handleClose = {handleClose}
             />
@@ -197,6 +217,10 @@ const Size = () => {
                 show = {showDelete}
                 handleClose = {handleClose}
                 data = {data}
+            />
+            <SizeImport
+                show = {showImport}
+                handleClose = {handleClose} 
             />
             <ToastContainer
                 position="top-right"

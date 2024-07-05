@@ -9,6 +9,9 @@ import { ToastContainer } from "react-toastify";
 import ColorEdit from "./ColorEdit";
 import ColorDelete from "./ColorDelete";
 import ReactPaginate from "react-paginate";
+import { CiExport, CiImport } from "react-icons/ci";
+import { CSVLink } from "react-csv";
+import ColorImport from "./ColorImport";
 
 const Color = () => {
     const [color, setColor] = useState([]);
@@ -16,6 +19,7 @@ const Color = () => {
     const [showCreate, setShowCreate] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+    const [showImport, setShowImport] = useState(false);
     const [data, setData] = useState({});
     const [currentPage, setCurrentPage] = useState(1);  
     const [searchTerm, setSearchTerm] = useState('');
@@ -24,6 +28,7 @@ const Color = () => {
         setShowCreate(false)
         setShowEdit(false)
         setShowDelete(false)
+        setShowImport(false)
     }
     const handleShowEdit = (data) => {
         setData(data)
@@ -101,22 +106,41 @@ const Color = () => {
                         </Button>
                     </FormGroup>
                 </Form>
-                <Form className="margin-top-10px">
-                    <Button
-                        variant="success" 
-                        className="margin-right-10px"
-                        onClick={handleRefesh } >
-                        Refesh
-                    </Button>
-                    <Button 
-                        className="margin-right-10px"
-                        onClick={handleOnchangeCheckTrue } >
-                        Tất Cả
-                    </Button>
-                    <Button 
-                        onClick= {handleOnchangeCheckFalse} >
-                        Ngưng hoạt động
-                    </Button>
+                <Form className="margin-top-10px display ">
+                    <div className="width-80-percent">
+                        <Button
+                            variant="success" 
+                            className="margin-right-10px"
+                            onClick={handleRefesh } >
+                            Refesh
+                        </Button>
+                        <Button 
+                            className="margin-right-10px"
+                            onClick={handleOnchangeCheckTrue } >
+                            Hoạt động
+                        </Button>
+                        <Button 
+                            onClick= {handleOnchangeCheckFalse} 
+                            className="margin-right-10px">
+                            Ngưng hoạt động
+                        </Button>
+                    </div>
+                    <div className="width-20-percent justify-content-end display">
+                        <CSVLink 
+                            data={color} 
+                            separator={";"}
+                            filename={"color.csv"}
+                            className="btn btn-primary margin-right-10px"
+                        > <CiExport /> Export</CSVLink>
+                        <form>
+                            <label htmlFor="import" className="btn btn-warning"><CiImport/> Import</label>
+                            <input 
+                                id="import" 
+                                hidden
+                                onClick={() =>  setShowImport(true)}
+                            ></input>
+                        </form>
+                    </div>  
                 </Form>
                 <Table className="margin-top-10px">
                     <thead>
@@ -156,6 +180,7 @@ const Color = () => {
                                     </tr>
                                 )
                             })
+                            
                         }
                     </tbody>
                 </Table>
@@ -195,6 +220,10 @@ const Color = () => {
                 show={showDelete}
                 handleClose={handleClose}
                 data={data}
+            />
+            <ColorImport 
+                show={showImport}
+                handleClose={handleClose}
             />
             <ToastContainer
                 position="top-right"

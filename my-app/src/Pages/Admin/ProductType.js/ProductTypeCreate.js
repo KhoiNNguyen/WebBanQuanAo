@@ -1,12 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Form, FormCheck, FormControl, FormGroup, FormLabel, FormSelect, Modal, ModalHeader } from "react-bootstrap"
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ProductTypeCreate = (props) => {
+    const navigate = useNavigate()
     const [productTypeCreate, setProductTypeCreate] = useState();
     const [gender, setGender] = useState([]);
     const {show,handleClose} = props
+    
     const handleChange = (e) =>{
         let name = e.target.name
         let value = e.target.value
@@ -30,9 +33,9 @@ const ProductTypeCreate = (props) => {
             formData.append("genderId",productTypeCreate.genderId)
             formData.append("status",productTypeCreate.status)
             axios.post(`https://localhost:7026/api/ProductTypes/uploadFile`,formData)
-            .then(handleClose())
+            .then(() => navigate('/Admin/ProductTypes'))
+            handleClose()
             toast.success("Thêm thành công")
-            window.location.reload()
         }
         catch{
             toast.error("Thêm thất bại")

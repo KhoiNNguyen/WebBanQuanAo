@@ -38,11 +38,14 @@ import PaySuccess from "./Pages/Client/Pay/PaySuccess";
 import Ordersuccess from "./Pages/Client/StatusOrder/Ordersuccess";
 import ChangePassword from "./Pages/Client/account/changePassword";
 import VoucherClient from "./Pages/Client/Voucher/Voucher";
+import Image from "./Pages/Admin/Image/Image";
+import LoginAdmin from "./Pages/Admin/Login/Login";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='Admin/Login' element={<LoginAdmin />}></Route>
         <Route path="/Admin" element={<LauOutAdmin />}>
           <Route index element={<HomeAdmin />}></Route>
           <Route path="/Admin/Brands" element={<Brand />}></Route>
@@ -58,6 +61,7 @@ function App() {
           <Route path='/Admin/Users' element={<User/>}></Route>
           <Route path='/Admin/Invoices' element={<Invoice/>}></Route>
           <Route path='/Admin/InvoiceDetails' element={<InvoiceDetail />}></Route>
+          <Route path='/Admin/Images' element={<Image />}></Route>
         </Route>
         <Route path="/" element={<LayOutClient />}>
           <Route index element={<HomeClient />} />

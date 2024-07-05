@@ -8,6 +8,11 @@ import ProductCreate from "./ProductCreate";
 import ProductEdit from "./ProductEdit";
 import ProductDelete from "./ProductDelete";
 import ReactPaginate from "react-paginate";
+import { CiExport, CiImport } from "react-icons/ci";
+import { CSVLink } from "react-csv";
+import ProductImport from "./ProductImport";
+import { FaSortAlphaDown } from "react-icons/fa";
+import { BsSortDown, BsSortUp } from "react-icons/bs";
 
 const Products = () => {
     const [product, setProduct] = useState([]);
@@ -22,11 +27,13 @@ const Products = () => {
     const [key, setKey] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
+    const [showImport, setShowImport] = useState(false);
 
     const handleClose = () =>{
         setShowCreate(false);
         setShowEdit(false)
         setShowDelete(false)
+        setShowImport(false)
     }
     const handleShowEdit = (data) =>{
         setShowEdit(true)
@@ -46,9 +53,9 @@ const Products = () => {
     const totalPages = Math.ceil(totalProduct / productPerPage)
     const currentProuduct = key.slice(indexOfFirst,indexOfLast)
 
-
     const handlePageClick = (e) =>{
         setCurrentPage(+e.selected + 1)
+        // getListProduct(+e.selected + 1)
     }
 
     //Thay đổi trạng thái load trang
@@ -71,15 +78,32 @@ const Products = () => {
     //Tìm kiếm
     const handleChangeSearch = (e) =>{
         setSearchTerm(e.target.value)
-        filterColors(e.target.value)
+        filterProducts(e.target.value)
     }
-    const filterColors = (searchTerm) =>{
+    const filterProducts = (searchTerm) =>{
         const filtered = product.filter((item) =>
             item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
         setCurrentPage(1);
     }
+    //.sort((a,b) => a.price > b.price ? 1 : -1)
+    //Sort
+    const sortAZ = () =>{
+        const sortedName = [...product].sort((a, b) => {
+            return a.name.localeCompare(b.name); // Sắp xếp theo tên theo thứ tự từ điển
+          });
+        setKey(sortedName)
+    }
+    const sortPriceUp = () =>{
+        const sortedPrice = product.sort((a,b) => a.price > b.price ? 1 : -1)
+        setKey(sortedPrice)
+    }
+    const sortPriceDown = () =>{
+        const sortedPrice = product.sort((a,b) => a.price > b.price ? -1 : 1)
+        setKey(sortedPrice)
+    }
+
     //Filter
     const filterSize = (id) =>{
         const filterSize = product.filter((item) =>{
@@ -94,7 +118,6 @@ const Products = () => {
         })
         setKey(filterColor)
     }
-
 
     //Lấy danh sách
     const getListProduct = () =>{
@@ -119,7 +142,7 @@ const Products = () => {
     useEffect(()=>{
         getListProduct();
         getListSize();
-        getListColor()
+        getListColor();
     },[])
     return ( 
         <>
@@ -134,61 +157,92 @@ const Products = () => {
                         </Button>
                     </FormGroup>
                 </Form>
-                <Form className="margin-top-10px" style={{display:"flex"}}>
-                    <Button
-                        variant="success" 
-                        className="margin-right-10px"
-                        onClick={handleRefesh}
-                        >
-                        Refesh
-                    </Button>
-                    <Button 
-                        className="margin-right-10px"
-                        onClick={handleOnchangeCheckTrue}
-                        >
-                        Còn hàng
-                    </Button>
-                    <Button
-                        onClick={handleOnchangeCheckFalse}
-                        className="margin-right-10px">
-                        Hết hàng
-                    </Button>
-                    <Dropdown className="margin-right-10px">
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            Size
-                        </Dropdown.Toggle>
+                <Form className="margin-top-10px display" >
+                    <div className="width-80-percent display">
+                        <Button
+                            variant="success" 
+                            className="margin-right-10px"
+                            onClick={handleRefesh}
+                            >
+                            Refesh
+                        </Button>
+                        <Button 
+                            className="margin-right-10px"
+                            onClick={handleOnchangeCheckTrue}
+                            >
+                            Còn hàng
+                        </Button>
+                        <Button
+                            onClick={handleOnchangeCheckFalse}
+                            className="margin-right-10px">
+                            Hết hàng
+                        </Button>
+                        <Dropdown className="margin-right-10px">
+                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                Size
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu>
-                            {
-                                size.map(item =>{
-                                    return(
-                                        <Dropdown.Item onClick={() => filterSize(item.id)}>{item.name}</Dropdown.Item>
-                                    )
-                                })
-                            }
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown >
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            Color
-                        </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                {
+                                    size.map(item =>{
+                                        return(
+                                            <Dropdown.Item onClick={() => filterSize(item.id)}>{item.name}</Dropdown.Item>
+                                        )
+                                    })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <Dropdown className="margin-right-10px">
+                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                Color
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu>
-                            {
-                                color.map(item =>{
-                                    return(
-                                        <Dropdown.Item onClick={() => filterColor(item.id)}>{item.name}</Dropdown.Item>
-                                    )
-                                })
-                            }
-                        </Dropdown.Menu>
-                    </Dropdown>
+                            <Dropdown.Menu>
+                                {
+                                    color.map(item =>{
+                                        return(
+                                            <Dropdown.Item onClick={() => filterColor(item.id)}>{item.name}</Dropdown.Item>
+                                        )
+                                    })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <Dropdown >
+                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                Giá
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => sortPriceDown()}>Giảm dần <BsSortDown/></Dropdown.Item>
+                                <Dropdown.Item onClick={() =>sortPriceUp()}>Tăng dần <BsSortUp/></Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
+                    <div className="width-20-percent justify-content-end display">
+                        <CSVLink 
+                            data={product} 
+                            separator={";"}
+                            filename={"BienTheSanpham.csv"}
+                            className="btn btn-primary margin-right-10px"
+                        > <CiExport /> Export</CSVLink>
+                        <form>
+                            <label htmlFor="import" className="btn btn-warning"><CiImport /> Import</label>
+                            <input 
+                                id="import" 
+                                hidden
+                                onClick={() =>  setShowImport(true)}
+                            ></input>
+                        </form>
+                    </div>  
                 </Form>
                 <Table className="margin-top-10px">
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th style={{width: "250px"}}>Tên sản phẩm</th>
+                            <th style={{width: "250px"}}>
+                                Tên sản phẩm
+                                <button style={{border: "none",backgroundColor: "white",marginLeft: "5px"}} onClick={()=>sortAZ()}><FaSortAlphaDown /></button> 
+                            </th>
                             <th>Giá</th>
                             <th>Size</th>
                             <th>Màu</th>
@@ -269,6 +323,10 @@ const Products = () => {
                 show = {showDelete}
                 handleClose = {handleClose}
                 data = {data}
+            />
+            <ProductImport 
+                show = {showImport}
+                handleClose = {handleClose}
             />
             <ToastContainer
                 position="top-right"

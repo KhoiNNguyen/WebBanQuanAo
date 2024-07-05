@@ -38,7 +38,6 @@ const UserCreate = (props) => {
             })
             .then(handleClose())
             toast.success("Thêm thành công")
-            console.log('User registered successfully');
         }
         catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
@@ -47,9 +46,7 @@ const UserCreate = (props) => {
               setErrorMessage('Đã xảy ra lỗi khi đăng ký.');
             }
             toast.error(errorMessage)
-            console.error('Error registering admin:', error);
         }
-        console.log(userCreate)
     }
     return ( 
         <>

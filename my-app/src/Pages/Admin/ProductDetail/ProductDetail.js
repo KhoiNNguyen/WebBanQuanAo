@@ -8,14 +8,18 @@ import { ToastContainer} from 'react-toastify';
 import ProductDetailEdit from "./ProductDetailEdit";
 import ProductDetailDelete from "./ProductDetailDelete";
 import ReactPaginate from "react-paginate";
+import { CiExport, CiImport } from "react-icons/ci";
+import { CSVLink } from "react-csv";
+import ProductDetailImport from "./ProductDetailImport";
 
-const ProductDetailAdmin = () => {
+const ProductDetail = () => {
     const [productDetail, setProductDetail] = useState([]);
 
     const [data, setData] = useState({});
     const [showCreate, setShowCreate] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+    const [showImport, setShowImport] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [key, setKey] = useState([]);
@@ -26,6 +30,7 @@ const ProductDetailAdmin = () => {
         setShowCreate(false);
         setShowEdit(false)
         setShowDelete(false)
+        setShowImport(false)
     }
     const handleShowEdit = (data) =>{
         setShowEdit(true);
@@ -104,25 +109,41 @@ const ProductDetailAdmin = () => {
                         </Button>
                     </FormGroup>
                 </Form>
-                <Form className="margin-top-10px">
-                    <Button
-                        variant="success" 
-                        className="margin-right-10px"
-                        onClick={handleRefesh}
-                        >
-                        Refesh
-                    </Button>
-                    <Button 
-                        className="margin-right-10px"
-                        onClick={handleOnchangeCheckTrue}
-                        >
-                        Hoạt động
-                    </Button>
-                    <Button
-                        onClick={handleOnchangeCheckFalse}
-                        >
-                        Ngưng hoạt động
-                    </Button>
+                <Form className="margin-top-10px display ">
+                    <div className="width-80-percent">
+                        <Button
+                            variant="success" 
+                            className="margin-right-10px"
+                            onClick={handleRefesh } >
+                            Refesh
+                        </Button>
+                        <Button 
+                            className="margin-right-10px"
+                            onClick={handleOnchangeCheckTrue } >
+                            Còn hàng
+                        </Button>
+                        <Button 
+                            onClick= {handleOnchangeCheckFalse} 
+                            className="margin-right-10px">
+                            Hết hàng
+                        </Button>
+                    </div>
+                    <div className="width-20-percent justify-content-end display">
+                        <CSVLink 
+                            data={productDetail} 
+                            separator={";"}
+                            filename={"SanPham.csv"}
+                            className="btn btn-primary margin-right-10px"
+                        > <CiExport /> Export</CSVLink>
+                        <form>
+                            <label htmlFor="import" className="btn btn-warning"><CiImport /> Import</label>
+                            <input 
+                                id="import" 
+                                hidden
+                                onClick={() =>  setShowImport(true)}
+                            ></input>
+                        </form>
+                    </div>  
                 </Form>
                 <Table className="margin-top-10px">
                     <thead>
@@ -139,12 +160,12 @@ const ProductDetailAdmin = () => {
                     </thead>
                     <tbody>
                         {
-                            currentProductDetail.map((item, index) =>{
+                             currentProductDetail.map((item, index) =>{
                                 return(
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>
-                                            <img src={`https://localhost:7026/images/products/${item.thumbnail}`} alt="hình ảnh loại sản phấm" style={{width: "170px",height: "200px"}}/>
+                                            <img src={`https://localhost:7026/images/products/${item.thumbnail}`} alt="hình ảnh loại sản phấm" style={{width: "100px",height: "130px"}}/>
                                         </td>
                                         <td>{item.name}</td>
                                         <td>{item.quantity}</td>
@@ -210,6 +231,10 @@ const ProductDetailAdmin = () => {
                 handleClose = {handleClose}
                 data = {data}
             />
+            <ProductDetailImport 
+                show = {showImport}
+                handleClose = {handleClose}
+            />
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -226,4 +251,4 @@ const ProductDetailAdmin = () => {
      );
 }
  
-export default ProductDetailAdmin;
+export default ProductDetail;

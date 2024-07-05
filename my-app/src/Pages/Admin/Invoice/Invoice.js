@@ -69,7 +69,7 @@ const Invoice = () => {
     },[])
     return ( 
         <>
-            <div>
+            <div className="">
                 <Form className="display">
                     <FormGroup className="width-80-percent">
                         <input type="text" className="width-100-percent height-40-px" placeholder="Tìm kiếm" onChange={handleChangeSearch} value={searchTerm}/>

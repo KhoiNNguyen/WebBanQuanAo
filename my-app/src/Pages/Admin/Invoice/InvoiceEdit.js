@@ -79,6 +79,7 @@ const InvoiceEdit = (props) => {
     useEffect(() => {
         setInvoiceEdit(data)
     },[data])
+    console.log(invoiceEdit);
     return ( 
         <>
             <Modal show={show} onHide={handleClose}>
@@ -102,7 +103,7 @@ const InvoiceEdit = (props) => {
                         <FormGroup>
                             <FormLabel>User: </FormLabel>
                             <FormSelect  name="userId" onChange={handleChange} value={invoiceEdit.userId}>
-                            <option> None </option>
+                            <option value={1}> None </option>
                             {
                                 user.map(item =>{
                                     return(
@@ -158,9 +159,7 @@ const InvoiceEdit = (props) => {
                             <option> None </option>
                             {
                                 shippingStatus.map(item =>{
-                                    return(
-                                        <option value={item.id} >{item.name} </option>
-                                    )
+                                    return <option value={item.id} >{item.name} </option>
                                 })
                             }
                             </FormSelect>

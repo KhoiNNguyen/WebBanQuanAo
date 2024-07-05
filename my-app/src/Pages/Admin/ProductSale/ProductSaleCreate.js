@@ -50,11 +50,11 @@ const ProductSaleCreate = (props) => {
                         </FormGroup>
                         <FormGroup>
                             <FormLabel>Phần trăm giảm giá: </FormLabel>
-                            <FormControl name="percentDiscount" type="text" onChange={handleChange} placeholder="Không ghi đấu %"></FormControl>
+                            <FormControl name="percentDiscount" type="text" onChange={handleChange}></FormControl>
                         </FormGroup>
                         <FormGroup>
                             <FormLabel>Ghi chú: </FormLabel>
-                            <FormControl name="ghiChu" type="text" onChange={handleChange} placeholder="vd: Giảm giá 10%"></FormControl>
+                            <FormControl name="ghiChu" type="text" onChange={handleChange}></FormControl>
                         </FormGroup>
                         <FormGroup>
                             <FormCheck name="status" type="switch" label="Hoạt động" onChange={handleCheck}/>

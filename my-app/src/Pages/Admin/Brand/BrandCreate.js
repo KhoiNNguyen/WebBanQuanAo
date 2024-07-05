@@ -1,12 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Button, Form, FormCheck, FormControl, FormGroup, FormLabel, Modal, ModalHeader } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 const BrandCreate = (props) => {
-    const navigate = useNavigate();
-    const [brandCreate, setbrandCreate] = useState({});
+    const [brandCreate, setbrandCreate] = useState();
     const {show, handleClose} = props
 
     const handleChange = (e) =>{
@@ -30,11 +28,12 @@ const BrandCreate = (props) => {
             formData.append('name', brandCreate.name);
             formData.append('imageFile', brandCreate.imageFile)
             formData.append('status', brandCreate.status);
+            console.log(formData);
             axios.post(`https://localhost:7026/api/Brands/uploadFile`, formData)
-            .then(() => navigate('/Admin/Brands'))
-            handleClose()
+            .then(handleClose())
+            
             toast.success("Thêm thành công")
-            window.location.reload()
+            // window.location.reload()
         }
         catch{
             toast.error("Xảy ra lỗi")

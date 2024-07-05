@@ -19,6 +19,8 @@ const ProductSale = () => {
 
     const [key, setKey] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [check, setCheck] = useState(true);
+    const [listFalse, setlistFalse] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -45,25 +47,28 @@ const ProductSale = () => {
     const totalPages = Math.ceil(totalProductSale / productSalePerPage)
     const currentProductSale = key.slice(indexOfFirst,indexOfLast)
 
+    const totalProductSaleFalse = listFalse.length
+    const totalPagesFalse = Math.ceil(totalProductSaleFalse / productSalePerPage)
+    const currentProductSaleFalse = listFalse.slice(indexOfFirst,indexOfLast)
+
     const handlePageClick = (e) => {
         setCurrentPage(+e.selected + 1)
+        getListProductSale(+e.selected + 1)
     }
 
     //Thay đổi trạng thái load trang
     const handleRefesh = () =>{
-        getListProductSale()
+        window.location.reload()
     }
     const handleOnchangeCheckTrue = () =>{
-        const filter = productSale.filter(f => {
-            return f.status === true;
-        })
-        setKey(filter);
+        setCheck(true);
     }
     const handleOnchangeCheckFalse = () =>{
+        setCheck(false);
         const filter = productSale.filter(f => {
             return f.status === false;
         })
-        setKey(filter);
+        setlistFalse(filter);
     }
 
     //Tìm kiếm
@@ -76,6 +81,7 @@ const ProductSale = () => {
             item.ghiChu && item.ghiChu.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
+        setlistFalse(filtered)
         setCurrentPage(1);
     }
     
@@ -115,7 +121,7 @@ const ProductSale = () => {
                         className="margin-right-10px"
                         onClick={handleOnchangeCheckTrue}
                         >
-                        Hoạt động
+                        Tất Cả
                     </Button>
                     <Button 
                     onClick={handleOnchangeCheckFalse}
@@ -123,7 +129,7 @@ const ProductSale = () => {
                         Ngưng hoạt động
                     </Button>
                 </Form>
-                <Table className="margin-top-10px">
+                <Table>
                     <thead>
                         <tr>
                             <th>STT</th>
@@ -138,7 +144,40 @@ const ProductSale = () => {
                     </thead>
                     <tbody>
                         {
-                            currentProductSale.map((item, index) => {
+                            check === true ?(
+                                currentProductSale.map((item, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>{item.id}</td>
+                                            <td>{item.startTime}</td>
+                                            <td>{item.endDate}</td>
+                                            <td>{item.percentDiscount}</td>
+                                            <td>{item.ghiChu}</td>
+                                            <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
+                                            <td>
+                                                    {item.status === true?(
+                                                        <Form>
+                                                            <Button variant="primary" onClick={() => handleShowEdit(item)}>
+                                                                <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
+                                                            </Button>
+                                                            <Button variant="danger" onClick={() => handleShowDelete(item)}>
+                                                                <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
+                                                            </Button>
+                                                        </Form>
+                                                    )
+                                                        :
+                                                        <Button variant="primary" onClick={() => handleShowEdit(item)}>
+                                                            <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
+                                                        </Button>
+                                                    }
+                                                </td>
+                                        </tr>
+                                    )
+                                })
+                            )
+                            :
+                            currentProductSaleFalse.map((item, index) => {
                                 return (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
@@ -178,7 +217,7 @@ const ProductSale = () => {
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={3}
-                        pageCount={totalPages}
+                        pageCount={check===true ? totalPages : totalPagesFalse}
                         previousLabel="< previous"
 
                         pageClassName="page-item"

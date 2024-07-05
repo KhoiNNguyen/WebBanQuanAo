@@ -85,7 +85,7 @@ const ProductDetailEdit = (props) => {
                         </FormGroup>
                         <FormGroup className="mb-3">
                             <FormLabel>Thương hiệu: </FormLabel>
-                            <FormSelect  name="brandId" onChange={handleChange}>
+                            <FormSelect  name="brandId" onChange={handleChange} value={productDetailEdit.brandId}>
                             <option> None </option>
                             {
                                 brand.map(item =>{
@@ -98,7 +98,7 @@ const ProductDetailEdit = (props) => {
                         </FormGroup>
                         <FormGroup className="mb-3">
                             <FormLabel>Loại sản phẩm: </FormLabel>
-                            <FormSelect  name="productTypeId" onChange={handleChange}>
+                            <FormSelect  name="productTypeId" onChange={handleChange} value={productDetailEdit.productTypeId}>
                             <option> None </option>
                             {
                                 productType.map(item =>{
