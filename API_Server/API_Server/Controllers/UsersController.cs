@@ -1,6 +1,9 @@
 ﻿using API_Server.Data;
 using API_Server.Models;
 using EshopIdentity.Models;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -8,8 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Newtonsoft.Json;
+using System.Net;
+using API_Server.Services;
 
 namespace EshopIdentity.Controllers
 {
@@ -20,15 +29,15 @@ namespace EshopIdentity.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-
         private readonly API_ServerContext _context;
-
-        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration,API_ServerContext context    )
+        private readonly IUserService _userService;
+        public UsersController(UserManager<User> userManager, IUserService userService, RoleManager<IdentityRole> roleManager, IConfiguration configuration, API_ServerContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
-            _context = context; 
+            _context = context;
+            _userService = userService;
         }
 
         // GET: api/User
@@ -134,7 +143,131 @@ namespace EshopIdentity.Controllers
             }
             return Unauthorized();
         }
+        [HttpPost("google")]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginModel model)
+        {
+            var client = new HttpClient();
+            var response = await client.GetAsync($"https://oauth2.googleapis.com/tokeninfo?id_token={model.TokenId}");
 
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest("Invalid Google token.");
+            }
+
+            var googleInfo = JsonConvert.DeserializeObject<GoogleTokenInfo>(await response.Content.ReadAsStringAsync());
+
+            // Lấy người dùng từ cơ sở dữ liệu
+            var user = await _userManager.FindByEmailAsync(googleInfo.Email);
+
+            // Nếu người dùng không tồn tại, tạo một người dùng mới
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = await _userManager.GetUserIdAsync(user);
+
+            // Tạo JWT
+            var authClaims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.UserName),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddHours(3),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+            );
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo,
+                userId = userId
+            });
+        }
+
+        [HttpPost("google/register")]
+        public async Task<IActionResult> GoogleRegister([FromBody] GoogleLoginModel model)
+        {
+            var client = new HttpClient();
+            var response = await client.GetAsync($"https://oauth2.googleapis.com/tokeninfo?id_token={model.TokenId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest("Invalid Google token.");
+            }
+
+            var googleInfo = JsonConvert.DeserializeObject<GoogleTokenInfo>(await response.Content.ReadAsStringAsync());
+
+            var result = await RegisterUserIfNotExists(googleInfo.Email, googleInfo.Name);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest("Failed to create user.");
+            }
+
+            // Lấy thông tin người dùng từ cơ sở dữ liệu sau khi đã tạo hoặc đã tồn tại
+            var user = await _userManager.FindByEmailAsync(googleInfo.Email);
+            var userId = await _userManager.GetUserIdAsync(user);
+
+            // Tạo JWT
+            var authClaims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.UserName),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddHours(3),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+            );
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo,
+                userId = userId
+            });
+        }
+        private async Task<IdentityResult> RegisterUserIfNotExists(string email, string fullName)
+{
+    var user = await _userManager.FindByEmailAsync(email);
+
+    if (user == null)
+    {
+        user = new User
+        {
+            UserName = email,
+            Email = email,
+            FullName = fullName
+        };
+
+        var result = await _userManager.CreateAsync(user);
+
+        if (result.Succeeded)
+        {
+            // Thêm quyền mặc định cho người dùng mới nếu cần thiết
+            if (await _roleManager.RoleExistsAsync("User"))
+            {
+                await _userManager.AddToRoleAsync(user, "User");
+            }
+        }
+
+        return result;
+    }
+
+    // Trả về Success nếu người dùng đã tồn tại
+    return IdentityResult.Success;
+}
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register(Register register)
@@ -202,6 +335,54 @@ namespace EshopIdentity.Controllers
             }
 
             return Ok();
+        }
+        [HttpPut("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok("Password changed successfully");
+        }
+        [HttpPut("ChangeInfoUser")]
+        public async Task<IActionResult> ChangeInfoUser(ChangeInfoUser model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            user.FullName = model.FullName;
+            user.Phone = model.Phone;
+            user.Address = model.Address;
+            user.Email = model.Email;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok("User information updated successfully");
         }
     }
 }

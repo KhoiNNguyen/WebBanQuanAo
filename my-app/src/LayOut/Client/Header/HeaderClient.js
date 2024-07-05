@@ -6,7 +6,7 @@ import "./Header.css";
 import { Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useState } from "react";
 import { getAllBrand } from "../../../features/brand/brandSlice";
 import { getAllProductType } from "../../../features/productType/productTypeSlice";
 import { CiLogout } from "react-icons/ci";
@@ -292,6 +292,7 @@ function HeaderClient() {
                     </li>
                   </ul>
                 </li>
+                <li><Link to="voucher-sale">VOUCHER</Link></li>
               </ul>
             </div>
             <div className="TypeHeader">
@@ -319,7 +320,7 @@ function HeaderClient() {
                         {resultUser.map((item) => {
                           if (item.id === userId) {
                             return (
-                              <li className="name-user " key={item.id}>
+                              <li className="name-user" key={item.id}>
                                 {item.userName}
                               </li>
                             );
@@ -335,7 +336,7 @@ function HeaderClient() {
                           <span>
                             <CiLogout />
                           </span>
-                          <span onClick={() => handLogout()}> Đăng Xuất</span>
+                          <span className="out-account" onClick={() => handLogout()}> Đăng Xuất</span>
                         </li>
                       </ul>
                     </div>

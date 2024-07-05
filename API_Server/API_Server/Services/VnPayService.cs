@@ -11,7 +11,7 @@ namespace API_Server.Services
         {
             _httpContextAccessor = httpContextAccessor;
         }
-        public string CreatePaymentUrl(string vnp_TmnCode, string vnp_HashSecret, string vnp_Url, string vnp_Returnurl, Invoice invoice)
+        public string CreatePaymentUrl(string vnp_TmnCode, string vnp_HashSecret, string vnp_Url, string vnp_Returnurl, string transactionReference, Invoice invoice)
         {
             VnPayLibrary vnpay = new VnPayLibrary();
 
@@ -20,7 +20,7 @@ namespace API_Server.Services
             vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
             vnpay.AddRequestData("vnp_Amount", (invoice.Total * 100).ToString()); // Số tiền thanh toán (đổi sang VND)
             vnpay.AddRequestData("vnp_CurrCode", "VND");
-            vnpay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString());
+            vnpay.AddRequestData("vnp_TxnRef", transactionReference);
             vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán đơn hàng");
             vnpay.AddRequestData("vnp_OrderType", "other");
             vnpay.AddRequestData("vnp_Locale", "vn");

@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using API_Server.Data;
 using API_Server.Services;
+using System.Configuration;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<API_ServerContext>(options =>
@@ -19,13 +21,20 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 
+builder.Services.AddDistributedMemoryCache(); // Sử dụng bộ nhớ trong cho session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Thiết lập thời gian timeout cho session
+    options.Cookie.HttpOnly = true; // Bảo mật cookie session
+    options.Cookie.IsEssential = true; // Đánh dấu cookie là cần thiết
+});
 //config cho identity
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<API_ServerContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<IUserService, UserService>();
 //config cho authentication
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -45,10 +54,17 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
+})
+
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.SaveTokens = true;
 });
 
-builder.Services.AddControllers();
 
+builder.Services.AddAuthorization();
 //cors
 builder.Services.AddCors(options =>
 {
@@ -72,6 +88,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSession();
 
 app.UseHttpsRedirection();
 

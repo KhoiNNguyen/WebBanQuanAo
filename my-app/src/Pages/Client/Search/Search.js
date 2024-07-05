@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProduct } from "../../../features/product/productSlice";
 import { useEffect } from "react";
 import { getAllImage } from "../../../features/image/imageSlice";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function Search() {
   const dispatch = useDispatch();
@@ -37,11 +37,7 @@ function Search() {
   }
 }
   function formatPrice(price) {
-    // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
     price = parseInt(price);
-
-    // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
-    // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
     return price.toLocaleString("vi-VN") + "đ";
   }
 
@@ -52,7 +48,7 @@ function Search() {
           <div className="search-header">
             <span>Tìm kiếm</span>
             <h4 className="product-type">
-              <strong>Kết quả tìm kiếm sản phẩm"ÁO SƠ MI"</strong>
+              <strong>Kết quả tìm kiếm sản phẩm "{name}"</strong>
             </h4>
           </div>
           <div className="container-account">
@@ -68,13 +64,13 @@ function Search() {
                           </span>
                         </div>
                         <div className="item_content">
-                          <div className="product_thumnail">
-                            <a className="image_thumb">
+                          <div className="product_thumnail" data-discount={pro.productSale.percentDiscount}>
+                          <Link to={`/ProductDetail/${pro.id}`} className="image_thumb">
                               <img
                                 src={`https://localhost:7026/images/products/${pro.thumbnail}`}
                                 alt="n"
                               />
-                            </a>
+                            </Link>
                           </div>
                           <div className="product_info">
                             <div className="product_name">

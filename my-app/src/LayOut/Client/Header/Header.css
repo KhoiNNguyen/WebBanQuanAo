@@ -162,7 +162,8 @@
     position: absolute;
     z-index: 1;
     background: #fff;
-    width: 100%;
+    min-width: 100%; /* Đặt min-width là giá trị mong muốn */
+    max-width: auto; /* Đặt max-width là giá trị tối đa */
     left: 0;
     height: auto;
     display: none !important;
@@ -213,6 +214,8 @@
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
     font-weight: 500;
+    width: 100%;
+
 }
 
 .Account .name-user{
@@ -245,4 +248,8 @@
     position: absolute;
     top: -21%;
     right: 65%;
+}
+
+.out-account{
+cursor: pointer;
 }

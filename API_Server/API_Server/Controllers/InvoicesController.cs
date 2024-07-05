@@ -114,63 +114,62 @@ namespace API_Server.Controllers
 
             return NoContent();
         }
-        /*[HttpPost("{id}/create-payment")]
-        public async Task<IActionResult> CreatePayment(int id)
-        {
-            var urlPayment = "";
-
-            // Lấy thông tin hóa đơn từ cơ sở dữ liệu
-            var invoice = await _context.Invoice.FindAsync(id);
-
-            if (invoice == null)
-            {
-                return NotFound(); // Trả về 404 Not Found nếu không tìm thấy hóa đơn
-            }
-
-            string vnp_TmnCode = _configuration["Vnpay:TmnCode"];
-            string vnp_HashSecret = _configuration["Vnpay:HashSecret"];
-            string vnp_Url = _configuration["Vnpay:Url"];
-            string vnp_Returnurl = _configuration["Vnpay:ReturnUrl"];
-
-            // Khởi tạo đối tượng VnPayLibrary
-            VnPayLibrary vnpay = new VnPayLibrary();
-
-            // Thêm các thông tin yêu cầu thanh toán vào VnPayLibrary
-            vnpay.AddRequestData("vnp_Version", VnPayLibrary.VERSION);
-            vnpay.AddRequestData("vnp_Command", "pay");
-            vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
-            vnpay.AddRequestData("vnp_Amount", (100000 * 100).ToString()); // Số tiền thanh toán (đổi sang VND)
-            vnpay.AddRequestData("vnp_CurrCode", "VND");
-            vnpay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString());
-            vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán đơn hàng");
-            vnpay.AddRequestData("vnp_OrderType", "other");
-            vnpay.AddRequestData("vnp_Locale", "vn");
-            vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
-            vnpay.AddRequestData("vnp_IpAddr", HttpContext.Connection.RemoteIpAddress?.ToString());
-            vnpay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
-
-            // Tạo URL thanh toán từ VnPayLibrary và mã bảo mật
-            urlPayment = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
-
-            // Redirect đến URL thanh toán
-            return Redirect(urlPayment);
-        }*/
+ 
         [HttpPost("{id}/create-payment")]
-        public async Task<IActionResult> CreatePayment(int id)
+        public async Task<IActionResult> CreatePayment(int id, [FromBody] CreatePaymentRequest request)
         {
             var invoice = await _context.Invoice.FindAsync(id);
             string vnp_TmnCode = _configuration["Vnpay:TmnCode"];
             string vnp_HashSecret = _configuration["Vnpay:HashSecret"];
             string vnp_Url = _configuration["Vnpay:Url"];
             string vnp_Returnurl = _configuration["Vnpay:ReturnUrl"];
+
+            // Tạo mã giao dịch duy nhất và lưu vào invoice
+            string transactionReference = request.TransactionReference;
+            invoice.TransactionReference = transactionReference;
+            _context.Invoice.Update(invoice);
+            await _context.SaveChangesAsync();
 
             // Tạo yêu cầu thanh toán và lấy URL thanh toán từ dịch vụ VnPay
-            var paymentUrl = _vnPayService.CreatePaymentUrl(vnp_TmnCode, vnp_HashSecret, vnp_Url, vnp_Returnurl, invoice);
+            var paymentUrl = _vnPayService.CreatePaymentUrl(vnp_TmnCode, vnp_HashSecret, vnp_Url, vnp_Returnurl, transactionReference, invoice);
 
             // Trả về URL thanh toán cho client
             return Ok(new { paymentUrl });
         }
-    
+
+        [HttpGet("payment-response")]
+        public async Task<IActionResult> PaymentResponse()
+        {
+            // Lấy các tham số từ query string
+            var vnp_ResponseCode = HttpContext.Request.Query["vnp_ResponseCode"].ToString();
+            var vnp_TxnRef = HttpContext.Request.Query["vnp_TxnRef"].ToString();
+
+            // Tìm invoice dựa trên TransactionReference
+            var invoice = await _context.Invoice.FirstOrDefaultAsync(x => x.TransactionReference == vnp_TxnRef);
+
+
+            if (invoice == null)
+            {
+                return NotFound("Invoice not found.");
+            }
+
+            if (vnp_ResponseCode == "00")
+            {
+                // Nếu vnp_ResponseCode là "00", thanh toán thành công
+                invoice.PaymentStatusId = 2;
+            }
+            else
+            {
+                // Nếu không, thanh toán thất bại
+                invoice.PaymentStatusId = 1;
+            }
+
+            // Lưu trạng thái mới của invoice
+            _context.Invoice.Update(invoice);
+            await _context.SaveChangesAsync();
+
+            return Redirect("http://localhost:3000/");
+        }
         private bool InvoiceExists(int id)
         {
             return _context.Invoice.Any(e => e.Id == id);

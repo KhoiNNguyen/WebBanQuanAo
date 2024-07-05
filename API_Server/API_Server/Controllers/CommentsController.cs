@@ -25,7 +25,7 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Comment>>> GetComment()
         {
-            return await _context.Comment.ToListAsync();
+            return await _context.Comment.Include(p=>p.User).Include(p=>p.ProductDetail).ToListAsync();
         }
 
         // GET: api/Comments/5
@@ -79,6 +79,16 @@ namespace API_Server.Controllers
         public async Task<ActionResult<Comment>> PostComment(Comment comment)
         {
             _context.Comment.Add(comment);
+            await _context.SaveChangesAsync();
+
+            // Tính toán và cập nhật trung bình đánh giá
+            var product = await _context.ProductDetail.FindAsync(comment.ProductDetailId);
+            var ratings = await _context.Comment
+                                        .Where(c => c.ProductDetailId == comment.ProductDetailId)
+                                        .Select(c => c.Rate)
+                                        .ToListAsync();
+            product.AverageRating = ratings.Average();
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetComment", new { id = comment.Id }, comment);

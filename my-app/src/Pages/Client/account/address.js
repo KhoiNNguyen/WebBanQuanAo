@@ -1,9 +1,10 @@
 import './account.css'
 import { PiUserCircleLight } from "react-icons/pi";
-import { CiHeart } from "react-icons/ci";
+import { CiDeliveryTruck, CiHeart } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { LiaFileInvoiceSolid } from "react-icons/lia";
 import { Link } from 'react-router-dom';
+import { LuKeySquare } from 'react-icons/lu';
 
 function Address() {
     return ( 
@@ -24,9 +25,14 @@ function Address() {
                     </div>
                 </div>
                 <div className='function-account'>
-                <Link to='/Account'>
-                    <div className='func myaccount'>
+                    <Link to='/Account'>
+                    <div className='func myaccount '>
                     <PiUserCircleLight className='icon-account' /> <span className='name_product'>Tài khoản của tôi</span>
+                    </div>
+                    </Link>
+                    <Link to='/account/changepassword'>
+                    <div className='func myorder'>
+                       <LuKeySquare  className='icon-account'/> <span className='name_product'>Đổi mật khẩu</span>
                     </div>
                     </Link>
                     <Link to='/Account/Order'>
@@ -34,9 +40,14 @@ function Address() {
                        <LiaFileInvoiceSolid className='icon-account'/> <span className='name_product'>Đơn hàng của tôi</span>
                     </div>
                     </Link>
+                    <Link to='/account/orderdetail/confim'>
+                    <div className='func order'>
+                        <CiDeliveryTruck className='icon-account'/> <span className='name_product'>Chi tiết đơn hàng</span>
+                    </div>
+                    </Link>
                     <Link to='/Account/Address'>
                     <div className='func address active'>
-                        <CiLocationOn className='icon-account '/> <span className='name_product'>Địa chỉ của tôi</span>
+                        <CiLocationOn className='icon-account'/> <span className='name_product'>Địa chỉ của tôi</span>
                     </div>
                     </Link>
                     <Link to='/Account/Favorite'>
@@ -44,6 +55,7 @@ function Address() {
                         <CiHeart className='icon-account'/> <span className='name_product'>Danh sách yêu thích</span>
                     </div>
                     </Link>
+                    
                 </div>
             </div>
             <div className='right' style={{"background-color": "#ffffff"}}>

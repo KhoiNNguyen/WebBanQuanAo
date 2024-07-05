@@ -5,7 +5,7 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { FaStar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addProDuctFavorite, getAllProduct } from "../../../features/product/productSlice";
 import { getAllProductDetail } from "../../../features/productDetail/productDetailsSlice";
 import { getAllBrand } from "../../../features/brand/brandSlice";
@@ -14,12 +14,14 @@ import { CiHeart } from "react-icons/ci";
 import { getAllUser } from "../../../features/user/userSlice";
 import { getAllImage } from "../../../features/image/imageSlice";
 
-const customer = JSON.parse(localStorage.getItem("customer"));
-const userId = customer?.userId;
+
 
 function HomeClient() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state);
+  const customer = JSON.parse(localStorage.getItem("customer"));
+  const userId = customer?.userId;
+
   useEffect(() => {
     getProduct();
   }, []);
@@ -31,7 +33,7 @@ function HomeClient() {
         productId: id,
     }))
     else{
-      alert("vui long dawng nhap de su dung")
+      alert("vui lòng đăng nhập để sử dụng chứa năng này")
     }
   }
 
@@ -41,7 +43,7 @@ function HomeClient() {
     const ps = productState.product.product[i];
     if (
       !seenProductDetailIds.has(ps.productDetailId) &&
-      ps.productSaleId ===1
+      ps.productSaleId ===5
     ) {
       const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
         resultDiscount.push({
@@ -224,11 +226,7 @@ const resultProTypeMail=[];
   }
 
   function formatPrice(price) {
-    // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
     price = parseInt(price);
-  
-    // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
-    // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
     return price.toLocaleString('vi-VN') + 'đ';
   }
 
@@ -300,11 +298,13 @@ const resultProTypeMail=[];
         </div>
         <div className="preview_sale">
           <div className="banner">
+            <Link to="/ProductSale">
             <img
               src="/Image/Logo/Sale.png"
               class="scroll-desktop-lazyload"
               alt="icon flash"
-            />
+              />
+              </Link>
           </div>
           <div className="headerSale">
             <div className="iconSale">
@@ -324,11 +324,16 @@ const resultProTypeMail=[];
                 {resultDiscount.map((product) => (
                   <div class="col">
                   <div className="item_product_main">
-                    <div className="product_review">
-                      <span>
-                        <FaStar /> 5
+                    {product.productDetail.averageRating?<div className="product_review">
+                      <span className="rate-avetage">
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
                       </span>
-                    </div>
+                    </div>:<div className="product_review d-none">
+                      <span>
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+
+                      </span>
+                    </div>}
                     <div className="item_content">
                       <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
                       <Link to={`/ProductDetail/${product.id}`} className="image_thumb">
@@ -363,11 +368,13 @@ const resultProTypeMail=[];
         </div>
         <div className="preview_sale">
           <div className="banner">
+          <Link to={`/Brand/1`}>
             <img
               src="/Image/Logo/BannerGucci.png"
               class="scroll-desktop-lazyload"
               alt="icon flash"
             />
+            </Link>
           </div>
           <div className="headerSale">
             <div className="iconSale">
@@ -387,11 +394,16 @@ const resultProTypeMail=[];
               {resultGucci.map((product) => (
                   <div class="col">
                   <div className="item_product_main">
-                    <div className="product_review">
-                      <span>
-                        <FaStar /> 5
+                    {product.productDetail.averageRating?<div className="product_review">
+                      <span className="rate-avetage">
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
                       </span>
-                    </div>
+                    </div>:<div className="product_review d-none">
+                      <span>
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+
+                      </span>
+                    </div>}
                     <div className="item_content">
                     <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
 
@@ -409,13 +421,13 @@ const resultProTypeMail=[];
                         </div>
                         </Link>
                         <div className="price">
-                          <span className="price_new">{formatPrice(product.price)}</span>
-                          <span className="price_current">{formatPrice(product.price)}</span>
+                        <span className="price_new">{formatPrice(product.price-product.price*(product.productSale.percentDiscount/100))}</span>
+                        <span className="price_current">{formatPrice(product.price)}</span>
                         </div>
                         <div className="color_group"></div>
                       </div>
                     </div>
-                    <div className="product-favorite">
+                    <div className="product-favorite"  onClick={() => {addToWish(product.id)}}>
                       <span>
                       <CiHeart />
                       </span>
@@ -429,11 +441,13 @@ const resultProTypeMail=[];
         </div>
         <div className="preview_sale">
           <div className="banner">
+          <Link to={`/Brand/3`}>
             <img
               src="/Image/Logo/BannerLV.png"
               class="scroll-desktop-lazyload"
               alt="icon flash"
             />
+            </Link>
           </div>
           <div className="headerSale">
             <div className="iconSale">
@@ -453,11 +467,16 @@ const resultProTypeMail=[];
               {resultLV.map((product) => (
                   <div class="col">
                   <div className="item_product_main">
-                    <div className="product_review">
-                      <span>
-                        <FaStar /> 5
+                  {product.productDetail.averageRating?<div className="product_review">
+                      <span className="rate-avetage">
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
                       </span>
-                    </div>
+                    </div>:<div className="product_review d-none">
+                      <span>
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+
+                      </span>
+                    </div>}
                     <div className="item_content">
                     <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
                     <Link to={`/ProductDetail/${product.id}`} className="image_thumb">
@@ -472,13 +491,13 @@ const resultProTypeMail=[];
                           <span  className="name_product">{product.name}</span>
                         </div>
                         <div className="price">
-                          <span className="price_new">{formatPrice(product.price)}</span>
-                          <span className="price_current">{formatPrice(product.price)}</span>
+                        <span className="price_new">{formatPrice(product.price-product.price*(product.productSale.percentDiscount/100))}</span>
+                        <span className="price_current">{formatPrice(product.price)}</span>
                         </div>
                         <div className="color_group"></div>
                       </div>
                     </div>
-                    <div className="product-favorite">
+                    <div className="product-favorite"  onClick={() => {addToWish(product.id)}}>
                       <span>
                       <CiHeart />
                       </span>
@@ -487,19 +506,18 @@ const resultProTypeMail=[];
                 </div>
                 ))}
               </div>
-
-              {/* <div className="next"><BiSolidSkipNextCircle /></div>
-                <div className="previous"><BiSolidSkipPreviousCircle /></div> */}
             </div>
           </div>
         </div>
         <div className="preview_sale">
           <div className="banner">
+          <Link to={`/Brand/5`}>
             <img
               src="/Image/Logo/BannerNike.png"
               class="scroll-desktop-lazyload"
               alt="icon flash"
             />
+            </Link>
           </div>
           <div className="headerSale">
             <div className="iconSale">
@@ -538,13 +556,13 @@ const resultProTypeMail=[];
                           <span className="name_product">{product.name}</span>
                         </div>
                         <div className="price">
-                          <span className="price_new">{formatPrice(product.price)}</span>
-                          <span className="price_current">{formatPrice(product.price)}</span>
+                        <span className="price_new">{formatPrice(product.price-product.price*(product.productSale.percentDiscount/100))}</span>
+                        <span className="price_current">{formatPrice(product.price)}</span>
                         </div>
                         <div className="color_group"></div>
                       </div>
                     </div>
-                    <div className="product-favorite">
+                    <div className="product-favorite"  onClick={() => {addToWish(product.id)}}>
                       <span>
                       <CiHeart />
                       </span>

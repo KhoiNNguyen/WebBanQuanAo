@@ -12,6 +12,8 @@ import cartSlice from "../features/cart/cartSlice";
 import voucherSlice from "../features/voucher/voucherSlice";
 import invoiceSlice from "../features/invoice/invoiceSlide";
 import invoiceDetailSlide from "../features/invoiceDetail/invoiceDetailSlice";
+import shippingStatusSlice  from "../features/paymentStatus/paymentStatusSlice";
+import  commentSilce  from "../features/comment/commentSlice";
 
 export const store=configureStore({
     reducer:{
@@ -28,5 +30,7 @@ export const store=configureStore({
         voucher:voucherSlice,
         invoice:invoiceSlice,
         invoiceDetail:invoiceDetailSlide,
+        shippingStatus:shippingStatusSlice,
+        comment:commentSilce,
     }
 })

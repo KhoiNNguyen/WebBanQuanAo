@@ -36,5 +36,6 @@ namespace API_Server.Models
         public ShippingStatus ShippingStatus { get; set; }
         public int PaymentStatusId { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
+        public string TransactionReference { get; set; }
     }
 }

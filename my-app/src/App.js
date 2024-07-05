@@ -29,6 +29,15 @@ import HomeAdmin from './Pages/Admin/Home/HomeAdmin';
 import User from "./Pages/Admin/User/User";
 import Invoice from "./Pages/Admin/Invoice/Invoice";
 import InvoiceDetail from "./Pages/Admin/InvoiceDetail/InvoiceDetail";
+import Search from "./Pages/Client/Search/Search";
+import Deliver from "./Pages/Client/StatusOrder/Deliver";
+import SuccessOrder from "./Pages/Client/StatusOrder/ProductReviews";
+import CancelOrder from "./Pages/Client/StatusOrder/Cancel";
+import OrderDetail from "./Pages/Client/account/orderDetail";
+import PaySuccess from "./Pages/Client/Pay/PaySuccess";
+import Ordersuccess from "./Pages/Client/StatusOrder/Ordersuccess";
+import ChangePassword from "./Pages/Client/account/changePassword";
+import VoucherClient from "./Pages/Client/Voucher/Voucher";
 
 function App() {
   return (
@@ -52,7 +61,7 @@ function App() {
         </Route>
         <Route path="/" element={<LayOutClient />}>
           <Route index element={<HomeClient />} />
-          <Route path="/Login" element={<Login />}></Route>
+          <Route path="/login" element={<Login />}></Route>
           <Route path="/Register" element={<Register />}></Route>
           <Route path="/ProductDetail" element={<ProductDetail />}></Route>
           <Route path="/Account" element={<Account />}></Route>
@@ -61,13 +70,22 @@ function App() {
           <Route path="/Account/Favorite" element={<Favorite />}></Route>
           <Route path="/Cart" element={<Cart />}></Route>
           <Route path="/pay" element={<Pay />}></Route>
+          <Route path="/ordersuccess" element={<PaySuccess />}></Route>
           <Route path="/:productTypeId/:genderId" element={<CategoryProduct />}></Route>
           <Route path="/Brand/:brandId" element={<ProductBrand />}></Route>
           <Route path="/ProductSale" element={<ClientProductSale />}></Route>
           <Route path="/ProductDetail/:productId" element={<ProductDetail />}></Route>  
+          <Route path="/search/:name" element={<Search />}></Route>  
+          <Route path="/account/orderdetail/deliver" element={<Deliver />}></Route>  
+          <Route path="/account/orderdetail/cancel" element={<CancelOrder />}></Route>  
+          <Route path="/account/orderdetail/successorder" element={<SuccessOrder />}></Route>  
+          <Route path="/account/orderdetail/driversuccess" element={<Ordersuccess />}></Route>  
+          <Route path="/account/orderdetail/confim" element={<OrderDetail />}></Route>  
+          <Route path="/account/changepassword" element={<ChangePassword />}></Route>  
+          <Route path="/voucher-sale" element={<VoucherClient />}></Route>  
         </Route>
-
       </Routes>
+
     </BrowserRouter>
   );
 }

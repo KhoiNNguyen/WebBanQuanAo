@@ -10,6 +10,14 @@ export const registerUser=createAsyncThunk("auth/register",async (userData,thunk
     }
 })
 
+export const registerGGUser=createAsyncThunk("auth/registerGG",async (userData,thunkAPI)=>{
+    try{
+        return authService.registerGG(userData)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
 export const loginUser=createAsyncThunk("auth/login",async (userData,thunkAPI)=>{
     try{
         return authService.login(userData)
@@ -18,9 +26,34 @@ export const loginUser=createAsyncThunk("auth/login",async (userData,thunkAPI)=>
     }
 })
 
+export const loginGGUser=createAsyncThunk("auth/loginGG",async (userData,thunkAPI)=>{
+    try{
+        return authService.loginGG(userData)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
 export const getAllUser=createAsyncThunk("auth/get-user",async (thunkAPI)=>{
     try{
         return authService.getUser();
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
+
+export const changePassword=createAsyncThunk("auth/changePassword-user",async (data,thunkAPI)=>{
+    try{
+        return authService.changePasswordUser(data);
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
+export const changeInfo=createAsyncThunk("auth/changeInfo-user",async (data,thunkAPI)=>{
+    try{
+        return authService.changeInfoUser(data);
     }catch(error){
         return thunkAPI.rejectWithValue(error)
     }
@@ -62,18 +95,17 @@ export const authSlice=createSlice({
                 toast.error(action.error)
             }
         })
-        builder.addCase(loginUser.pending,(state)=>{
+        .addCase(registerGGUser.pending,(state)=>{
             state.isLoading=true
-        }).addCase(loginUser.fulfilled,(state,action)=>{
+        }).addCase(registerGGUser.fulfilled,(state,action)=>{
             state.isLoading=false;
             state.isError=false;
             state.isSuccess=true;
-            state.user=action.payload;
+            state.createUser=action.payload;
             if(state.isSuccess===true){
-                localStorage.setItem('loginsuccess',"success")
-                toast.success("Đăng nhập thành công")
+                toast.success("Tạo tài khoản thành công")
             }
-        }).addCase(loginUser.rejected,(state,action)=>{
+        }).addCase(registerGGUser.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
             state.isSuccess=false;
@@ -82,7 +114,47 @@ export const authSlice=createSlice({
                 toast.error(action.error)
             }
         })
-        builder.addCase(getAllUser.pending,(state)=>{
+        .addCase(loginUser.pending,(state)=>{
+            state.isLoading=true
+        }).addCase(loginUser.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.user=action.payload;
+            if(state.isSuccess===true){
+                localStorage.setItem('loginsuccess',"success")
+                toast.success("Đăng nhập thành công");
+            }
+        }).addCase(loginUser.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error
+            if(state.isError===true){
+                toast.error("Đăng nhập thấy bại")
+            }
+        })
+        .addCase(loginGGUser.pending,(state)=>{
+            state.isLoading=true
+        }).addCase(loginGGUser.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.user=action.payload;
+            if(state.isSuccess===true){
+                localStorage.setItem('loginsuccess',"success")
+                toast.success("Đăng nhập thành công");
+            }
+        }).addCase(loginGGUser.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error
+            if(state.isError===true){
+                toast.error("Đăng nhập thấy bại");
+            }
+        })
+        .addCase(getAllUser.pending,(state)=>{
             state.isLoading=true
         }).addCase(getAllUser.fulfilled,(state,action)=>{
             state.isLoading=false;
@@ -90,6 +162,44 @@ export const authSlice=createSlice({
             state.isSuccess=true;
             state.product=action.payload;
         }).addCase(getAllUser.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error
+            if(state.isError===true){
+                toast.error(action.error)
+            }
+        })
+        .addCase(changePassword.pending,(state)=>{
+            state.isLoading=true
+        }).addCase(changePassword.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.product=action.payload;
+            if(state.isSuccess===true){
+                toast.success("Đổi mật khẩu thành công");
+            }
+        }).addCase(changePassword.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error
+            if(state.isError===true){
+                toast.error(action.error)
+            }
+        })
+        .addCase(changeInfo.pending,(state)=>{
+            state.isLoading=true
+        }).addCase(changeInfo.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.product=action.payload;
+            if(state.isSuccess===true){
+                toast.success("Thay đổi thông tin thành công");
+            }
+        }).addCase(changeInfo.rejected,(state,action)=>{
             state.isLoading=false;
             state.isError=true;
             state.isSuccess=false;

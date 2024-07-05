@@ -18,7 +18,7 @@ namespace API_Server.Models
         public Brand Brand { get; set; }
         public int ProductTypeId { get; set; }
         public ProductType ProductType { get; set; }
-
         public bool Status { get; set; }
+        public double? AverageRating { get; set; }
     }
 }

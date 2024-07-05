@@ -6,6 +6,7 @@ import { getAllProductDetail } from "../../../features/productDetail/productDeta
 import { useEffect, useState } from "react";
 import { getAllProduct } from "../../../features/product/productSlice";
 import { Link } from "react-router-dom";
+import { getAllImage } from "../../../features/image/imageSlice";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -15,9 +16,11 @@ function Cart() {
   const customer = JSON.parse(localStorage.getItem("customer"));
   const userId = customer?.userId;
   const [cartDetails, setCartDetails] = useState([]);
+
   useEffect(() => {
     getProduct();
   }, []);
+  
   const removeCartItem = (id) => {
     dispatch(removeCart(id));
     setTimeout(() => {
@@ -55,6 +58,7 @@ function Cart() {
         console.error("Sản phẩm không xác định hoặc không phải là một mảng");
         }
   }, [productState, userId]);
+  
   const handleQuantityChange = (id, newQuantity) => {
     setCartDetails(prevCartDetails =>
       prevCartDetails.map(product =>
@@ -81,6 +85,7 @@ function Cart() {
     dispatch(getAllCart());
     dispatch(getAllProduct());
     dispatch(getAllProductDetail());
+    dispatch(getAllImage())
   };
   useEffect(() => {
     let sum = 0;
@@ -96,13 +101,15 @@ function Cart() {
   },[productState?.cart?.product, userId]);
 
   function formatPrice(price) {
-    // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
     price = parseInt(price);
-  
-    // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
-    // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
     return price.toLocaleString('vi-VN') + 'đ';
   }
+
+  const [showAlert, setShowAlert] = useState(true);
+
+  const handleClose = () => {
+    setShowAlert(false);
+  };
   console.log(cartDetails)
     return (
       (userId? <div className="background-all">
@@ -125,10 +132,13 @@ function Cart() {
                   <div className="cart-item" key={product.id}>
                     <div className="cart-product">
                       <div className="img-cart">
-                      <img
+                      <Link to={`/ProductDetail/${product.productId}`}>
+                          <img
                            src={`https://localhost:7026/images/products/${product.thumbnail}`}
                             alt="n"
                           />
+                        </Link>
+                     
                       </div>
                       <div className="cart-info">
                         <div className="name-cart-info">
@@ -157,7 +167,7 @@ function Cart() {
                         </div>
                         <div className="price2-cart-info">
                           <div className="price2">
-                          <span>{formatPrice(Number(product.product.price)*Number(product.quantity))}</span>
+                          <span>{formatPrice(Number(product.price)*Number(product.quantity))}</span>
                           </div>
                           <div className="remove-cart" onClick={()=>removeCartItem(product.id)}>
                             <CiTrash />
@@ -180,10 +190,24 @@ function Cart() {
                 <button >Thanh toán ngay</button>
                 </Link>
               </div>
+              <div className="voucher-pay">
+                  
+              </div>
             </div>
           </div>
         </div>
-      </div>:<div>Bạn chưa đăng nhập vùi lòng đăng nhập</div>)
+      </div>:
+      <div>
+        {showAlert && (
+        <div className="alert">
+          <span className="alert-message">Vui lòng tiến hành đăng nhập để sử dụng chức năng này</span>
+          <button className="close-button" onClick={handleClose}>
+            &times;
+          </button>
+        </div>
+      )}  
+        </div>  
+    )
      
     );
 }

@@ -16,6 +16,30 @@ export const addInvoiceDetail = createAsyncThunk("invoiceDetail/add-invoiceDetai
         return thunkAPI.rejectWithValue(err);
     }
 })
+
+export const removeInvoiceDetail = createAsyncThunk("invoiceDetail/remove-invoiceDetail", async (id,thunkAPI) => {
+    try {
+        return await invoiceDetailService.changeShippingInvoiceDetail(id)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+    }
+})
+
+export const changeShipping4InvoiceDetail = createAsyncThunk("invoiceDetail/changeShipping4-invoiceDetail", async (id,thunkAPI) => {
+    try {
+        return await invoiceDetailService.changeShippingSuccessInvoiceDetail(id)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+    }
+})
+
+export const deleteInvoiceDetail = createAsyncThunk("invoiceDetail/delete-invoiceDetail", async (id,thunkAPI) => {
+    try {
+        return await invoiceDetailService.deleteInvoiceDetail(id)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+    }
+})
 const initalState = {
     invoiceDetail: "",
     isError: false,
@@ -56,6 +80,35 @@ export const invoiceDetailSlide = createSlice({
             state.isSuccess = false;
             state.message = action.error;
         })
+        .addCase(removeInvoiceDetail.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(removeInvoiceDetail.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.product = action.payload;
+
+        }).addCase(removeInvoiceDetail.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+        })
+        .addCase(deleteInvoiceDetail.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(deleteInvoiceDetail.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.product = action.payload;
+
+        }).addCase(deleteInvoiceDetail.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+        })
+        
     }
 })
 export default invoiceDetailSlide.reducer;

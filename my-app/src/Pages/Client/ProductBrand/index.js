@@ -9,12 +9,14 @@ import { getAllColor } from "../../../features/color/colorSlice";
 import { getAllSize } from "../../../features/size/sizeSlice";
 import { getAllProductDetail } from "../../../features/productDetail/productDetailsSlice";
 import { getAllImage } from "../../../features/image/imageSlice";
+import { getAllBrand } from "../../../features/brand/brandSlice";
 
 function ProductBrand() {
   const brandId = useParams();
   const dispatch = useDispatch();
   const productState = useSelector((state) => state);
   const [productBrand, setProductBrand] = useState([]);
+  const [nameBrand,setNameBrand]=useState();
   const priceRanges = {
     under500k: { min: 0, max: 200000 },
     from500kTo1M: { min: 200000, max: 500000 },
@@ -57,8 +59,9 @@ function ProductBrand() {
     dispatch(getAllSize());
     dispatch(getAllProductDetail());
     dispatch(getAllImage());
+    dispatch(getAllBrand())
   };
-
+  console.log(productState)
   const resultSize = [];
   if (productState.size.product && Array.isArray(productState.size.product)) {
     for (let i = 0; i < productState.size.product.length; i++) {
@@ -72,6 +75,17 @@ function ProductBrand() {
       resultColor.push(productState.color.product[i]);
     }
   } 
+
+  useEffect(()=>{   
+    if(productState.brand.product && Array.isArray(productState.brand.product)){
+      for (let i = 0; i < productState.brand.product.length; i++) {
+        if(productState.brand.product[i].id === Number(brandId.brandId)){
+          setNameBrand(productState.brand.product[i].name)
+        }
+      }
+    }
+  },[brandId.brandId, productState.brand.product])
+
 
   useEffect(()=>{
     const resultBrand = [];
@@ -96,8 +110,9 @@ function ProductBrand() {
       }
     }
     setProductBrand(resultBrand)
-  },[productState])
+  },[brandId.brandId,productState.brand.product])
 
+  
  
   const resultBrandAll = [];
   if (
@@ -155,11 +170,7 @@ function ProductBrand() {
     setProductBrand(colorone);
   };
   function formatPrice(price) {
-    // Chuyển giá trị số thành chuỗi và đảm bảo nó là số nguyên
     price = parseInt(price);
-
-    // Sử dụng toLocaleString để định dạng số tiền thành chuỗi theo ngôn ngữ và quốc gia cụ thể
-    // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
     return price.toLocaleString("vi-VN") + "đ";
   }
   return (
@@ -168,10 +179,12 @@ function ProductBrand() {
         <div className="Inner">
           <div className="header-account">
             <div className="title_header">
-              <span>Trang chủ / </span>
-              <span>Áo Nữ</span>
+            <Link to="/">
+                <span>Trang chủ / </span>
+              </Link>
+              <span>{nameBrand}</span>
             </div>
-            <h4>ÁO KHOÁC</h4>
+            <h4>{nameBrand}</h4>
           </div>
           <div className="container-account">
             <div
@@ -263,7 +276,7 @@ function ProductBrand() {
                           </span>
                         </div>
                         <div className="item_content ">
-                          <div className="product_thumnail">
+                          <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
                             <Link
                               to={`/ProductDetail/${product.id}`}
                               className="image_thumb"

@@ -4,6 +4,6 @@ namespace API_Server.Services
 {
     public interface IVnPayService
     {
-        string CreatePaymentUrl(string vnp_TmnCode, string vnp_HashSecret, string vnp_Url, string vnp_Returnurl, Invoice invoice);
+        string CreatePaymentUrl(string vnp_TmnCode, string vnp_HashSecret, string vnp_Url, string vnp_Returnurl, string transactionReference, Invoice invoice);
     }
 }

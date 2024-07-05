@@ -8,7 +8,9 @@
     ".NETCoreApp,Version=v6.0": {
       "API_Server/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.29",
+          "Microsoft.AspNetCore.Authentication.Facebook": "6.0.31",
+          "Microsoft.AspNetCore.Authentication.Google": "6.0.31",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.30",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.28",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.31",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.29",
@@ -587,14 +589,30 @@
         }
       },
       "MessagePackAnalyzer/2.1.152": {},
-      "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.29": {
+      "Microsoft.AspNetCore.Authentication.Facebook/6.0.31": {
+        "runtime": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Facebook.dll": {
+            "assemblyVersion": "6.0.31.0",
+            "fileVersion": "6.0.3124.26908"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.Google/6.0.31": {
+        "runtime": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+            "assemblyVersion": "6.0.31.0",
+            "fileVersion": "6.0.3124.26908"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.30": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.35.0"
         },
         "runtime": {
           "lib/net6.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
-            "assemblyVersion": "6.0.29.0",
-            "fileVersion": "6.0.2924.17108"
+            "assemblyVersion": "6.0.30.0",
+            "fileVersion": "6.0.3024.21619"
           }
         }
       },
@@ -3204,12 +3222,26 @@
       "path": "messagepackanalyzer/2.1.152",
       "hashPath": "messagepackanalyzer.2.1.152.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.29": {
+    "Microsoft.AspNetCore.Authentication.Facebook/6.0.31": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-daOVgz0G2YwPRWOxGKCqa8mNjzd+2PXTo05sq1lKTY14OaNDByOYPjNrgDip5qmyLawuhyRn9gmSIDqdW0rKBA==",
-      "path": "microsoft.aspnetcore.authentication.jwtbearer/6.0.29",
-      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.6.0.29.nupkg.sha512"
+      "sha512": "sha512-0Blqw2/g1VK7lglERMA3rr3TcQ+qvzis0gw/TL6Tb0kGHmexbL9bM7GEIuPb5kRxZJZE4eIIZSwYckMTsU9IYg==",
+      "path": "microsoft.aspnetcore.authentication.facebook/6.0.31",
+      "hashPath": "microsoft.aspnetcore.authentication.facebook.6.0.31.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.Google/6.0.31": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KAglSfZl1dDogVnxiECzMEuMl7gM0meATcO0iCJMzCdWHKpfu/1vby8MGZg9hwfjtHOhH2y/BzNhEH3IV9kJng==",
+      "path": "microsoft.aspnetcore.authentication.google/6.0.31",
+      "hashPath": "microsoft.aspnetcore.authentication.google.6.0.31.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.30": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PPB0+6RD4V5mHlpd4K95S+IuOsfzmnrjKxOhUysF+/9gP6bPasahC3GxOfN/yGKBhuPoyyJVSx18uUrZ+9UeNw==",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/6.0.30",
+      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.6.0.30.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Cryptography.Internal/6.0.28": {
       "type": "package",

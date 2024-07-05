@@ -10,6 +10,7 @@ import { getAllProduct } from "../../../features/product/productSlice";
 import { getAllProductDetail } from "../../../features/productDetail/productDetailsSlice";
 import { getAllImage } from "../../../features/image/imageSlice";
 
+
 function CategoryProduct() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state);
@@ -209,10 +210,11 @@ function CategoryProduct() {
                   <span>Đồ Nữ</span>
                 )}
               </span>
-            </div>
-            {categoryProduct.map((product) => (
+              {categoryProduct.map((product) => (
               <h4 className="product-type">{product.name}</h4>
             ))}
+            </div>
+           
           </div>
           <div className="container-account">
             <div
@@ -297,7 +299,7 @@ function CategoryProduct() {
                           </span>
                         </div>
                         <div className="item_content ">
-                          <div className="product_thumnail">
+                          <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
                             <Link
                               to={`/ProductDetail/${product.id}`}
                               className="image_thumb"

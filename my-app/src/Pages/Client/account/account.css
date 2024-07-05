@@ -1,17 +1,17 @@
-a{
+a {
   color: #595959 !important;
   text-decoration: none !important;
 }
 
-.background-all{
-  background-color: #f8f8f8;;
+.background-all {
+  background-color: #f8f8f8;
 }
 
-.container-account{
+.container-account {
   display: flex;
 }
 
-.header-account h4{
+.header-account h4 {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,7 +21,7 @@ a{
   text-transform: uppercase;
   font-size: 30px;
   margin-bottom: 10px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding-top: 40px;
   padding-bottom: 20px;
 }
@@ -29,7 +29,6 @@ a{
 .left-account {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
   width: 24%;
   background-color: #ffffff;
@@ -64,58 +63,57 @@ a{
   border-radius: 12px;
 }
 
-.function-account{
+.function-account {
   width: 100%;
   max-height: 700px;
   min-height: 500px;
 }
 
-.function-account span{
+.function-account span {
   font-size: 14px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.active .icon-account{
-  color:#fcaf17;
+.active .icon-account {
+  color: #fcaf17;
 }
 
-.active span{
-  color: #fcaf17;;
+.active span {
+  color: #fcaf17;
 }
 
-.function-account .icon-account{
+.function-account .icon-account {
   font-size: 30px;
   margin-right: 5px;
 }
 
-.function-account .func{
+.function-account .func {
   padding: 5px;
 }
 
-.function-account .func:hover{
-  background-color: #FEEEEA;
+.function-account .func:hover {
+  background-color: #feeeea;
   color: #fcaf17;
 }
 
-.function-account .func:hover .icon-account{
-  color:#fcaf17;
-}
-
-.function-account .func:hover span{
-  color:#fcaf17;
-}
-
-
-.function-account .active{
-  background-color: #FEEEEA;
+.function-account .func:hover .icon-account {
   color: #fcaf17;
 }
 
-.right{
+.function-account .func:hover span {
+  color: #fcaf17;
+}
+
+.function-account .active {
+  background-color: #feeeea;
+  color: #fcaf17;
+}
+
+.right {
   width: 74%;
 }
 
-.header-right{
+.header-right {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -123,38 +121,38 @@ a{
   border-bottom: 1px solid gray;
 }
 
-.header-right h1{
+.header-right h1 {
   color: #fcaf17;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 18px;
-    margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  margin: 0;
 }
 
-.header-right button{
+.header-right button {
   background: #fcaf17;
-  color: #FFF;
-  border:none;
+  color: #fff;
+  border: none;
   border-radius: 4px;
   height: 40px;
 }
 
-.form-info{
+.form-info {
   padding: 20px 30px;
   display: flex;
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
-.form-info p{
+.form-info p {
   flex: 0 0 50%;
-    max-width: 50%;
+  max-width: 50%;
 }
 
-p{
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+p {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
 }
 
-.table1{
+.table1 {
   width: 100%;
   max-width: 100%;
   margin-bottom: 1rem;
@@ -165,84 +163,100 @@ p{
   background-color: #f5f5f5;
 }
 
-.table1 th{
+.table1 th {
   padding-left: 30px !important;
   font-weight: 500;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
 }
 
-.table1 tr td{
+.table1 tr td {
   border: none !important;
-  border-top: 1px solid #DDE1EF !important;
-  padding: 12px 15px;
+  border-top: 1px solid #dde1ef !important;
+  padding: 12px 0px;
+  text-align: center;
   line-height: 16px;
   vertical-align: middle;
 }
 
-.table1 tr td:nth-child(1){
+.table1 tr td:nth-child(1) {
   padding-left: 30px !important;
 }
 
-.thead-default{
+.thead-default {
   width: 900px;
   height: 52px;
 }
 
-.body-address{
+.body-address {
   display: flex;
   justify-content: space-between;
   padding: 20px 30px;
 }
 
-.body-address .info-address p{
+.body-address .info-address p {
   margin-bottom: 5px;
 }
 
-.body-address .info-address strong{
+.body-address .info-address strong {
   display: inline-block;
-    width: 109px;
-    font-weight: initial;
-    color: #7A7A9D;
+  width: 109px;
+  font-weight: initial;
+  color: #7a7a9d;
 }
 
-.body-favorite{
+.body-favorite {
   width: 100%;
   height: auto;
   padding: 20px 0px;
   height: 160px;
 }
 
-
-
-.body-favorite .product-favorite{
+.body-favorite .product-favorite {
   top: 51.5%;
   left: 85%;
 }
 
-.row{
+.row {
   height: auto;
+  justify-content: space-between;
 }
 
-.Left .col{
+.right .col {
   flex: 0 0 0 !important;
+  width: 20% !important;
 }
 
-.btn-order{
+.btn-order {
   display: flex;
   justify-content: space-between;
 }
 
-.btn-order button{
+.btn-order button {
   width: 30%;
-    height: 50px;
-    background-color:#e8b95b;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    margin: 20px 0px 40px 0px;
+  height: 50px;
+  background-color: #e8b95b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  margin: 20px 0px 40px 0px;
 }
 
-.btn-order .active{
+.btn-order .active {
   background-color: #fcaf17;
+}
+
+.change-password{
+  width: 30%;
+  height: 50px;
+  background-color: #e8b95b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  margin: 20px 0px 40px 0px;
+}
+
+.favorite-null{
+  text-align: center;
+  padding-top: 15%;
 }

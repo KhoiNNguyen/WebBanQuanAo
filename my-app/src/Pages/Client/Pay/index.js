@@ -4,7 +4,7 @@ import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getAllCart } from "../../../features/cart/cartSlice";
+import { getAllCart, removeCart } from "../../../features/cart/cartSlice";
 import { getAllProduct } from "../../../features/product/productSlice";
 import { getAllProductDetail } from "../../../features/productDetail/productDetailsSlice";
 import { useFormik } from "formik";
@@ -12,6 +12,8 @@ import * as yup from "yup";
 import { getAllVoucher } from "../../../features/voucher/voucherSlice";
 import { addInvoice } from "../../../features/invoice/invoiceSlide";
 import { addInvoiceDetail } from "../../../features/invoiceDetail/invoiceDetailSlice";
+import { getAllImage } from "../../../features/image/imageSlice";
+import { v4 as uuidv4 } from 'uuid';
 
 const shippingSchema = yup.object({
   username: yup.string().required("Bạn chưa nhập UserName"),
@@ -30,7 +32,7 @@ function Pay() {
   const customer = JSON.parse(localStorage.getItem("customer"));
   const userId = customer.userId;
   const [voucher, setVoucher] = useState("");
-  const [voucherDiscount, setVoucherDiscount] = useState({});
+  const [voucherDiscount, setVoucherDiscount] = useState({discount:0,voucherId:null});
   const [finalTotal, setFinalTotal] = useState(totalCart);
   const handleVoucherChange = (event) => {
     setVoucher(event.target.value);
@@ -72,9 +74,10 @@ function Pay() {
           (pd) => pd.id === fm.productId
         );
         if (product) {
+          const ps_image=productState?.image?.product?.find(pro=>pro.productId===fm.productId)
           resultCartProduct.push({
             ...fm,
-            thumbnail: product.productDetail.thumbnail,
+            thumbnail: ps_image.name,
             color: product.color.name,
             size: product.size.name,
           });
@@ -99,16 +102,26 @@ function Pay() {
       const username = `${values.address}`;
       const phoneShip = `${values.phone}`;
       const paymentMethodId = `${values.payment}`;
+      const currentDate = new Date(); // Lấy ngày hiện tại
+
+      // Định dạng ngày tháng nếu cần
+      const formattedDate = currentDate.toISOString().split('T')[0];
+      const fullUuid = uuidv4();
+      const transactionReference = fullUuid.substr(0, 8);
       const invoiceId = await dispatch(
         addInvoice({
           addressShip,
           username,
           phoneShip,
+          invoiceDate:formattedDate,
           total: totalCart,
           discoundTotal: Number(finalTotal) === 0 ? totalCart : finalTotal,
           userId,
           paymentMethodId,
           voucherId: voucherDiscount.voucherId,
+          paymentStatusId: Number(`${values.payment}`) === 2 ? 2 : 1,
+          shippingStatusId:1,
+          transactionReference
         })
       ).unwrap();
       if (Number(paymentMethodId) === 1) {
@@ -123,7 +136,9 @@ function Pay() {
             unitPrice: invoiceId.discoundTotal === 0 ? totalCart : finalTotal,
           };
           dispatch(addInvoiceDetail(finalInvoiceDetail));
+          dispatch(removeCart(finalInvoiceDetail.productId))
         }
+        window.location.href = "http://localhost:3000/ordersuccess";
       } else if (Number(paymentMethodId) === 2) {
         try {
           for (let i = 0; i < resultCartProduct.length; i++) {
@@ -137,7 +152,8 @@ function Pay() {
               unitPrice: invoiceId.discoundTotal === 0 ? totalCart : finalTotal,
             };
             await dispatch(addInvoiceDetail(finalInvoiceDetail));
-            console.log(finalInvoiceDetail);
+          dispatch(removeCart(finalInvoiceDetail.productId))
+
           }
           // Gọi API để tạo URL thanh toán VNPay
           const response = await fetch(
@@ -147,6 +163,7 @@ function Pay() {
               headers: {
                 "Content-Type": "application/json",
               },
+              body: JSON.stringify({ transactionReference }),
             }
           );
 
@@ -185,6 +202,7 @@ function Pay() {
     dispatch(getAllProduct());
     dispatch(getAllProductDetail());
     dispatch(getAllVoucher());
+    dispatch(getAllImage())
   };
 
   function formatPrice(price) {
@@ -333,7 +351,7 @@ function Pay() {
             {resultCartProduct.map((product) => (
               <div className="cart-item">
                 <div className="cart-product">
-                  <div className="img-cart">
+                  <div className="img-cart-pay">
                     <img
                       src={`https://localhost:7026/images/products/${product.thumbnail}`}
                       alt="1"
@@ -371,20 +389,21 @@ function Pay() {
             </form>
             <div className="right-pay-info">
               <span>Tổng Tiền:</span>
-              <span>{totalCart}đ</span>
+              <span>{formatPrice(totalCart)}</span>
             </div>
             <div className="right-pay-info">
               <span>Voucher:</span>
-              <span>{voucherDiscount.discount}đ</span>
+              <span>{voucherDiscount.discount===0?0:formatPrice(voucherDiscount.discount)}</span>
+
             </div>
 
             <div className="right-pay-info">
               <span>Tổng tiền tạm tính:</span>
-              <span>{finalTotal ? finalTotal : totalCart}đ</span>
+              <span>{formatPrice(finalTotal ? finalTotal : totalCart)}</span>
             </div>
             <div className="right-pay-info mt-5">
               <h5> Tổng cộng:</h5>
-              <span>{finalTotal ? finalTotal : totalCart}đ</span>
+              <span>{formatPrice(finalTotal ? finalTotal : totalCart)}đ</span>
             </div>
           </div>
         </div>

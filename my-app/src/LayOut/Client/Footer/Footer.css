@@ -6,6 +6,7 @@
 }
 .col-content{
     display: flex;
+    justify-content: center;
 }
 
 .link-content{

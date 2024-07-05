@@ -75,6 +75,90 @@ namespace API_Server.Controllers
 
             return NoContent();
         }
+        [HttpPut("{id}/successorder")]
+        public async Task<IActionResult> SuccessInvoiceDetail(int id)
+        {
+            var invoiceDetail = await _context.InvoiceDetail
+                                        .Include(p => p.Invoice)
+                                     .FirstOrDefaultAsync(i => i.Id == id);
+
+            if (invoiceDetail == null)
+            {
+                return NotFound();
+            }
+
+            // Đổi trạng thái của đơn hàng thành đã hủy (assume 5 là đã hoàn thành)
+            invoiceDetail.Invoice.ShippingStatusId = 5;
+            invoiceDetail.Invoice.PaymentStatusId = 2;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InvoiceDetailExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}/CancelProduct")]
+        public async Task<IActionResult> CancelInvoiceDetail(int id)
+        {
+            var invoiceDetail = await _context.InvoiceDetail
+                .Include(p=>p.Invoice)
+                                     .FirstOrDefaultAsync(i => i.Id == id);
+
+            if (invoiceDetail == null)
+            {
+                return NotFound();
+            }
+
+            // Đổi trạng thái của đơn hàng thành đã hủy (assume 4 là đã hủy)
+            invoiceDetail.Invoice.ShippingStatusId = 6;
+
+            // Duyệt qua các sản phẩm trong InvoiceDetail và cập nhật số lượng sản phẩm
+            var product = await _context.Product.FindAsync(invoiceDetail.ProductId);
+            var productDetail = await _context.ProductDetail.FindAsync(invoiceDetail.Product.ProductDetailId);
+
+            if (product != null)
+            {
+                // Tăng số lượng sản phẩm lên
+                product.Quantity += invoiceDetail.Quantity;
+                productDetail.Quantity += invoiceDetail.Quantity;
+
+            }
+            else
+            {
+                // Xử lý khi sản phẩm không tồn tại
+                // Có thể ghi log lỗi hoặc thực hiện hành động khác tùy theo yêu cầu
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InvoiceDetailExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
 
         // POST: api/InvoiceDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -128,7 +212,6 @@ namespace API_Server.Controllers
             {
                 return NotFound();
             }
-
             _context.InvoiceDetail.Remove(invoiceDetail);
             await _context.SaveChangesAsync();
 

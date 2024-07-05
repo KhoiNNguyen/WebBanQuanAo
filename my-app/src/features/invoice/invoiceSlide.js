@@ -16,6 +16,14 @@ export const addInvoice = createAsyncThunk("invoice/add-invoice", async (invoice
         return thunkAPI.rejectWithValue(err);
     }
 })
+
+export const deleteInvoice = createAsyncThunk("invoice/delete-invoice", async (id,thunkAPI) => {
+    try {
+        return await invoiceService.deleteInvoice(id);
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+    }
+})
 const initalState = {
     invoice: "",
     isError: false,
@@ -51,6 +59,20 @@ export const invoiceSlice = createSlice({
             state.product = action.payload;
 
         }).addCase(addInvoice.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+        })
+        .addCase(deleteInvoice.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(deleteInvoice.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.product = action.payload;
+
+        }).addCase(deleteInvoice.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

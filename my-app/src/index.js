@@ -7,13 +7,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
+const clientId="46959152209-l8u7arh3b8nrbd2e0opv1gvtssip7eto.apps.googleusercontent.com";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <GoogleOAuthProvider clientId={clientId}>
     <Provider store={store}>
     <App />
     </Provider>
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );
 

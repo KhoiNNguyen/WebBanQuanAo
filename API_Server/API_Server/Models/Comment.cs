@@ -29,5 +29,6 @@ namespace API_Server.Models
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
+        public int Rate { get; set; }
     }
 }

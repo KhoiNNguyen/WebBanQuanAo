@@ -1,5 +1,5 @@
 .container-pay{
-    background-color: #fde7ff;
+    background-color: #f9f0e0;
 }
 
 .container-pay input{
@@ -91,6 +91,14 @@
     bottom: 0px;
 }
 
+.img-cart-pay img{
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .form-pay{
     display: flex;
     justify-content: space-between;
@@ -107,4 +115,48 @@
     justify-content: space-around;
     padding-top: .5rem;
     margin-top: 2rem;
+}
+
+.container-order{
+    margin-right: 20%;
+    margin-left: 20%;
+}
+
+.content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 20px 0px;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+}
+
+.header-ordersuccess{
+    text-align: center;
+    padding: 20px 0px;
+    color: #e8b95b;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.company-info{
+    width: 50%;
+}
+
+.order-info{
+    width: 50%;
+}
+
+.icon-order{
+    text-align: center;
+    margin: 20px 0px;
+}
+
+.thank-you{
+    margin: 10px 0px;
+}
+
+.text-link{
+    color: rgb(27, 51, 151) !important;
+    text-decoration: underline !important;
 }

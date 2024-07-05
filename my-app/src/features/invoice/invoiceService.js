@@ -10,16 +10,24 @@ const getInvoice = async (id) => {
 }
 
 const addInvoice=async(InvoiceDetail)=>{
-    const respone = await axios.post(`${base_url}Invoices`,InvoiceDetail,config);
-    if(respone.data){
-        return respone.data;
+    const response = await axios.post(`${base_url}Invoices`,InvoiceDetail,config);
+    if(response.data){
+        return response.data;
+    }
+}
+
+const deleteInvoice=async(id)=>{
+    const response = await axios.delete(`https://localhost:7026/api/Invoices/${id}`,config);
+    if(response.data){
+        return response.data;
     }
 }
 
 
 const invoiceService = {
     getInvoice,
-    addInvoice
+    addInvoice,
+    deleteInvoice,
 }
 
 export default invoiceService
