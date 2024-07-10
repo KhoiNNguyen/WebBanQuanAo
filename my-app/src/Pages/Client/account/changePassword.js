@@ -74,7 +74,7 @@ function ChangePassword() {
                   <span className="name_product">Đơn hàng của tôi</span>
                 </div>
               </Link>
-              <Link to="/order/confim">
+              <Link to="/account/orderdetail/confim">
                 <div className="func order ">
                   <CiDeliveryTruck className="icon-account" />{" "}
                   <span className="name_product">Chi tiết đơn hàng</span>

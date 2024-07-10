@@ -1,5 +1,5 @@
 import "./ProductDetail.css";
-import { FaRegStar, FaStar } from "react-icons/fa";
+import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { CiShoppingCart } from "react-icons/ci";
 import { IoTicketOutline } from "react-icons/io5";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
@@ -31,9 +31,19 @@ const ProductDetail = () => {
     }
   };
 
-  const increaseQuantity = () => {
-    setQuantity(quantity + 1);
+  const increaseQuantity = (currentquantity) => {
+    console.log(currentquantity)
+    setQuantity((prevQuantity) => {
+      if (prevQuantity < currentquantity) {
+        return prevQuantity + 1;
+      }
+      else{
+        alert("đã quá số lượng tồn kho")
+        return prevQuantity;
+      }
+    });
   };
+
 
   const handleChangColor = (id) => {
     setProductid(id);
@@ -80,7 +90,7 @@ const ProductDetail = () => {
       );
       setTimeout(() => {
         dispatch(getAllCart());
-      }, 300);
+      }, 200);
     }
     else{
       alert("Vui lòng đăng nhập để sử dụng chức năng này")
@@ -423,35 +433,47 @@ const ProductDetail = () => {
           ))}
         </div>
         <div className="Right">
-          {resultProduct.map((product) => (
-            <>
-              <div className="name-product">
-                <h5>{product.name}</h5>
-              </div>
-              <div className="rate">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-              </div>
-              <div className="quantity-sale name_product">
-                ({countcomment} đánh giá của khách hàng)
-              </div>
-              <div className="price">
-                <span className="price_new">
-                  {formatPrice(
-                    product.price -
-                      product.price *
-                        (product.productSale.percentDiscount / 100)
-                  )}
-                </span>
-                <span className="price_current">
-                  {formatPrice(product.price)}
-                </span>
-              </div>
-            </>
-          ))}
+        {resultProduct.map((product) =>{
+            const fullStars = Math.floor(product.productDetail.averageRating);
+            const hasHalfStar = product.productDetail.averageRating % 1 !== 0;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            return(
+              <>
+                <div className="name-product">
+                  <h5>{product.name}</h5>
+                </div>
+                <div className="rate">
+              {Array(fullStars)
+                .fill()
+                .map((_, index) => (
+                  <FaStar key={index} />
+                ))}
+              {hasHalfStar && <FaStarHalfAlt />}
+              {Array(emptyStars)
+                .fill()
+                .map((_, index) => (
+                  <FaRegStar key={index + fullStars + 1} />
+                ))}
+            </div>
+                <div className="quantity-sale name_product">
+                  ({countcomment} đánh giá của khách hàng)
+                </div>
+                <div className="price">
+                  <span className="price_new">
+                    {formatPrice(
+                      product.price -
+                        product.price *
+                          (product.productSale.percentDiscount / 100)
+                    )}
+                  </span>
+                  <span className="price_current">
+                    {formatPrice(product.price)}
+                  </span>
+                </div>
+              </>
+            )
+          } )}
+
           <div className="color">
             <p className=" name_product">Màu sắc:</p>
             <div className="btn-color-productDt">
@@ -494,8 +516,16 @@ const ProductDetail = () => {
           <div className="Quantity">
             <button onClick={decreaseQuantity}>-</button>
             <input value={quantity} />
-            <button onClick={increaseQuantity}>+</button>
+            {resultProduct.map((prodct) => (<>
+            
+              <button onClick={()=>increaseQuantity(prodct.quantity)}>+</button>
+                <span className="number-qantity">
+                  {prodct.quantity} sản phẩm có sẵn
+                </span>
+            </>
+              ))}
           </div>
+
           <div className="add-cart" onClick={uploadCart}>
             <button>
               {" "}

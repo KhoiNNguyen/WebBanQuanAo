@@ -67,6 +67,11 @@ const Invoice = () => {
     useEffect(() => {
         getListInvoice();
     },[])
+
+    function formatPrice(price) {
+        price = parseInt(price);
+        return price.toLocaleString("vi-VN") + "đ";
+      }
     return ( 
         <>
             <div className="">
@@ -104,11 +109,11 @@ const Invoice = () => {
                                         <td>{index + 1}</td>
                                         <td>{item.invoiceDate}</td>
                                         <td>{item.addressShip}</td>
-                                        <td>{item.total}vnđ</td>
-                                        <td>{item.discoundTotal}vnđ</td>
+                                        <td>{formatPrice(item.total)}</td>
+                                        <td>{formatPrice(item.discoundTotal)}</td>
                                         <td>{item.user.userName}</td>
                                         <td>{item.paymentMethod.name}</td>
-                                        <td>{item.voucher.discount}vnđ</td>
+                                        <td>{item.voucher?.discount?formatPrice(item.voucher.discount):0}</td>
                                         <td>{item.paymentStatus.name}</td>
                                         <td>{item.shippingStatus.name}</td>
                                         <td>

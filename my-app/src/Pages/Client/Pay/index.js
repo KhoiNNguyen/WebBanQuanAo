@@ -136,7 +136,10 @@ function Pay() {
             unitPrice: invoiceId.discoundTotal === 0 ? totalCart : finalTotal,
           };
           dispatch(addInvoiceDetail(finalInvoiceDetail));
-          dispatch(removeCart(finalInvoiceDetail.productId))
+          dispatch(removeCart(resultCartProduct[i].id))
+          setTimeout(() => {
+            dispatch(getAllCart())
+          }, 300);  
         }
         window.location.href = "http://localhost:3000/ordersuccess";
       } else if (Number(paymentMethodId) === 2) {
@@ -152,8 +155,10 @@ function Pay() {
               unitPrice: invoiceId.discoundTotal === 0 ? totalCart : finalTotal,
             };
             await dispatch(addInvoiceDetail(finalInvoiceDetail));
-          dispatch(removeCart(finalInvoiceDetail.productId))
-
+            dispatch(removeCart(resultCartProduct[i].id))
+            setTimeout(() => {
+              dispatch(getAllCart())
+            }, 300);    
           }
           // Gọi API để tạo URL thanh toán VNPay
           const response = await fetch(

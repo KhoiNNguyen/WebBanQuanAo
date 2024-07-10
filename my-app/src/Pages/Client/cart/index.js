@@ -60,6 +60,9 @@ function Cart() {
   }, [productState, userId]);
   
   const handleQuantityChange = (id, newQuantity) => {
+    if(newQuantity===0){
+      removeCartItem(id)
+    }
     setCartDetails(prevCartDetails =>
       prevCartDetails.map(product =>
         product.id === id ? { ...product, quantity: newQuantity } : product
@@ -67,6 +70,7 @@ function Cart() {
     );
     updateCartDetail(id, newQuantity);
   };
+
 
   const updateCartDetail = async (id, quantity) => {
     try {
@@ -154,12 +158,12 @@ function Cart() {
                         </div>
                         <div className="quantity-cart-info">
                           <div className="Quantity">
-                            <input 
+                          <input 
                             className="form-control"
                             type="number"
                             name=""
-                            min={1}
-                            max={10}
+                            min={0}
+                            max={product.product.quantity}
                             value={cartDetails.quantity?cartDetails.quantity:product.quantity}
                             onChange={(e)=>handleQuantityChange(product.id, parseInt(e.target.value, 10))}
                             />
