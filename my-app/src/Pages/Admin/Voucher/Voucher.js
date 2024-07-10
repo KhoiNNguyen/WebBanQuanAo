@@ -19,9 +19,6 @@ const Voucher = () => {
     const [data, setData] = useState({});
     const [key, setKey] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [check, setCheck] = useState(true);
-
-    const [listFalse, setlistFalse] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -49,28 +46,30 @@ const Voucher = () => {
     const totalPages = Math.ceil(totalVoucher / voucherPerPage)
     const currentVoucherTrue = (key.slice(indexOfFirst, indexOfLast))
 
-    const totalVoucherFalse = listFalse.length
-    const totalPagesFalse = Math.ceil(totalVoucherFalse / voucherPerPage)
-    const currentVoucherFalse = (listFalse.slice(indexOfFirst, indexOfLast))
-
     const handlePageClick = (e) =>{
         setCurrentPage(+e.selected + 1)
         getListVoucher(+e.selected + 1)
     }
 
+    function formatPrice(price) {
+        price = parseInt(price);
+        return price.toLocaleString("vi-VN") + "đ";
+      }
     //Thay đổi trạng thái load trang
     const handleRefesh = () =>{
-        window.location.reload()
+        getListVoucher()
     }
     const handleOnchangeCheckTrue = () =>{
-        setCheck(true);
+        const filter = voucher.filter(f => {
+            return f.status === true;
+        })
+        setKey(filter);
     }
     const handleOnchangeCheckFalse = () =>{
-        setCheck(false);
         const filter = voucher.filter(f => {
             return f.status === false;
         })
-        setlistFalse(filter);
+        setKey(filter);
     }
 
     //Tìm kiếm
@@ -83,7 +82,6 @@ const Voucher = () => {
             item.voucherCode && item.voucherCode.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setKey(filtered);
-        setlistFalse(filtered)
         setCurrentPage(1);
     }
 
@@ -131,7 +129,7 @@ const Voucher = () => {
                         Ngưng hoạt động
                     </Button>
                 </Form>
-                <Table >
+                <Table className="margin-top-10px">
                     <thead>
                         <tr>
                             <th>STT</th>
@@ -147,48 +145,13 @@ const Voucher = () => {
                     </thead>
                     <tbody>
                         {
-                            check === true?(
-                                currentVoucherTrue.map((item,index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{item.id}</td>
-                                            <td>{item.voucherCode}</td>
-                                            <td>{item.discount}</td>
-                                            <td>{item.startTime}</td>
-                                            <td>{item.endDate}</td>
-                                            <td>{item.description}</td>
-                                            <td>{item.status?"Hoạt động" : "Ngưng hoạt đông"}</td>
-                                            <td>
-                                                {item.status === true?(
-                                                    <Form>
-                                                        <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                            <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
-                                                        </Button>
-                                                        <Button variant="danger" onClick={() => handleShowDelete(item)}>
-                                                            <FontAwesomeIcon icon={faTrash} style={{color:"black"}}/>
-                                                        </Button>
-                                                    </Form>
-                                                )
-                                                    :
-                                                    <Button variant="primary" onClick={() => handleShowEdit(item)}>
-                                                        <FontAwesomeIcon icon={faEdit} style={{color:"black"}}/>
-                                                    </Button>
-                                                }
-                                            </td>
-                                        </tr>
-                                        
-                                    )
-                                })
-                            )
-                            :
-                            currentVoucherFalse.map((item,index) => {
+                            currentVoucherTrue.map((item,index) => {
                                 return (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{item.id}</td>
                                         <td>{item.voucherCode}</td>
-                                        <td>{item.discount}</td>
+                                        <td>{formatPrice(item.discount)}</td>
                                         <td>{item.startTime}</td>
                                         <td>{item.endDate}</td>
                                         <td>{item.description}</td>
@@ -224,7 +187,7 @@ const Voucher = () => {
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={3}
-                        pageCount={check===true ? totalPages : totalPagesFalse}
+                        pageCount={totalPages}
                         previousLabel="< previous"
 
                         pageClassName="page-item"

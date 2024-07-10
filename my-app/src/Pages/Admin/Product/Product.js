@@ -119,6 +119,12 @@ const Products = () => {
         setKey(filterColor)
     }
 
+    //Format Price
+    function formatPrice(price) {
+        price = parseInt(price);
+        return price.toLocaleString("vi-VN") + "đ";
+      }
+
     //Lấy danh sách
     const getListProduct = () =>{
         axios.get(`https://localhost:7026/api/Products`)
@@ -259,7 +265,7 @@ const Products = () => {
                                     <tr key={index}>
                                         <td>{index+1}</td>
                                         <td>{item.name}</td>
-                                        <td>{item.price}</td>
+                                        <td>{formatPrice(item.price)}</td>
                                         <td>{item.size.name}</td>
                                         <td>{item.color.name}</td>
                                         <td>{item.quantity}</td>

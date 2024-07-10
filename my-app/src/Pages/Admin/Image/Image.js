@@ -69,7 +69,7 @@ const Image = () => {
                     </Button>
                 </FormGroup>
             </Form>
-            <Table>
+            <Table className="margin-top-10px">
                 <thead>
                     <tr>
                         <th>STT</th>

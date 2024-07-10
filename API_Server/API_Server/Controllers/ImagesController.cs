@@ -25,7 +25,7 @@ namespace API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Image>>> GetImage()
         {
-            return await _context.Image.ToListAsync();
+            return await _context.Image.Include(p => p.Product).ToListAsync();
         }
 
         // GET: api/Images/5

@@ -56,6 +56,10 @@ const InvoiceDetail = () => {
         setKey(filtered);
         setCurrentPage(1);
     }
+    function formatPrice(price) {
+        price = parseInt(price);
+        return price.toLocaleString("vi-VN") + "đ";
+      }
     const getListInvoiceDetail = () =>{
         axios.get(`https://localhost:7026/api/InvoiceDetails`)
         .then(res => {
@@ -99,7 +103,7 @@ const InvoiceDetail = () => {
                                         <td>{item.invoice.id}</td>
                                         <td>{item.product.name} - Màu {item.product.color.name} - Size {item.product.size.name}</td>
                                         <td>{item.quantity}</td>
-                                        <td>{item.unitPrice}</td>
+                                        <td>{formatPrice(item.unitPrice)}</td>
                                         <td>
                                             <Button variant="primary"  onClick={() =>  handleShowEdit(item)}>
                                                 <FontAwesomeIcon icon={faEdit} className="color-black"/>
