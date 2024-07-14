@@ -12,7 +12,6 @@ const ColorDelete = (props) => {
             axios.delete(`https://localhost:7026/api/Colors/${id}`)
             handleClose()
             toast.success("Xóa thành công")
-            window.location.reload()
         }
         catch{
             toast.danger("Xóa thất bại")

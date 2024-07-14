@@ -11,7 +11,6 @@ const InvoiceCreate = (props) => {
     const [voucher, setVoucher] = useState([]);
     const [paymentStatus, setPaymentStatus] = useState([]);
     const [shippingStatus, setShippingStatus] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) =>{
         let name = e.target.name
@@ -19,24 +18,14 @@ const InvoiceCreate = (props) => {
         setInvoiceCreate(prev => ({...prev, [name]: value}));
     }
     const handleSubmit = (e) =>{
-        e.preventDefault();
         try{
-            axios.post(`https://localhost:7026/api/Invoices`,invoiceCreate, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
+            e.preventDefault();
+            axios.post(`https://localhost:7026/api/Invoices`,invoiceCreate)
             .then(handleClose())
             toast.success("Thêm thành công")
-            window.location.reload()
         }
-        catch (error) {
-            if (error.response && error.response.data && error.response.data.message) {
-              setErrorMessage(error.response.data.message);
-            } else {
-              setErrorMessage('Đã xảy ra lỗi khi đăng ký.');
-            }
-            toast.error(errorMessage)
+        catch{
+            toast.error("Thêm thất bại")
         }
     }
     const getListUser = () =>{
@@ -100,7 +89,7 @@ const InvoiceCreate = (props) => {
                         <FormGroup>
                             <FormLabel>User: </FormLabel>
                             <FormSelect  name="userId" onChange={handleChange}>
-                            <option value={1}> None </option>
+                            <option> None </option>
                             {
                                 user.map(item =>{
                                     return(

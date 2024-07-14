@@ -51,7 +51,6 @@ const ProductType = () => {
 
     const handlePageClick = (e) =>{
         setCurrentPage(e.selected + 1)
-        getListProductType(e.selected + 1)
     }
 
     //Thay đổi trạng thái load trang

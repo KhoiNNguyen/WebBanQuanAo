@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useState } from "react";
-import { Button, Form, FormControl, FormGroup, FormLabel, Modal, ModalHeader } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Form, FormControl, FormGroup, FormLabel, FormSelect, Modal, ModalHeader } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 const ImageCreate = (props) => {
     const [imageCreate, setImageCreate] = useState();
+    const [product, setProduct] = useState([]);
     const {show, handleClose} = props
     const handleChange = (e) =>{
         let name = e.target.name
@@ -35,6 +36,15 @@ const ImageCreate = (props) => {
         // axios.post(`https://localhost:7026/api/Brands`, brandCreate)
         //    .then(() => navigate('/Admin/Brands'))
     }
+    const getListProduct = () =>{
+        axios.get(`https://localhost:7026/api/Products`)
+        .then((res) => {
+            setProduct(res.data);
+        })
+    }
+    useEffect(()=>{
+        getListProduct();
+    },[])
     return ( 
         <>
             <Modal show={show} onHide={handleClose}>
@@ -47,9 +57,18 @@ const ImageCreate = (props) => {
                             <FormLabel>Tên hình ảnh: </FormLabel>
                             <FormControl name="imageFile" type="file" onChange={handleImageChange}></FormControl>
                         </FormGroup>
-                        <FormGroup>
-                            <FormLabel>Sản phẩm: </FormLabel>
-                            <FormControl name="productId" type="text" onChange={handleChange}></FormControl>
+                        <FormGroup className="mb-3">
+                            <FormLabel>Màu: </FormLabel>
+                            <FormSelect  name="productId" onChange={handleChange}>
+                            <option> None </option>
+                            {
+                                product.map(item =>{
+                                    return(
+                                        <option value={item.id} >{item.name} - Màu {item.color.name} - Size {item.size.name}</option>
+                                    )
+                                })
+                            }
+                            </FormSelect>
                         </FormGroup>
                     </Form>
                 </Modal.Body>

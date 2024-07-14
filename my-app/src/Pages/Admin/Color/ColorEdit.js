@@ -21,7 +21,6 @@ const ColorEdit = (props) => {
             axios.put(`https://localhost:7026/api/Colors/${data.id}`,colorEdit)
             handleClose()
             toast.success("Cập nhật thành công")
-            window.location.reload()
         }
         catch{
             toast.danger("Cập nhật thất bại")

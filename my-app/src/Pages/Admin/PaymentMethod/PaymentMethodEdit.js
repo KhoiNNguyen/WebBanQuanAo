@@ -21,7 +21,6 @@ const PaymentMethodEdit = (props) => {
         try{
             axios.put(`https://localhost:7026/api/PaymentMethods/${data.id}`,paymentMethodEdit)
             handleClose()
-            window.location.reload()
             toast.success("Cập nhật thành công")
         }
         catch{

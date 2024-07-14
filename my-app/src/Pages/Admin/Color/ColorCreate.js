@@ -26,7 +26,6 @@ const ColorCreate = (props) => {
             .then(() => navigate('/Admin/Colors'))
             handleClose()
             toast.success("Thêm thành công")
-            window.location.reload();
         }
         catch{
             toast.error("Thêm thất bại")

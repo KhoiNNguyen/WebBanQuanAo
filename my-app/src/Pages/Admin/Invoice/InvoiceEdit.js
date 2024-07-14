@@ -11,7 +11,6 @@ const InvoiceEdit = (props) => {
     const [voucher, setVoucher] = useState([]);
     const [paymentStatus, setPaymentStatus] = useState([]);
     const [shippingStatus, setShippingStatus] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) =>{
         let name = e.target.name
@@ -28,15 +27,9 @@ const InvoiceEdit = (props) => {
             })
             .then(handleClose())
             toast.success("Sửa thành công")
-            window.location.reload()
         }
-        catch (error) {
-            if (error.response && error.response.data && error.response.data.message) {
-              setErrorMessage(error.response.data.message);
-            } else {
-              setErrorMessage('Đã xảy ra lỗi khi đăng ký.');
-            }
-            toast.error(errorMessage)
+        catch{
+            toast.error("Sửa thất bại")
         }
     }
     const getListUser = () =>{

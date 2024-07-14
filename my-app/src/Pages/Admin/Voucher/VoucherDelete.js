@@ -12,7 +12,6 @@ const VoucherDelete = (props) => {
             axios.delete(`https://localhost:7026/api/Vouchers/${id}`)
             handleClose()
             toast.success("Xóa thành công")
-            window.location.reload()
         }
         catch{
             toast.error("Xóa thất bại")

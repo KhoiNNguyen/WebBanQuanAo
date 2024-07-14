@@ -26,7 +26,6 @@ const SizeCreate = (props) => {
             .then(() => navigate('/Admin/Sizes'))
             handleClose()
             toast.success("Thêm thành công")
-            window.location.reload();
         }
         catch{
             toast.error("Thêm thất bại")

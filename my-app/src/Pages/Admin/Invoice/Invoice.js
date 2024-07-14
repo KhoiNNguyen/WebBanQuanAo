@@ -51,10 +51,15 @@ const Invoice = () => {
     }
     const filterProducts = (searchTerm) =>{
         const filtered = invoice.filter((item) =>
-            item.user.userName && item.user.userName.toLowerCase().includes(searchTerm.toLowerCase())
+            (item.invoiceDate && item.invoiceDate.toLowerCase().includes(searchTerm.toLowerCase()))
+            ||
+            (item.user.userName && item.user.userName.toLowerCase().includes(searchTerm.toLowerCase()))
         );
         setKey(filtered);
         setCurrentPage(1);
+    }
+    const handleRefesh = () =>{
+        getListInvoice()
     }
     //Lấy danh sách
     const getListInvoice = () =>{
@@ -84,8 +89,16 @@ const Invoice = () => {
                             <FontAwesomeIcon icon={faPlus} /> Create
                         </Button>
                     </FormGroup>
+                    
                 </Form>
-                <Table className="margin-top-10px">
+                <Button
+                    variant="success" 
+                    className="margin-top-10px"
+                    onClick={handleRefesh}
+                >
+                    Refesh
+                </Button>
+                <Table >
                     <thead>
                         <tr>
                             <th>STT</th>
@@ -111,11 +124,11 @@ const Invoice = () => {
                                         <td>{item.addressShip}</td>
                                         <td>{formatPrice(item.total)}</td>
                                         <td>{formatPrice(item.discoundTotal)}</td>
-                                        <td>{item.user.userName}</td>
-                                        <td>{item.paymentMethod.name}</td>
+                                        <td>{item.user?.userName}</td>
+                                        <td>{item.paymentMethod?.name}</td>
                                         <td>{item.voucher?.discount?formatPrice(item.voucher.discount):0}</td>
-                                        <td>{item.paymentStatus.name}</td>
-                                        <td>{item.shippingStatus.name}</td>
+                                        <td>{item.paymentStatus?.name}</td>
+                                        <td>{item.shippingStatus?.name}</td>
                                         <td>
                                             {
                                                 item.paymentStatus.id !== 5 || item.paymentStatus.id !== 8?

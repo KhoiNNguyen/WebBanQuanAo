@@ -53,5 +53,9 @@ namespace API_Server.Data
 
         public DbSet<API_Server.Models.PaymentStatus> PaymentStatus { get; set; }
 
+        public DbSet<API_Server.Models.ImportInvoice> ImportInvoice { get; set; }
+
+        public DbSet<API_Server.Models.ImportInvoiceDetail> ImportInvoiceDetail { get; set; }
+
     }
 }

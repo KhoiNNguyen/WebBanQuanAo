@@ -37,7 +37,6 @@ const BrandEdit = (props) => {
             axios.put(`https://localhost:7026/api/Brands/uploadFile/${brandEdit.id}`, formData)
             handleClose()
             toast.success("Cập nhật thành công")
-            window.location.reload();
         }
         catch{
             toast.error("Xảy ra lỗi")

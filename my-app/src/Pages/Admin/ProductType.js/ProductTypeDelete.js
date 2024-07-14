@@ -12,7 +12,6 @@ const ProductTypeDelete = (props) => {
             axios.delete(`https://localhost:7026/api/ProductTypes/${id}`)
             handleClose()
             toast.success("Xóa thành công")
-            window.location.reload()
         }
         catch{
             toast.danger("Xóa thất bại")

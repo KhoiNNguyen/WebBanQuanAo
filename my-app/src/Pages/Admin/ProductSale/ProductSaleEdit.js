@@ -21,7 +21,6 @@ const ProductSaleEdit = (props) => {
         try{
             axios.put(`https://localhost:7026/api/ProductSales/${data.id}`,productSaleEdit)
             handleClose()
-            window.location.reload()
             toast.success("Cập nhật thành công")
         }
         catch{

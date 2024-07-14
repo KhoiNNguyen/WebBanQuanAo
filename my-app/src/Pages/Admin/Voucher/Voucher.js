@@ -133,7 +133,6 @@ const Voucher = () => {
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Id</th>
                             <th>VoucherCode</th>
                             <th>Giá giảm</th>
                             <th>Thời gian bắt đầu</th>
@@ -149,7 +148,6 @@ const Voucher = () => {
                                 return (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{item.id}</td>
                                         <td>{item.voucherCode}</td>
                                         <td>{formatPrice(item.discount)}</td>
                                         <td>{item.startTime}</td>

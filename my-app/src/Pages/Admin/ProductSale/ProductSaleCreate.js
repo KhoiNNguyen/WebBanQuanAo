@@ -26,7 +26,6 @@ const ProductSaleCreate = (props) => {
             .then(() => navigate('/Admin/ProductSales'))
             handleClose()
             toast.success("Thêm thành công")
-            window.location.reload();
         }
         catch{
             toast.error("Thêm thất bại")

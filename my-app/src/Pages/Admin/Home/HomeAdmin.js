@@ -3,17 +3,66 @@ import './Home.css'
 import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill } from "react-icons/bs";
 import { PiInvoice } from 'react-icons/pi';
 import axios from 'axios';
-import HomeChart from './HomeChart';
+import { Dropdown } from 'react-bootstrap';
+import LoiNhuanChart from './LoiNhuanChart';
+import DoanhThuChart from './DoanhThuChart';
 
 const HomeAdmin = () => {
     const [productDetail, setProductDetail] = useState([]);
+    const [importInvoice, setImportInvoice] = useState([]);
     const [user, setUser] = useState([]);
     const [productType, setProductType] = useState([]);
     const [invoice, setInvoice] = useState([]);
+    const [yearsDoanhThu, setYearDoanhThu] = useState([]);
+    const [yearsLoiNhuan, setYearLoiNhuan] = useState([]);
+    const [yearsLoiNhuan1, setYearLoiNhuan1] = useState([]);
+
+    //Doanh thu
+    const arrYears = invoice.map(item => {
+        const parts = item.invoiceDate.split('-'); // Tách chuỗi bởi dấu '-'
+        const year = parts[0];
+        return year
+    })
+    const uniqueArray = [...new Set(arrYears)];
+    const filterYears = (year) =>{
+        const eventsInYear = invoice.filter(event => {
+            const eventDate = new Date(event.invoiceDate);
+            return eventDate.getFullYear().toString() === year.toString();
+        });
+        setYearDoanhThu(eventsInYear)
+    }
+    //Lợi nhuận
+    const arrLoiNhuan = importInvoice.map(item => {
+        const parts = item.invoiceTime.split('-'); // Tách chuỗi bởi dấu '-'
+        const year = parts[0];
+        return year
+    })
+    const uniqueLoiNhuan = [...new Set(arrLoiNhuan)];
+    const filterYearsLoiNhuan = (year) =>{
+        const eventsLoiNhuan = importInvoice.filter(event => {
+            const eventDate = new Date(event.invoiceTime);
+            return eventDate.getFullYear().toString() === year.toString();
+        });
+        const eventsDoanhThu = invoice.filter(event => {
+            const eventDate = new Date(event.invoiceDate);
+            return eventDate.getFullYear().toString() === year.toString();
+        });
+        setYearLoiNhuan1(eventsDoanhThu)
+        setYearLoiNhuan(eventsLoiNhuan)
+    }
+    console.log("yearsLoiNhuan",yearsLoiNhuan);
+    console.log("yearsDoanhThu",yearsDoanhThu);
+    //Lấy danh sách
     const getListUser = () =>{
         axios.get(`https://localhost:7026/api/Users`)
         .then(res =>{
             setUser(res.data);
+        })
+    }
+    const getListImportInvocie = () =>{
+        axios.get(`https://localhost:7026/api/ImportInvoices`)
+        .then(res => {
+            setImportInvoice(res.data);
         })
     }
     const getListProductType = () =>{
@@ -39,73 +88,8 @@ const HomeAdmin = () => {
         getListUser();
         getListProductType();
         getListInvoice();
+        getListImportInvocie()
     },[])
-    // var arr = [
-    //     {
-    //         invoiceDate : "2024-06-17T14:39:28.362Z",
-    //         total: 200,
-    //     },
-    //     {
-    //         invoiceDate : "10-01-2003",
-    //         total: 100,
-    //     },
-    //     {
-    //         invoiceDate : "10-01-2003",
-    //         total: 100,
-    //     },
-    //     {
-    //         invoiceDate : "10-02-2003",
-    //         total: 200,
-    //     },
-    //     {
-    //         invoiceDate : "10-03-2003",
-    //         total: 300,
-    //     },
-    //     {
-    //         invoiceDate : "10-03-2003",
-    //         total: 300,
-    //     },
-    //     {
-    //         invoiceDate : "10-03-2003",
-    //         total: 300,
-    //     },
-    //     {
-    //         invoiceDate : "10-04-2003",
-    //         total: 400,
-    //     },
-    //     {
-    //         invoiceDate : "10-07-2003",
-    //         total: 200,
-    //     },
-    //     {
-    //         invoiceDate : "2024-06-17T14:39:28.362Z",
-    //         total: 200,
-    //     },
-    //     {
-    //         invoiceDate : "10-08-2003",
-    //         total: 300,
-    //     },
-    //     {
-    //         invoiceDate : "10-09-2003",
-    //         total: 400,
-    //     },
-    //     {
-    //         invoiceDate : "10-10-2003",
-    //         total: 500,
-    //     },
-    //     {
-    //         invoiceDate : "10-11-2003",
-    //         total: 500,
-    //     },
-    //     {
-    //         invoiceDate : "10-12-2003",
-    //         total: 600,
-    //     },
-    //     {
-    //         invoiceDate : "10-05-2003",
-    //         total: 500,
-    //     },
-    // ]
     return ( 
         <>
             <main className="main-container">
@@ -140,16 +124,56 @@ const HomeAdmin = () => {
                             <PiInvoice className="card-icon"/>
                         </div>
                         <h1>{invoice.length}</h1>
-                    </div> 
+                    </div>
                 </div>
-                <div className="charts">
-                    <HomeChart 
-                        arr = {invoice}
-                    />
+                <div> 
+                    <h1>Doanh thu</h1>
+                    <div className="charts">
+                        <Dropdown className="display justify-content-end">
+                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                Năm
+                            </Dropdown.Toggle>
 
+                            <Dropdown.Menu>
+                                {
+                                    uniqueArray.map((item) =>{
+                                        return(
+                                            <Dropdown.Item onClick={() => filterYears(item)}>{item}</Dropdown.Item>
+                                        )
+                                    })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <DoanhThuChart 
+                            arr = {yearsDoanhThu}
+                        />
+                    </div>
                 </div>
-            </main>
-            
+                <div>
+                    <h1>Lợi nhuận</h1>
+                    <div className="charts">
+                        <Dropdown className="display justify-content-end">
+                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                Năm
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                {
+                                    uniqueLoiNhuan.map((item) =>{
+                                        return(
+                                            <Dropdown.Item onClick={() => filterYearsLoiNhuan(item)}>{item}</Dropdown.Item>
+                                        )
+                                    })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <LoiNhuanChart 
+                            arrImportInvoice = {yearsLoiNhuan}
+                            arrInvoice = {yearsLoiNhuan1}
+                        />
+                    </div>
+                </div>
+            </main>   
         </>
      );
 }

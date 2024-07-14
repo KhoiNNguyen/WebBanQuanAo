@@ -56,6 +56,9 @@ const InvoiceDetail = () => {
         setKey(filtered);
         setCurrentPage(1);
     }
+    const handleRefesh = () =>{
+        getListInvoiceDetail()
+    }
     function formatPrice(price) {
         price = parseInt(price);
         return price.toLocaleString("vi-VN") + "đ";
@@ -83,6 +86,13 @@ const InvoiceDetail = () => {
                         </Button>
                     </FormGroup>
                 </Form>
+                <Button
+                    variant="success" 
+                    className="margin-top-10px"
+                    onClick={handleRefesh}
+                >
+                    Refesh
+                </Button>
                 <Table className="margin-top-10px">
                     <thead>
                         <tr>

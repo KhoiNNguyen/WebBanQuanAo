@@ -154,7 +154,6 @@ const Brand = () => {
                     <thead>
                         <tr>
                             <th className="width-80-px">STT</th>
-                            <th className="width-80-px">Id</th>
                             <th className="width-100-px">Hình ảnh</th>
                             <th style={{width: "400px"}}>Tên</th>
                             <th className="width-100-px">Trạng thái</th>
@@ -167,7 +166,6 @@ const Brand = () => {
                                 return (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{item.id}</td>
                                         <td>
                                             <img src={`https://localhost:7026/images/brands/${item.image}`} alt="hình ảnh thương hiệu" style={{width: "50px",height: "50px"}}/>
                                         </td>

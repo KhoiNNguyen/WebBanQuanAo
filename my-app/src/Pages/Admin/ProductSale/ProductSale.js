@@ -53,7 +53,6 @@ const ProductSale = () => {
 
     const handlePageClick = (e) => {
         setCurrentPage(+e.selected + 1)
-        getListProductSale(+e.selected + 1)
     }
 
     //Thay đổi trạng thái load trang
@@ -133,7 +132,6 @@ const ProductSale = () => {
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Id</th>
                             <th>Thời gian bắt đầu</th>
                             <th>Thời gian kết thúc</th>
                             <th>Phần trăm giảm giá</th>
@@ -149,7 +147,6 @@ const ProductSale = () => {
                                     return (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
-                                            <td>{item.id}</td>
                                             <td>{item.startTime}</td>
                                             <td>{item.endDate}</td>
                                             <td>{item.percentDiscount}</td>
@@ -181,7 +178,6 @@ const ProductSale = () => {
                                 return (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{item.id}</td>
                                         <td>{item.startTime}</td>
                                         <td>{item.endDate}</td>
                                         <td>{item.percentDiscount}</td>

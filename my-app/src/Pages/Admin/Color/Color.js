@@ -146,7 +146,6 @@ const Color = () => {
                     <thead>
                         <tr>
                             <th className="width-100-px">STT</th>
-                            <th className="width-100-px">Id</th>
                             <th className="width-400-px">Tên</th>
                             <th >Trạng Thái</th>
                             <th>Chức năng</th>
@@ -158,7 +157,6 @@ const Color = () => {
                                 return(
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{item.id}</td>
                                         <td>{item.name}</td>
                                         <td>{item.status?"Hoạt động":"Ngưng hoạt động"}</td>
                                         <td>

@@ -20,7 +20,6 @@ const InvoiceDetailEdit = (props) => {
             axios.put(`https://localhost:7026/api/InvoiceDetails/${invoiceDetailEdit.id}`,invoiceDetailEdit)
             .then(handleClose())
             toast.success("Sửa thành công")
-            window.location.reload();
         }
         catch{
             toast.error("Thêm thất bại")

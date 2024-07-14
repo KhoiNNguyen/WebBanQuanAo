@@ -266,10 +266,10 @@ const Products = () => {
                                         <td>{index+1}</td>
                                         <td>{item.name}</td>
                                         <td>{formatPrice(item.price)}</td>
-                                        <td>{item.size.name}</td>
-                                        <td>{item.color.name}</td>
+                                        <td>{item.size?.name}</td>
+                                        <td>{item.color?.name}</td>
                                         <td>{item.quantity}</td>
-                                        <td>{item.productSale.percentDiscount}%</td>
+                                        <td>{item.productSale?.percentDiscount}%</td>
                                         <td>{item.status?"Còn hàng":"Hết hàng"}</td>
                                         <td>
                                             {item.status === true?

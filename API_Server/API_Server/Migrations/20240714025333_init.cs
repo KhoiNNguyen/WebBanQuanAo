@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API_Server.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -314,6 +314,29 @@ namespace API_Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ImportInvoice",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    InvoiceTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Total = table.Column<double>(type: "float", nullable: false),
+                    PaymentMethodId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImportInvoice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImportInvoice_PaymentMethod_PaymentMethodId",
+                        column: x => x.PaymentMethodId,
+                        principalTable: "PaymentMethod",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Invoice",
                 columns: table => new
                 {
@@ -547,6 +570,34 @@ namespace API_Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ImportInvoiceDetail",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    UnitPrice = table.Column<double>(type: "float", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ImportInvoiceId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImportInvoiceDetail", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImportInvoiceDetail_ImportInvoice_ImportInvoiceId",
+                        column: x => x.ImportInvoiceId,
+                        principalTable: "ImportInvoice",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ImportInvoiceDetail_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InvoiceDetail",
                 columns: table => new
                 {
@@ -654,6 +705,21 @@ namespace API_Server.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ImportInvoice_PaymentMethodId",
+                table: "ImportInvoice",
+                column: "PaymentMethodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImportInvoiceDetail_ImportInvoiceId",
+                table: "ImportInvoiceDetail",
+                column: "ImportInvoiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImportInvoiceDetail_ProductId",
+                table: "ImportInvoiceDetail",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Invoice_PaymentMethodId",
                 table: "Invoice",
                 column: "PaymentMethodId");
@@ -754,10 +820,16 @@ namespace API_Server.Migrations
                 name: "Image");
 
             migrationBuilder.DropTable(
+                name: "ImportInvoiceDetail");
+
+            migrationBuilder.DropTable(
                 name: "InvoiceDetail");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "ImportInvoice");
 
             migrationBuilder.DropTable(
                 name: "Invoice");

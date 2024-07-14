@@ -1,6 +1,6 @@
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const HomeChart = (props) => {
+const DoanhThuChart = (props) => {
     const {arr} = props
     
     //Tháng 1
@@ -338,6 +338,21 @@ const HomeChart = (props) => {
     const listInvoiceDecember = arrInvoiceDecember.filter(item =>{
         return item !== 0
     })
+
+    //Tính doanh thu
+    const arrDoandThu = []
+    arr.map(item =>{
+        return arrDoandThu.push(item.total)
+    })
+    const sumDoanhThu = 
+    arrDoandThu.reduce((total, num) => total + num, 0)
+
+    //format giá tiền
+    function formatPrice(price) {
+        price = parseInt(price);
+        return price.toLocaleString("vi-VN") + "đ";
+    }
+
     //dữ liệu Charts
     const data = [
         {
@@ -414,29 +429,31 @@ const HomeChart = (props) => {
         },
     ];
     return ( 
-        <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-            }}
-            >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name"/>
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="invoice" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
-            <Bar dataKey="total" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
-            </BarChart>
-        </ResponsiveContainer>
-
+        <>
+            <h2>Tổng doanh thu năm: {formatPrice(sumDoanhThu)}</h2>
+            <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                width={500}
+                height={300}
+                data={data}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+                >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name"/>
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="invoice" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
+                <Bar dataKey="total" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
+                </BarChart>
+            </ResponsiveContainer>
+        </>
     );
 }
  
-export default HomeChart;
+export default DoanhThuChart;

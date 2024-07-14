@@ -54,7 +54,6 @@ const PaymentMethod = () => {
 
     const handlePageClick = (e) =>{
         setCurrentPage(+e.selected + 1)
-        getListPaymentMethod(+e.selected + 1)
     }
     
     //Thay đổi trạng thái load trang
@@ -134,7 +133,6 @@ const PaymentMethod = () => {
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Id</th>
                             <th>Tên phương thức</th>
                             <th>Trạng thái</th>
                             <th>Chức năng</th>
@@ -147,7 +145,6 @@ const PaymentMethod = () => {
                                     return (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
-                                            <td>{item.id}</td>
                                             <td>{item.name}</td>
                                             <td>{item.status?"Hoạt động":"Ngưng hoạt đông"}</td>
                                             <td>
@@ -175,7 +172,6 @@ const PaymentMethod = () => {
                                 return (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{item.id}</td>
                                         <td>{item.name}</td>
                                         <td>{item.status?"Hoạt động":"Ngưng hoạt đông"}</td>
                                         <td>

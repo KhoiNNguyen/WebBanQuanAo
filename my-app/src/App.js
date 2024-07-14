@@ -40,6 +40,8 @@ import ChangePassword from "./Pages/Client/account/changePassword";
 import VoucherClient from "./Pages/Client/Voucher/Voucher";
 import Image from "./Pages/Admin/Image/Image";
 import LoginAdmin from "./Pages/Admin/Login/Login";
+import ImportInvoice from './Pages/Admin/ImportInvoice/ImportInvoice';
+import ImportInvoiceDetail from './Pages/Admin/ImportInvoiceDetail';
 
 function App() {
   return (
@@ -62,6 +64,8 @@ function App() {
           <Route path='/Admin/Invoices' element={<Invoice/>}></Route>
           <Route path='/Admin/InvoiceDetails' element={<InvoiceDetail />}></Route>
           <Route path='/Admin/Images' element={<Image />}></Route>
+          <Route path='/Admin/ImportInvoices' element={<ImportInvoice />}></Route>
+          <Route path='/Admin/ImportInvoicesDetails' element={<ImportInvoiceDetail />}></Route>
         </Route>
         <Route path="/" element={<LayOutClient />}>
           <Route index element={<HomeClient />} />

@@ -12,7 +12,6 @@ const UserEdit = (props) => {
             axios.put(`https://localhost:7026/api/Users/${id}`)
             handleClose()
             toast.success("Khôi phục thành công")
-            window.location.reload()
         }
         catch{
             toast.danger("Xóa thất bại")

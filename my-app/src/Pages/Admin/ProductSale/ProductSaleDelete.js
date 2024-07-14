@@ -13,7 +13,6 @@ const ProductSaleDelete = (props) => {
             axios.delete(`https://localhost:7026/api/ProductSales/${id}`)
             handleClose()
             toast.success("Xóa thành công")
-            window.location.reload()
         }
         catch{
             toast.error("Xóa thất bại")

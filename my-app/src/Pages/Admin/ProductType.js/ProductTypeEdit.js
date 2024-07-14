@@ -34,7 +34,6 @@ const ProductTypeEdit = (props) => {
             formData.append("status",productTypeEdit.status)
             axios.put(`https://localhost:7026/api/ProductTypes/uploadFile/${productTypeEdit.id}`,formData)
             handleClose()
-            window.location.reload()
             toast.success("Cập nhật thành công")
         }
         catch{

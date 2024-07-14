@@ -27,7 +27,6 @@ const VoucherCreate = (props) => {
             .then(() => navigate('/Admin/Vouchers'))
             handleClose()
             toast.success("Thêm thành công")
-            window.location.reload();
         }
         catch{
             toast.error("Thêm thất bại")

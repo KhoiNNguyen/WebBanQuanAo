@@ -21,7 +21,6 @@ const VoucherEdit = (props) => {
         try{
             axios.put(`https://localhost:7026/api/Vouchers/${data.id}`,voucherEdit)
             handleClose()
-            window.location.reload()
             toast.success("Cập nhật thành công")
         }
         catch{

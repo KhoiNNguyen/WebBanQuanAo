@@ -47,6 +47,9 @@ const Image = () => {
         setKey(filtered);
         setCurrentPage(1);
     }
+    const handleRefesh = () =>{
+        getListImage()
+    }
     const getListImage = () =>{
         axios.get(`https://localhost:7026/api/Images`)
         .then(res => {
@@ -69,6 +72,13 @@ const Image = () => {
                     </Button>
                 </FormGroup>
             </Form>
+            <Button
+                variant="success" 
+                className="margin-top-10px"
+                onClick={handleRefesh}
+            >
+                Refesh
+            </Button>
             <Table className="margin-top-10px">
                 <thead>
                     <tr>
@@ -85,7 +95,7 @@ const Image = () => {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{item.name}</td>
-                                    <td>{item.product.name}</td>
+                                    <td>{item.product?.name}</td>
                                     <td>
                                         <Form>
                                             <Button variant="primary"  onClick={() =>  handleShowEdit(item)}>

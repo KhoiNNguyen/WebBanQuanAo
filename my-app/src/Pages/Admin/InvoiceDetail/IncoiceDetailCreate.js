@@ -20,7 +20,6 @@ const InvoiceDetailCreate = (props) => {
             axios.post(`https://localhost:7026/api/InvoiceDetails`,invoiceDetailCreate)
             .then(handleClose())
             toast.success("Thêm thành công")
-            window.location.reload();
         }
         catch{
             toast.error("Thêm thất bại")
