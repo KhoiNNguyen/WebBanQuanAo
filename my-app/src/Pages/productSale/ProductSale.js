@@ -9,12 +9,15 @@ import { getAllSize } from "../../features/size/sizeSlice";
 import { getAllProductDetail } from "../../features/productDetail/productDetailsSlice";
 import './productSale.css'
 import { getAllImage } from "../../features/image/imageSlice";
+import ReactPaginate from "react-paginate";
 
 function ClientProductSale() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state);
   const [productSaleFilter,setProductSaleFilter]=useState([]);
+  const [currentPage, setCurrentPage] = useState(1);  
   const [proActive,setProActive]=useState(0)
+  const [proActiveSize,setProActiveSize]=useState(0)
   const priceRanges = {
     under500k: { min: 0, max: 200000 },
     from500kTo1M: { min: 200000, max: 500000 },
@@ -68,26 +71,20 @@ function ClientProductSale() {
         }
       }
     }
+    setCurrentPage(1)
     setProductSaleFilter(resultSale)
   },[productState])
 
   const resultSaleAll = [];
-    const seenProductSale = new Set();
     if (
       productState.product.product &&
       Array.isArray(productState.product.product)
     ) {
       for (let i = 0; i < productState.product.product.length; i++) {
         const ps = productState.product.product[i];
-        if (!seenProductSale.has(ps.productDetailId) && ps.productSaleId) {
-          const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
-          resultSaleAll.push({
-            ...ps,
-            thumbnail:ps_image?.name
-          });
-          seenProductSale.add(ps.productDetailId);
-        }
+          resultSaleAll.push(ps);
       }
+      
     }
 
   const filterPrice = (range) => {
@@ -115,21 +112,22 @@ function ClientProductSale() {
   };
 
   const filterSize = (id) => {
+    setProActiveSize(id)
+    setProActive(0)
     let size = resultSaleAll.filter((item) => item.sizeId === id);
-    console.log(size)
     const sizeone = [];
-    const seenProductBrand = new Set();
+    const seenProductType = new Set();
     for (let i = 0; i < size.length; i++) {
       const ps = size[i];
       if (
-        !seenProductBrand.has(ps.productDetailId)
+        !seenProductType.has(ps.productDetailId)
       ) {
         const ps_image=productState?.image?.product?.find(pro=>pro.productId===ps.id)
           sizeone.push({
             ...ps,
             thumbnail:ps_image?.name
           });
-        seenProductBrand.add(ps.productDetailId);
+        seenProductType.add(ps.productDetailId);
       }
     }
     setProductSaleFilter(sizeone);
@@ -137,6 +135,7 @@ function ClientProductSale() {
 
   const filterColor = (id) => {
     setProActive(id)
+    setProActiveSize(0)
     let color = resultSaleAll.filter((item) => item.colorId === id);
     const colorone = [];
     const seenProductType = new Set();
@@ -165,6 +164,18 @@ function ClientProductSale() {
     return price.toLocaleString('vi-VN') + 'đ';
   }
 
+  const brandsPerPage = 12; // Số sản phẩm mỗi trang
+  const indexOfLastBrand = currentPage * brandsPerPage;//Tính toán chỉ số của sản phẩm đầu tiên
+  const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;// Tính toán chỉ số của sản phẩm cuối cùng
+
+  const totalBrands = productSaleFilter.length; // Tổng số sản phẩm
+  const totalPages = Math.ceil(totalBrands / brandsPerPage);// Tổng số trang hiển thị
+  const currentBrandsTrue = (productSaleFilter.slice(indexOfFirstBrand, indexOfLastBrand));
+
+  const handlePageClick = (e) =>{
+      setCurrentPage(+e.selected + 1)
+  }
+
   return (
     <>
       <div className="background-all">
@@ -190,7 +201,7 @@ function ClientProductSale() {
                   <span>Kích Thước</span>
                 </div>
                 {resultSize.map((size) => (
-                  <button   onClick={() => filterSize(size.id)} className="btn-size">{size.name}</button>
+                  proActiveSize===size.id?<button onClick={() => filterSize(size.id)} className="btn-color active">{size.name}</button>:<button onClick={() => filterSize(size.id)} className="btn-size">{size.name}</button>
                 ))}
               </div>
               <div className="color-category mbt-10">
@@ -242,14 +253,20 @@ function ClientProductSale() {
               </div>
               <div className="product-category mbt-10">
                 <div className="row">
-                  {productSaleFilter.map((product) => (
+                  {currentBrandsTrue.map((product) => (
                     <div class="col">
                       <div className="item_product_main">
-                        <div className="product_review">
-                          <span>
-                            <FaStar /> 5
-                          </span>
-                        </div>
+                      {product.productDetail.averageRating?<div className="product_review">
+                      <span className="rate-avetage">
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+                      </span>
+                    </div>:
+                    <div className="product_review d-none">
+                      <span>
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+
+                      </span>
+                    </div>}
                         <div className="item_content sale">
                         <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
                             <Link to={`/ProductDetail/${product.id}`} className="image_thumb">
@@ -280,6 +297,27 @@ function ClientProductSale() {
                     </div>
                   ))}
                 </div>
+                {currentBrandsTrue.length>11?<div className="pagination-container">
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        marginPagesDisplayed={3}
+                        pageCount={totalPages}
+                        previousLabel="< previous"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousClassName="page-item"
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        breakClassName="page-item"
+                        breakLinkClassName="page-link"
+                        containerClassName="pagination"
+                        activeClassName="active"
+                    />
+                </div>:<div></div>}
               </div>
             </div>
           </div>

@@ -224,7 +224,7 @@ p {
 
 .right .col {
   flex: 0 0 0 !important;
-  width: 20% !important;
+  width: 23% !important;
 }
 
 .btn-order {
@@ -259,4 +259,17 @@ p {
 .favorite-null{
   text-align: center;
   padding-top: 15%;
+}
+
+.container-change-info{
+  display: flex;
+  justify-content: space-between;
+}
+
+.right-info{
+  width: 48%;
+}
+
+.left-info{
+  width: 48%;
 }

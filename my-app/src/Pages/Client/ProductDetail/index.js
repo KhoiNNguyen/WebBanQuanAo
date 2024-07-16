@@ -14,7 +14,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getAllImage } from "../../../features/image/imageSlice";
 import { getAllSize } from "../../../features/size/sizeSlice";
 import { getAllColor } from "../../../features/color/colorSlice";
-import { addToCart, getAllCart } from "../../../features/cart/cartSlice";
+import { addToCart, getAllCart, updateQuanTityCart } from "../../../features/cart/cartSlice";
 import { getAllComment } from "../../../features/comment/commentSlice";
 
 const ProductDetail = () => {
@@ -79,7 +79,14 @@ const ProductDetail = () => {
   const uploadCart = () => {
     const customer = JSON.parse(localStorage.getItem("customer"));
     const userId = customer?.userId;
+    const findCart = productState.cart.product?.find(item => item.productId === productid);
     if(userId){
+    if (findCart) {
+      const newQuantity = findCart.quantity + quantity;
+      dispatch(updateQuanTityCart({ id:findCart.id, quantity: newQuantity }));
+      alert("Thêm sản phẩm thành công")
+    }  
+    else{
       dispatch(
         addToCart({
           productId: productid,
@@ -91,9 +98,9 @@ const ProductDetail = () => {
       setTimeout(() => {
         dispatch(getAllCart());
       }, 200);
-    }
+    }}
     else{
-      alert("Vui lòng đăng nhập để sử dụng chức năng này")
+      alert("vui lòng đăng nhập để sử dụng chức năng này")
     }
   };
 
@@ -126,12 +133,14 @@ const ProductDetail = () => {
     dispatch(getAllSize());
     dispatch(getAllColor());
     dispatch(getAllComment());
+    dispatch(getAllCart());
   };
 
   const [filterRate, setFilterRate] = useState(null);
   const handleFilterChange = (rate) => {
     setFilterRate(rate);
   };
+
   const resultComment = [];
   let countcomment = 0;
   if (
@@ -222,6 +231,7 @@ const ProductDetail = () => {
     }
   }
 
+  console.log(productState)
   const foundProduct = resultProduct.find((pro) => pro.productDetailId);
   const currentProductDetail = foundProduct
     ? foundProduct.productDetailId
@@ -557,11 +567,16 @@ const ProductDetail = () => {
           {resultSame.map((product) => (
             <div class="col">
               <div className="item_product_main">
-                <div className="product_review">
-                  <span>
-                    <FaStar /> 5
-                  </span>
-                </div>
+              {product.productDetail.averageRating?<div className="product_review">
+                      <span className="rate-avetage">
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+                      </span>
+                    </div>:
+                    <div className="product_review d-none">
+                      <span>
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+                      </span>
+                    </div>}
                 <div className="item_content">
                   <div
                     className="product_thumnail"

@@ -9,13 +9,16 @@ import { getAllSize } from "../../../features/size/sizeSlice";
 import { getAllProduct } from "../../../features/product/productSlice";
 import { getAllProductDetail } from "../../../features/productDetail/productDetailsSlice";
 import { getAllImage } from "../../../features/image/imageSlice";
+import ReactPaginate from "react-paginate";
 
 
 function CategoryProduct() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state);
   const [productType, setProductType] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);  
   const param = useParams();  
+  
   const priceRanges = {
     under500k: { min: 0, max: 200000 },
     from500kTo1M: { min: 200000, max: 500000 },
@@ -193,7 +196,17 @@ function CategoryProduct() {
     // và thêm đơn vị tiền tệ 'đ' vào sau chuỗi định dạng
     return price.toLocaleString("vi-VN") + "đ";
   }
-  console.log(productType);
+  const brandsPerPage = 12; // Số sản phẩm mỗi trang
+  const indexOfLastBrand = currentPage * brandsPerPage;//Tính toán chỉ số của sản phẩm đầu tiên
+  const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;// Tính toán chỉ số của sản phẩm cuối cùng
+
+  const totalBrands = productType.length; // Tổng số sản phẩm
+  const totalPages = Math.ceil(totalBrands / brandsPerPage);// Tổng số trang hiển thị
+  const currentBrandsTrue = (productType.slice(indexOfFirstBrand, indexOfLastBrand));
+
+  const handlePageClick = (e) =>{
+    setCurrentPage(+e.selected + 1)
+}
   return (
     <>
       <div className="background-all">
@@ -293,11 +306,17 @@ function CategoryProduct() {
                   {productType.map((product) => (
                     <div class="col">
                       <div className="item_product_main type">
-                        <div className="product_review">
-                          <span>
-                            <FaStar /> 5
-                          </span>
-                        </div>
+                      {product.productDetail.averageRating?<div className="product_review">
+                      <span className="rate-avetage">
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+                      </span>
+                    </div>:
+                    <div className="product_review d-none">
+                      <span>
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+
+                      </span>
+                    </div>}
                         <div className="item_content ">
                           <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
                             <Link
@@ -334,6 +353,27 @@ function CategoryProduct() {
                     </div>
                   ))}
                 </div>
+                {currentBrandsTrue.length>11?<div className="pagination-container">
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        marginPagesDisplayed={3}
+                        pageCount={totalPages}
+                        previousLabel="< previous"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousClassName="page-item"
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        breakClassName="page-item"
+                        breakLinkClassName="page-link"
+                        containerClassName="pagination"
+                        activeClassName="active"
+                    />
+                </div>:<div></div>}
               </div>
             </div>
           </div>

@@ -6,14 +6,17 @@ import { FaStar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { addProDuctFavorite, getAllProduct } from "../../../features/product/productSlice";
+import { addProDuctFavorite, getAllProduct, removeProductFarvorite } from "../../../features/product/productSlice";
 import { getAllProductDetail } from "../../../features/productDetail/productDetailsSlice";
 import { getAllBrand } from "../../../features/brand/brandSlice";
 import { getAllProductType } from "../../../features/productType/productTypeSlice";
 import { CiHeart } from "react-icons/ci";
 import { getAllUser } from "../../../features/user/userSlice";
 import { getAllImage } from "../../../features/image/imageSlice";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { getAllUserWishList } from "../../../features/wishlist/wishlistSlice";
 
 
 function HomeClient() {
@@ -27,11 +30,15 @@ function HomeClient() {
   }, []);
 
   const addToWish=(id)=>{
-    if(userId)
+    if(userId){
       dispatch(addProDuctFavorite({
         userId:userId,
         productId: id,
     }))
+    setTimeout(() => {
+      dispatch(getAllUserWishList())
+    }, 300);     
+  }
     else{
       alert("vui lòng đăng nhập để sử dụng chứa năng này")
     }
@@ -185,6 +192,7 @@ const resultProTypeMail=[];
     dispatch(getAllProductType());
     dispatch(getAllUser());
     dispatch(getAllImage())
+    dispatch(getAllUserWishList())
   };
 
   function activeClickFemaleType() {
@@ -230,8 +238,45 @@ const resultProTypeMail=[];
     return price.toLocaleString('vi-VN') + 'đ';
   }
 
+  const removeFromWishList = (id) => {
+    const wishlistProducts = productState?.wishlist?.product || [];
+    const cartId =wishlistProducts.find(item => item.productId === id);
+    dispatch(removeProductFarvorite(cartId.id));
+    setTimeout(() => {
+      dispatch(getAllUserWishList())
+    }, 300);     
+  };
 
-  console.log(resultDiscount)
+  const settings = {
+    slidesToShow: 5,
+    slidesToScroll: 2,
+    infinite: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
   return (
     <>
       <SlideShow />
@@ -253,6 +298,7 @@ const resultProTypeMail=[];
           </div>
           <div className="menu_content_female d-none">
             <ul className="menu_female_list">
+          <Slider {...settings}>
               {resultProTypeFemail.map((product)=>
               <li>
                 <div className="menu_famale_list-group">
@@ -271,10 +317,12 @@ const resultProTypeMail=[];
                 </div>
               </li>
               )}
+            </Slider>
             </ul>
           </div>
           <div className="menu_content_male">
           <ul className="menu_female_list">
+          <Slider {...settings}>
               {resultProTypeMail.map((product)=>
               <li>
                 <div className="menu_famale_list-group">
@@ -293,6 +341,7 @@ const resultProTypeMail=[];
                 </div>
               </li>
               )}
+              </Slider>
             </ul>
           </div>
         </div>
@@ -321,14 +370,18 @@ const resultProTypeMail=[];
           <div className="bodyContent">
             <div className="list_product">
               <div class="row row1">
-                {resultDiscount.map((product) => (
+                {resultDiscount.map((product) => {        
+                  const wishlistProducts = productState?.wishlist?.product || [];
+                  const isFavorite = Array.isArray(wishlistProducts) && wishlistProducts.some(item => item.productId === product.id);
+                  return (
                   <div class="col">
                   <div className="item_product_main">
                     {product.productDetail.averageRating?<div className="product_review">
                       <span className="rate-avetage">
                         <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
                       </span>
-                    </div>:<div className="product_review d-none">
+                    </div>:
+                    <div className="product_review d-none">
                       <span>
                         <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
 
@@ -354,14 +407,14 @@ const resultProTypeMail=[];
                         <div className="color_group"></div>
                       </div>
                     </div>
-                    <div className="product-favorite"  onClick={() => {addToWish(product.id)}}>
+                    <div className={`product-favorite ${isFavorite ? 'active-favorite' : ''}`}  onClick={() => {isFavorite?removeFromWishList(product.id):addToWish(product.id)}}>
                       <span>
                       <CiHeart />
                       </span>
                     </div>
                   </div>
                 </div>
-                ))}
+                )})}
               </div>
             </div>
           </div>
@@ -391,8 +444,10 @@ const resultProTypeMail=[];
           <div className="bodyContent">
             <div className="list_product">
               <div class="row row1">
-              {resultGucci.map((product) => (
-                  <div class="col">
+              {resultGucci.map((product) => {
+                    const wishlistProducts = productState?.wishlist?.product || [];
+                    const isFavorite = Array.isArray(wishlistProducts) && wishlistProducts.some(item => item.productId === product.id);
+                return  ( <div class="col">
                   <div className="item_product_main">
                     {product.productDetail.averageRating?<div className="product_review">
                       <span className="rate-avetage">
@@ -427,14 +482,15 @@ const resultProTypeMail=[];
                         <div className="color_group"></div>
                       </div>
                     </div>
-                    <div className="product-favorite"  onClick={() => {addToWish(product.id)}}>
+                    <div className={`product-favorite ${isFavorite ? 'active-favorite' : ''}`}  onClick={() => {isFavorite?removeFromWishList(product.id):addToWish(product.id)}}>
                       <span>
                       <CiHeart />
                       </span>
                     </div>
                   </div>
-                </div>
-                ))}
+                </div>)
+                 
+                })}
               </div>
             </div>
           </div>
@@ -464,7 +520,10 @@ const resultProTypeMail=[];
           <div className="bodyContent">
             <div className="list_product">
               <div class="row row1">
-              {resultLV.map((product) => (
+              {resultLV.map((product) => {
+                    const wishlistProducts = productState?.wishlist?.product || [];
+                    const isFavorite = Array.isArray(wishlistProducts) && wishlistProducts.some(item => item.productId === product.id);
+                return (
                   <div class="col">
                   <div className="item_product_main">
                   {product.productDetail.averageRating?<div className="product_review">
@@ -497,14 +556,14 @@ const resultProTypeMail=[];
                         <div className="color_group"></div>
                       </div>
                     </div>
-                    <div className="product-favorite"  onClick={() => {addToWish(product.id)}}>
+                    <div className={`product-favorite ${isFavorite ? 'active-favorite' : ''}`}  onClick={() => {isFavorite?removeFromWishList(product.id):addToWish(product.id)}}>
                       <span>
                       <CiHeart />
                       </span>
                     </div>
                   </div>
                 </div>
-                ))}
+                )})}
               </div>
             </div>
           </div>
@@ -534,14 +593,23 @@ const resultProTypeMail=[];
           <div className="bodyContent">
             <div className="list_product">
               <div class="row row1">
-              {resultNike.map((product) => (
+              {resultNike.map((product) => {
+                    const wishlistProducts = productState?.wishlist?.product || [];
+                    const isFavorite = Array.isArray(wishlistProducts) && wishlistProducts.some(item => item.productId === product.id);
+                return (
                   <div class="col">
                   <div className="item_product_main">
-                    <div className="product_review">
-                      <span>
-                        <FaStar /> 5
+                  {product.productDetail.averageRating?<div className="product_review">
+                      <span className="rate-avetage">
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
                       </span>
-                    </div>
+                    </div>:
+                    <div className="product_review d-none">
+                      <span>
+                        <FaStar /> {product.productDetail.averageRating?product.productDetail.averageRating:0}
+
+                      </span>
+                    </div>}
                     <div className="item_content">
                     <div className="product_thumnail" data-discount={product.productSale.percentDiscount}>
                       <Link to={`/ProductDetail/${product.id}`} className="image_thumb">
@@ -562,14 +630,14 @@ const resultProTypeMail=[];
                         <div className="color_group"></div>
                       </div>
                     </div>
-                    <div className="product-favorite"  onClick={() => {addToWish(product.id)}}>
+                    <div className={`product-favorite ${isFavorite ? 'active-favorite' : ''}`}  onClick={() => {isFavorite?removeFromWishList(product.id):addToWish(product.id)}}>
                       <span>
                       <CiHeart />
                       </span>
                     </div>
                   </div>
                 </div>
-                ))}
+                )})}
               </div>
             </div>
           </div>

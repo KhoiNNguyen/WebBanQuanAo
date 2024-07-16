@@ -135,7 +135,7 @@ function Order() {
                       <td>{product.transactionReference}</td>
                       <td>{product.invoiceDate}</td>
                       <td>{product.addressShip}</td>
-                      <td>{formatPrice(product.total)}</td>
+                      <td>{formatPrice(product.discoundTotal)}</td>
                       <td>{product.paymentStatus.name}</td>
                       <td>{product.shippingStatus.name}</td>
                     </tr>

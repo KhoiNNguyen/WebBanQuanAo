@@ -43,6 +43,10 @@ function HeaderClient() {
     navigate('/');
   };
 
+  const handleCart=()=>{
+    alert("Bạn cần đăng nhập để sử dụng chức năng này")
+  }
+
   const resultProTypeFemailShirt = [];
   if (
     productState.productType.product &&
@@ -145,6 +149,7 @@ function HeaderClient() {
   const handleSearch = () => {
     if (searchTerm.trim() !== '') {
       navigate(`/search/${searchTerm}`);
+      setSearchTerm("")
     }
   };
 
@@ -228,7 +233,7 @@ function HeaderClient() {
                         ))}
                       </ul>
                     </li>
-                    <li className="col">Đồ Bơi</li>
+                    <li className="col"></li>
                     <li className="col"></li>
                     <li className="col">
                       <div className="ImageNam">
@@ -265,7 +270,7 @@ function HeaderClient() {
                         ))}
                       </ul>
                     </li>
-                    <li className="col">Đồ Bơi</li>
+                    <li className="col"></li>
                     <li className="col"></li>
                     <li className="col">
                       <div className="ImageNam">
@@ -298,13 +303,20 @@ function HeaderClient() {
             <div className="TypeHeader">
               <ul className="menu">
                 <li>
-                  <Link to="/Cart" className="info-user_cart cart">
+                  {userId?<Link to="/Cart" className="info-user_cart cart">
                     <div className="icon">
                       <BsHandbag />
                     </div>
                       <span className="number-cart">{lengthCart}</span>
                     Giỏ Hàng
-                  </Link>
+                  </Link>:<Link onClick={handleCart} className="info-user_cart cart">
+                    <div className="icon">
+                      <BsHandbag />
+                    </div>
+                      <span className="number-cart">{lengthCart}</span>
+                    Giỏ Hàng
+                  </Link>}
+                  
                 </li>
                 <li>
                   {userId ? (

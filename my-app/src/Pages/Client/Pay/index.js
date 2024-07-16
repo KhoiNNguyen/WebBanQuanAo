@@ -14,9 +14,10 @@ import { addInvoice } from "../../../features/invoice/invoiceSlide";
 import { addInvoiceDetail } from "../../../features/invoiceDetail/invoiceDetailSlice";
 import { getAllImage } from "../../../features/image/imageSlice";
 import { v4 as uuidv4 } from 'uuid';
+import { getAllUser } from "../../../features/user/userSlice";
 
 const shippingSchema = yup.object({
-  username: yup.string().required("Bạn chưa nhập UserName"),
+  fullname: yup.string().required("Bạn chưa nhập UserName"),
   phone: yup.string().required("Bạn chưa nhập Số điện thoại"),
   address: yup.string().required("Bạn chưa nhập địa chỉ"),
   city: yup.string().required("Bạn chưa nhâp thành phố"),
@@ -30,10 +31,37 @@ function Pay() {
   const productState = useSelector((state) => state);
   const [totalCart, setTotalCart] = useState();
   const customer = JSON.parse(localStorage.getItem("customer"));
-  const userId = customer.userId;
+  const userId = customer?.userId;
   const [voucher, setVoucher] = useState("");
   const [voucherDiscount, setVoucherDiscount] = useState({discount:0,voucherId:null});
-  const [finalTotal, setFinalTotal] = useState(totalCart);
+  const [finalTotal, setFinalTotal] = useState();
+  const [initialValues, setInitialValues] = useState({
+    fullname: "",
+    address: "",
+    phone: "",
+    city: "",
+    district: "",
+    wards: "",
+    payment: "",
+  });
+  useEffect(() => {
+    if (productState.auth.product && Array.isArray(productState.auth.product)) {
+      const user = productState.auth.product.find((item) => item.id === userId);
+      console.log(user)
+      if (user) {
+        setInitialValues({
+          fullname: user.fullName,
+          address: user.address,
+          city:user.city,
+          district: user.district,
+          wards: user.wards,
+          phone: user.phone,
+          payment:"",
+        });
+      }
+    }
+  }, [productState, userId]);
+  console.log(initialValues)
   const handleVoucherChange = (event) => {
     setVoucher(event.target.value);
   };
@@ -77,7 +105,7 @@ function Pay() {
           const ps_image=productState?.image?.product?.find(pro=>pro.productId===fm.productId)
           resultCartProduct.push({
             ...fm,
-            thumbnail: ps_image.name,
+            thumbnail: ps_image?.name,
             color: product.color.name,
             size: product.size.name,
           });
@@ -87,19 +115,12 @@ function Pay() {
   }
   console.log(resultCartProduct);
   const formik = useFormik({
-    initialValues: {
-      username: "",
-      phone: "",
-      address: "",
-      city: "",
-      district: "",
-      wards: "",
-      payment: "",
-    },
+    initialValues,
+    enableReinitialize: true,
     validationSchema: shippingSchema,
     onSubmit: async (values) => {
       const addressShip = `${values.address}, ${values.wards}, ${values.district}, ${values.city}`;
-      const username = `${values.address}`;
+      const username = `${values.fullname}`;
       const phoneShip = `${values.phone}`;
       const paymentMethodId = `${values.payment}`;
       const currentDate = new Date(); // Lấy ngày hiện tại
@@ -115,7 +136,7 @@ function Pay() {
           phoneShip,
           invoiceDate:formattedDate,
           total: totalCart,
-          discoundTotal: Number(finalTotal) === 0 ? totalCart : finalTotal,
+          discoundTotal: finalTotal ? finalTotal:totalCart,
           userId,
           paymentMethodId,
           voucherId: voucherDiscount.voucherId,
@@ -124,6 +145,7 @@ function Pay() {
           transactionReference
         })
       ).unwrap();
+      console.log(Number(finalTotal) === Number(totalCart) ? totalCart : finalTotal)
       if (Number(paymentMethodId) === 1) {
         for (let i = 0; i < resultCartProduct.length; i++) {
           const invoiceDetails = {
@@ -208,6 +230,7 @@ function Pay() {
     dispatch(getAllProductDetail());
     dispatch(getAllVoucher());
     dispatch(getAllImage())
+    dispatch(getAllUser());
   };
 
   function formatPrice(price) {
@@ -236,7 +259,7 @@ function Pay() {
                         type="text"
                         name="fullname"
                         placeholder="Họ và tên"
-                        value={formik.values.username}
+                        value={formik.values.fullname}
                         onBlur={formik.handleBlur("username")}
                         onChange={formik.handleChange("username")}
                       />
@@ -332,7 +355,7 @@ function Pay() {
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                           />
-                          <span>Thanh Toán Bằng MoMo</span>
+                          <span>Thanh Toán Bằng VNPAY</span>
                           <div className="icon">
                             <FaMoneyBillTransfer />
                           </div>

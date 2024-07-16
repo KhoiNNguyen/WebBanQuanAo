@@ -51,8 +51,6 @@
 }
 
 .menu_female_list{
-    display: flex;
-    justify-content: center;
     width: 100%;
     padding: unset;
     transform: translate3d(0px, 0px, 0px);
@@ -202,6 +200,15 @@
     align-items: center;
 }
 
+.image a{
+    display: flex;
+    justify-content: center;
+}
+
+.slick-prev:before, .slick-next:before{
+    color: #FCAF17 !important;
+}
+
 .image_thumb{
     display: block;
     position: relative;
@@ -284,4 +291,8 @@
 
 .product-favorite-active{
     background-color: rgb(151, 71, 71);
+}
+
+.active-favorite{
+    background-color: #CD151C;
 }

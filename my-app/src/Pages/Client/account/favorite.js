@@ -47,14 +47,14 @@ function Favorite() {
         const ps_image=productState?.image?.product?.find(pro=>pro.productId===fm.productId);
         const ps_sale=productState.product?.product.find(pro=>pro.id===fm.productId)
         if (ps_image) {
-          resultFavorite.push({...fm, thumbnail: ps_image.name,percentDiscount:ps_sale.productSale.percentDiscount });
+          resultFavorite.push({...fm, thumbnail: ps_image.name,percentDiscount:ps_sale.productSale.percentDiscount,averageRating:ps_sale.productDetail.averageRating });
         }
       } else {
         console.error("Products are undefined or not an array");
       }
     }
   }
-
+  console.log(resultFavorite)
   const removeFromWishList = (id) => {
     dispatch(removeProductFarvorite(id));
     setTimeout(() => {
@@ -146,14 +146,20 @@ function Favorite() {
               {resultFavorite.map((product) => (
                 <div class="col">
                   <div className="item_product_main">
-                    <div className="product_review">
-                      <span>
-                        <FaStar /> 5
+                  {product.averageRating?<div className="product_review">
+                      <span className="rate-avetage">
+                        <FaStar /> {product.averageRating?product.averageRating:0}
                       </span>
-                    </div>
+                    </div>:
+                    <div className="product_review d-none">
+                      <span>
+                        <FaStar /> {product.averageRating?product.averageRating:0}
+
+                      </span>
+                    </div>}
                     <div className="item_content">
                       <div className="product_thumnail" data-discount={product.percentDiscount}>
-                        <Link to={`/ProductDetail/${product.id}`} className="image_thumb img">
+                        <Link to={`/ProductDetail/${product.productId}`} className="image_thumb img">
                           <img
                            src={`https://localhost:7026/images/products/${product.thumbnail}`}
                             alt="n"

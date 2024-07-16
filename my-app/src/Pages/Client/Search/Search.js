@@ -2,13 +2,15 @@ import { FaStar } from "react-icons/fa";
 import "./Search.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProduct } from "../../../features/product/productSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getAllImage } from "../../../features/image/imageSlice";
 import { Link, useParams } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 function Search() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state);
+  const [currentPage, setCurrentPage] = useState(1);  
   const { name } = useParams();
   useEffect(() => {
     getProduct();
@@ -41,6 +43,19 @@ function Search() {
     return price.toLocaleString("vi-VN") + "đ";
   }
 
+  const brandsPerPage = 12; // Số sản phẩm mỗi trang
+  const indexOfLastBrand = currentPage * brandsPerPage;//Tính toán chỉ số của sản phẩm đầu tiên
+  const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;// Tính toán chỉ số của sản phẩm cuối cùng
+
+  const totalBrands = resultProduct.length; // Tổng số sản phẩm
+  const totalPages = Math.ceil(totalBrands / brandsPerPage);// Tổng số trang hiển thị
+  const currentBrandsTrue = (resultProduct.slice(indexOfFirstBrand, indexOfLastBrand));
+
+
+  const handlePageClick = (e) =>{
+    setCurrentPage(+e.selected + 1)
+}
+
   return (
     <>
       <div className="background-all">
@@ -55,14 +70,20 @@ function Search() {
             <div className="search" style={{ "background-color": "#ffffff" }}>
               <div className="product-category mbt-10">
                 <div class="row row1">
-                  {resultProduct.map((pro) => (
+                  {currentBrandsTrue.map((pro) => (
                     <div class="col">
                       <div className="item_product_main">
-                        <div className="product_review">
-                          <span>
-                            <FaStar /> 5
-                          </span>
-                        </div>
+                      {pro.productDetail.averageRating?<div className="product_review">
+                      <span className="rate-avetage">
+                        <FaStar /> {pro.productDetail.averageRating?pro.productDetail.averageRating:0}
+                      </span>
+                    </div>:
+                    <div className="product_review d-none">
+                      <span>
+                        <FaStar /> {pro.productDetail.averageRating?pro.productDetail.averageRating:0}
+
+                      </span>
+                    </div>}
                         <div className="item_content">
                           <div className="product_thumnail" data-discount={pro.productSale.percentDiscount}>
                           <Link to={`/ProductDetail/${pro.id}`} className="image_thumb">
@@ -95,6 +116,27 @@ function Search() {
                     </div>
                   ))}
                 </div>
+                {currentBrandsTrue.length>11?<div className="pagination-container">
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        marginPagesDisplayed={3}
+                        pageCount={totalPages}
+                        previousLabel="< previous"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousClassName="page-item"
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        breakClassName="page-item"
+                        breakLinkClassName="page-link"
+                        containerClassName="pagination"
+                        activeClassName="active"
+                    />
+                </div>:<div></div>}
               </div>
             </div>
           </div>

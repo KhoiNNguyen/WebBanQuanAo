@@ -224,11 +224,7 @@ function Deliver() {
                     <div className="body-footer--sum">
                       <span>Thành tiền:</span>
                       <h4>
-                        {formatPrice(
-                          product.price -
-                            product.price *
-                              (product.productSale.percentDiscount / 100)
-                        )}
+                        {formatPrice(product.unitPrice)}
                       </h4>
                     </div>
                   </div>

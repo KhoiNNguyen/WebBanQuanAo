@@ -375,6 +375,9 @@ namespace EshopIdentity.Controllers
             user.FullName = model.FullName;
             user.Phone = model.Phone;
             user.Address = model.Address;
+            user.City = model.City;
+            user.District = model.District;
+            user.Wards = model.Wards;
             user.Email = model.Email;
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
